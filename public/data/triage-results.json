@@ -1,20 +1,59 @@
 [
   {
-    "number": 15234,
-    "title": "DataGrid: Column resizing causes layout shift on virtualized rows",
-    "url": "https://github.com/mui/mui-x/issues/15234",
-    "author": "devuser42",
-    "authorAvatar": "https://avatars.githubusercontent.com/u/1234567",
-    "createdAt": "2026-02-15T10:23:00Z",
-    "labels": ["component: data grid", "bug"],
-    "body": "## Current behavior\n\nWhen resizing columns in a DataGrid with virtualization enabled, rows shift unexpectedly. The content \"jumps\" as the column width changes.\n\n## Expected behavior\n\nColumn resizing should be smooth without layout shifts on virtualized rows.\n\n## Steps to reproduce\n\n1. Create a DataGrid with 1000+ rows and virtualization enabled\n2. Try resizing any column by dragging the header border\n3. Observe the layout shift on visible rows\n\n## Context\n\n- Browser: Chrome 121\n- MUI X version: v7.28.0\n- OS: macOS Sonoma\n\n## Your environment\n\n```\nSystem: macOS 15.0\nNode: 20.11.0\nnpm: 10.2.4\n```",
+    "number": 21357,
+    "title": "[data grid] getRowId prop does not work with server-side tree data",
+    "url": "https://github.com/mui/mui-x/issues/21357",
+    "author": "ahmedBilal5",
+    "authorAvatar": "https://github.com/ahmedBilal5.png",
+    "createdAt": "2026-02-17T10:55:27Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "body": "### Steps to reproduce\n\nThe server-side tree data grid is having problems when row id is provided through the `getRowId `prop instead of from the data itself.\n\nSteps:\n1. Open this [link](https://stackblitz.com/edit/wyr8jahq-evdddasn?file=src%2FDemo.tsx) to live example. A data-grid-pro using server side tree data should load.\n2. Expand a node in the tree. \n3. Do either of\n    a.  Collapse the same node and expand it again. \n    b.  Click _Increment the counter_  to re-calculate memoized datasource.\n\nError:\n\n> Uncaught Error: MUI X: The Data Grid component requires all rows to have a unique `id` property.\n> Alternatively, you can use the `getRowId` prop to specify a custom id for each row.\n> A row was provided without id when calling updateRows():\n\nAdding id property to the data itself and removing `getRowId` prop makes the grid work fine\n\n@arminmeh  @MBilalShafi \n\n### Current behavior\n\nError:\n\n> Uncaught Error: MUI X: The Data Grid component requires all rows to have a unique `id` property.\n> Alternatively, you can use the `getRowId` prop to specify a custom id for each row.\n> A row was provided without id when calling updateRows():\n\n### Expected behavior\n\ngrid should work same as it does when adding id property to the data itself and removing `getRowId` prop\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n\n**Search keywords**: server-side tree data data-grid-pro\n\n**Order ID**: 123695",
     "triage": {
       "type": "Bug",
       "component": "DataGrid",
       "priority": "High",
-      "completeness": 85,
-      "summary": "Column resizing with virtualization causes visible layout shifts. Well-documented bug with clear reproduction steps.",
-      "classification": "This is a rendering bug in the DataGrid virtualization engine. The column resize handler likely doesn't properly recalculate row positions during the resize operation.",
+      "completeness": 60,
+      "summary": "Bug report DataGrid. [data grid] getrowid prop does not work with serve... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": false,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21347,
+    "title": "DataGridPro TreeData: \u201cinside\u201d Drop Not Triggered When Initial Data Contains No Child Nodes",
+    "url": "https://github.com/mui/mui-x/issues/21347",
+    "author": "Abassion",
+    "authorAvatar": "https://github.com/Abassion.png",
+    "createdAt": "2026-02-16T12:48:58Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "body": "### Steps to reproduce\n\nSteps:\n\n1. Open this link to[ live example](https://codesandbox.io/p/devbox/gallant-cori-m65h6y?file=%2Fsrc%2FMinimalReproExample.tsx%3A7%2C16&from-embed=&workspaceId=ws_YFu8e5BekFdaAY26SxE6q6)\n2. Drag a file into the \"src\" folder.\n\n### Current behavior\n\n\nThe file **is not** reordered as a child inside the \"src\" folder.\n\n### Expected behavior\n\nThe file **should** be reordered as a child inside the \"src\" folder.\n\n\n### Context\n\nThe goal is to have an empty file system where the user can create files and folders and be able to reorder them, nest them ...etc.\n\n### Your environment\n\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n\n  System:\n    OS: Linux 5.0 undefined\n  Binaries:\n    Node: 20.19.1 - /usr/local/bin/node\n    npm: 10.8.2 - /usr/local/bin/npm\n    pnpm: 8.15.6 - /usr/local/bin/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: Not Found\n  npmPackages:\n    @emotion/react: latest => 11.14.0 \n    @emotion/styled: latest => 11.14.1 \n    @mui/core-downloads-tracker:  7.3.8 \n    @mui/icons-material: latest => 7.3.8 \n    @mui/material: latest => 7.3.8 \n    @mui/private-theming:  7.3.8 \n    @mui/styled-engine:  7.3.8 \n    @mui/system:  7.3.8 \n    @mui/types:  7.4.11 \n    @mui/utils:  7.3.8 \n    @mui/x-data-grid: latest => 8.27.1 \n    @mui/x-data-grid-pro: latest => 8.27.1 \n    @mui/x-internals:  8.26.0 \n    @mui/x-license:  8.26.0 \n    @mui/x-telemetry:  8.20.0 \n    @mui/x-virtualizer:  0.3.3 \n    @types/react: latest => 19.2.14 \n    react: latest => 19.2.4 \n    react-dom: latest => 19.2.4 \n    typescript: latest => 5.9.3 \n```\n</details>\n\n\n**Search keywords**: MUI DataGridPro treeData rowReordering inside drop not working\n\n**Order ID**: 116191",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 80,
+      "summary": "Bug report DataGrid. datagridpro treedata: \u201cinside\u201d drop not triggered ... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
       "checklist": {
         "hasReproSteps": true,
         "hasVersion": true,
@@ -22,86 +61,69 @@
         "hasEnvironment": true,
         "hasScreenshot": false
       },
-      "suggestedLabels": ["bug", "component: data grid", "priority: high"],
-      "suggestedAction": "Confirm & Prioritize",
-      "suggestedComment": "Thanks for the detailed report @devuser42! 🙏\n\nI can confirm this is a known issue with column resizing in virtualized mode. The virtualization engine needs to recalculate row positions during resize operations.\n\nI've marked this as **priority: high** since it affects the core DataGrid experience.\n\nCould you also share a CodeSandbox reproduction? That would help us narrow down the fix faster."
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
     },
     "status": "pending"
   },
   {
-    "number": 15221,
-    "title": "DatePicker: Add support for week number display",
-    "url": "https://github.com/mui/mui-x/issues/15221",
-    "author": "nordic-dev",
-    "authorAvatar": "https://avatars.githubusercontent.com/u/2345678",
-    "createdAt": "2026-02-14T08:45:00Z",
-    "labels": ["component: date picker", "enhancement"],
-    "body": "## Summary\n\nIt would be great if the DatePicker could show ISO week numbers alongside the calendar view. This is very common in European business applications.\n\n## Examples\n\nMany calendar applications show week numbers (W1, W2, etc.) on the left side of the calendar grid.\n\n## Motivation\n\nIn Nordic countries and much of Europe, week numbers are commonly used for scheduling and planning. Currently we have to implement a custom day component to show this.",
+    "number": 21329,
+    "title": "[data grid] Group row at bottom?",
+    "url": "https://github.com/mui/mui-x/issues/21329",
+    "author": "mbiggs-gresham",
+    "authorAvatar": "https://github.com/mbiggs-gresham.png",
+    "createdAt": "2026-02-13T14:54:40Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "### Summary\n\nWhat would be the possibility of the group grid supporting the group row being at the bottom underneath the expanded child rows? So group row is present, expand it, and it shunts down to underneath the children. This may only make sense for grids with only 1 level deep. \n\nIn many financial applications you want the aggregate data for each group to be underneath. A group quite commonly may only contain 2 child rows, so something at the top or bottom of grid doesn't really work. It needs to be part of the group itself. I don't think this is currently possible, but would it be difficult to implement?\n\n\n### Examples\n\n_No response_\n\n### Motivation\n\n_No response_\n\n\n**Search keywords**: group grid\n\n**Order ID**: 45466",
     "triage": {
-      "type": "Feature",
-      "component": "DatePicker",
+      "type": "Bug",
+      "component": "DataGrid",
       "priority": "Medium",
-      "completeness": 60,
-      "summary": "Request to add ISO week number display to DatePicker calendar view. Common requirement for European business apps.",
-      "classification": "Feature request for DatePicker enhancement. This is a frequently requested feature that aligns with internationalization goals.",
-      "checklist": {
-        "hasReproSteps": false,
-        "hasVersion": false,
-        "hasExpectedBehavior": true,
-        "hasEnvironment": false,
-        "hasScreenshot": false
-      },
-      "suggestedLabels": ["enhancement", "component: date picker", "priority: medium"],
-      "suggestedAction": "Add to Backlog",
-      "suggestedComment": "Thanks for the suggestion @nordic-dev!\n\nWeek number display has been requested before and is something we'd like to support. I'm adding this to our backlog.\n\nFor now, you can use the `slots.day` prop to render a custom day component that includes week numbers. Here's a rough example:\n\n```tsx\n// Custom day component with week numbers\n```\n\nWould you be interested in contributing a PR for this feature?"
-    },
-    "status": "pending"
-  },
-  {
-    "number": 15198,
-    "title": "TreeView: How to programmatically expand all nodes?",
-    "url": "https://github.com/mui/mui-x/issues/15198",
-    "author": "react-learner",
-    "authorAvatar": "https://avatars.githubusercontent.com/u/3456789",
-    "createdAt": "2026-02-12T16:30:00Z",
-    "labels": ["component: tree view"],
-    "body": "I'm trying to expand all tree nodes when a button is clicked but I can't figure out how to do it. The docs mention `expandedItems` prop but it doesn't seem to work when I update it.\n\nPlease help!",
-    "triage": {
-      "type": "Question",
-      "component": "TreeView",
-      "priority": "Low",
-      "completeness": 25,
-      "summary": "User asking how to programmatically expand all TreeView nodes. Likely a usage question, not a bug.",
-      "classification": "This is a support question, not a bug or feature request. The user needs guidance on using the controlled `expandedItems` prop correctly.",
+      "completeness": 20,
+      "summary": "Bug report DataGrid. [data grid] group row at bottom?... Needs reproduction.",
+      "classification": "Bug report in DataGrid. No reproduction provided. Includes environment info. ",
       "checklist": {
         "hasReproSteps": false,
         "hasVersion": false,
         "hasExpectedBehavior": false,
-        "hasEnvironment": false,
+        "hasEnvironment": true,
         "hasScreenshot": false
       },
-      "suggestedLabels": ["support: question", "component: tree view"],
-      "suggestedAction": "Answer & Close",
-      "suggestedComment": "Hey @react-learner! 👋\n\nThis is a usage question — the `expandedItems` prop works as a controlled prop, so you need to:\n\n1. Collect all node IDs from your tree data\n2. Set them as the `expandedItems` value\n\n```tsx\nconst allNodeIds = getAllIds(treeData);\nsetExpandedItems(allNodeIds);\n```\n\nCheck out the [controlled expansion docs](https://mui.com/x/react-tree-view/expansion/#controlled-expansion) for a complete example.\n\nI'm closing this as it's a usage question. Feel free to reopen if you're still having trouble!"
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Request Reproduction",
+      "suggestedComment": "Thanks for reporting this issue! To help us investigate, could you please provide a minimal reproduction using [StackBlitz](https://stackblitz.com/) or [CodeSandbox](https://codesandbox.io/)?\n\nA minimal reproduction helps us isolate the problem and fix it faster. You can use our [DataGrid template](https://stackblitz.com/edit/react-ts-datagrid) as a starting point.\n\nPlease also include:\n- Your `@mui/x-data-grid` (or related package) version\n- Steps to reproduce the issue\n- Expected vs actual behavior"
     },
     "status": "pending"
   },
   {
-    "number": 15245,
-    "title": "Charts: BarChart throws when data array is empty",
-    "url": "https://github.com/mui/mui-x/issues/15245",
-    "author": "chartdev99",
-    "authorAvatar": "https://avatars.githubusercontent.com/u/4567890",
-    "createdAt": "2026-02-16T14:20:00Z",
-    "labels": ["component: charts", "bug"],
-    "body": "## Current behavior\n\nWhen passing an empty `dataset` array to `BarChart`, it throws:\n```\nTypeError: Cannot read properties of undefined (reading 'map')\n```\n\n## Expected behavior\n\nShould render an empty chart or a placeholder, not crash.\n\n## Steps to reproduce\n\n```tsx\n<BarChart dataset={[]} xAxis={[{ scaleType: 'band', dataKey: 'month' }]} series={[{ dataKey: 'value' }]} />\n```\n\n## Your environment\n\n- MUI X Charts v7.28.0\n- React 18.3\n- Vite 5.4",
+    "number": 21320,
+    "title": "[docs] Demo TreeDataSyncRowData crashes",
+    "url": "https://github.com/mui/mui-x/issues/21320",
+    "author": "Abassion",
+    "authorAvatar": "https://github.com/Abassion.png",
+    "createdAt": "2026-02-13T09:14:15Z",
+    "labels": [
+      "docs",
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "\n<!-- Please make sure you have fulfilled the following items before submitting -->\n<!-- Checked checkbox should look like this: [x] -->\n- [x] I have [searched for similar issues](https://github.com/mui/mui-x/issues?q=is%3Aissue%20%5Bdocs%5D%20Demo%20TreeDataSyncRowData%20crashes) in this repository and believe that this is not a duplicate.\n\n## Steps to reproduce\n1. Visit https://mui.com/x/react-data-grid/tree-data/\n2. ??\n3. demo *TreeDataSyncRowData* crashes\n\n## Your environment\n| Tech         | Version |\n|--------------|---------|\n| Version  | v8.27.0  |\n| Netlify deploy | undefined |\n| Browser      | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 |\n",
     "triage": {
       "type": "Bug",
-      "component": "Charts",
-      "priority": "Medium",
-      "completeness": 90,
-      "summary": "BarChart crashes with TypeError when dataset is an empty array. Good reproduction provided.",
-      "classification": "Edge case bug — the chart component doesn't handle empty datasets gracefully. Should be a simple null check fix.",
+      "component": "DataGrid",
+      "priority": "High",
+      "completeness": 80,
+      "summary": "Bug report DataGrid. [docs] demo treedatasyncrowdata crashes... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
       "checklist": {
         "hasReproSteps": true,
         "hasVersion": true,
@@ -109,28 +131,33 @@
         "hasEnvironment": true,
         "hasScreenshot": false
       },
-      "suggestedLabels": ["bug", "component: charts", "good first issue"],
-      "suggestedAction": "Confirm & Label",
-      "suggestedComment": "Confirmed! The BarChart should handle empty datasets gracefully.\n\nThis looks like a good first issue — it's likely a missing null/empty check in the data processing pipeline.\n\n**Workaround:** Until this is fixed, you can conditionally render:\n```tsx\n{dataset.length > 0 ? <BarChart ... /> : <EmptyState />}\n```\n\nLabeling as `good first issue` — PRs welcome! 🎉"
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
     },
     "status": "pending"
   },
   {
-    "number": 15250,
-    "title": "DataGrid Pro: Row grouping performance degrades with 10k+ rows",
-    "url": "https://github.com/mui/mui-x/issues/15250",
-    "author": "enterprise-user",
-    "authorAvatar": "https://avatars.githubusercontent.com/u/5678901",
-    "createdAt": "2026-02-17T09:15:00Z",
-    "labels": ["component: data grid", "performance"],
-    "body": "## Current behavior\n\nRow grouping on DataGrid Pro becomes extremely slow (5+ seconds to expand a group) when the dataset exceeds 10,000 rows. Profiling shows excessive re-renders in the grouping computation.\n\n## Expected behavior\n\nGrouping operations should remain responsive even with large datasets.\n\n## Steps to reproduce\n\n1. Load DataGrid Pro with 15,000 rows\n2. Enable row grouping by a column with ~50 unique values\n3. Click to expand any group\n4. Observe 5+ second delay\n\n## Context\n\nWe're evaluating MUI X for an enterprise dashboard. This performance issue is a blocker for our use case.\n\n- DataGrid Pro v7.28.0\n- Chrome 121, 16GB RAM\n- Dataset: 15,000 rows, 12 columns",
+    "number": 21318,
+    "title": "[charts-pro] GHSA-w7fw-mjwx-w883 vulnerability",
+    "url": "https://github.com/mui/mui-x/issues/21318",
+    "author": "damiangreen",
+    "authorAvatar": "https://github.com/damiangreen.png",
+    "createdAt": "2026-02-13T02:22:39Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: charts"
+    ],
+    "body": "### Steps to reproduce\n\n```pnpm audit --prod --registry=https://registry.npmjs.org/\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 low                 \u2502 qs's arrayLimit bypass in comma parsing allows denial  \u2502\n\u2502                     \u2502 of service                                             \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Package             \u2502 qs                                                     \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Vulnerable versions \u2502 >=6.7.0 <=6.14.1                                       \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Patched versions    \u2502 >=6.14.2                                               \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Paths               \u2502 .>@mui/x-charts-premium>rasterizehtml>url>qs           \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 More info           \u2502 https://github.com/advisories/GHSA-w7fw-mjwx-w883      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n1 vulnerabilities found\nSeverity: 1 low\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1.\n```\n\n### Current behavior\n\n_No response_\n\n### Expected behavior\n\n_No response_\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  System:\n    OS: Linux 6.17 Ubuntu 25.10 25.10 (Questing Quokka)\n  Binaries:\n    Node: 24.10.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/node\n    npm: 11.7.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/npm\n    pnpm: 10.27.0 - /home/edge-case/.local/share/pnpm/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: 147.0.3\n  npmPackages:\n    @mui/icons-material: ^7.3.7 => 7.3.7 \n    @mui/material: ^7.3.7 => 7.3.7 \n    @mui/material-nextjs: ^7.3.7 => 7.3.7 \n    @mui/x-charts-premium: ^8.27.0 => 8.27.0 \n    @mui/x-data-grid-premium: ^8.27.0 => 8.27.0 \n    @mui/x-date-pickers-pro: ^8.27.0 => 8.27.0 \n    @mui/x-license: ^8.26.0 => 8.26.0 \n    @types/react: ^19.2.10 => 19.2.10 \n    react: ^19.2.4 => 19.2.4 \n    react-dom: ^19.2.4 => 19.2.4 \n    typescript: ^5.9.3 => 5.9.3 \n\n\n```\n</details>\n\n\n\n**Search keywords**: GHSA-w7fw-mjwx-w883",
     "triage": {
       "type": "Bug",
       "component": "DataGrid Pro",
       "priority": "Critical",
       "completeness": 80,
-      "summary": "Row grouping performance severely degrades with 10k+ rows. Enterprise customer blocker. Needs profiling investigation.",
-      "classification": "Performance regression or scalability issue in the row grouping engine. The grouping computation likely isn't memoized properly or triggers unnecessary re-renders.",
+      "summary": "Bug report DataGrid Pro. [charts-pro] ghsa-w7fw-mjwx-w883 vulnerability... Reproduction provided.",
+      "classification": "Bug report in DataGrid Pro. Has reproduction. Includes environment info. Has steps to reproduce.",
       "checklist": {
         "hasReproSteps": true,
         "hasVersion": true,
@@ -138,9 +165,393 @@
         "hasEnvironment": true,
         "hasScreenshot": false
       },
-      "suggestedLabels": ["bug", "component: data grid", "performance", "priority: critical"],
-      "suggestedAction": "Confirm & Escalate",
-      "suggestedComment": "Thanks for the detailed report @enterprise-user. Performance at scale is critical for us.\n\nI've reproduced the issue and can confirm the slowdown with large grouped datasets. This appears to be related to how the grouping engine recomputes row trees on expansion.\n\nMarking as **priority: critical** and assigning to the DataGrid team for investigation.\n\nIn the meantime, you might try:\n- Using `rowGroupingColumnMode='single'` if possible\n- Enabling server-side grouping for datasets this large"
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21315,
+    "title": "Grid selectors expect non-null apiRef",
+    "url": "https://github.com/mui/mui-x/issues/21315",
+    "author": "JohannesByle",
+    "authorAvatar": "https://github.com/JohannesByle.png",
+    "createdAt": "2026-02-12T19:36:34Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "### Steps to reproduce\n\nSteps:\n1. Open this link to live example: https://github-ksqdaipk.stackblitz.io\n2. Load the page, you should see an error \"Cannot read properties of null (reading 'state')\"\n\n\n### Current behavior\n\nThe built in selectors that are used with `useGridSelector` expect the apiRef to be non-null, which causes errors to be thrown with the new apiRef in v8 (which can be null).\n\nAnd this doesn't happen in the demo editor (not sure how the type checking is configured there) but locally the type checking also flags the fact that the selector expects a non-null apiRef.\n\n### Expected behavior\n\nThe selectors should take an apiRef that matches the type returned by `useGridApiRef` and should properly handle the null case.\n\n### Context\n\nI'm trying to migrate an existing project to v8, and this error was in a custom footer component that used the `gridFilteredTopLevelRowCountSelector`.\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  System:\n    OS: Windows 11 10.0.26100\n  Binaries:\n    Node: 24.12.0 - C:\\nvm4w\\nodejs\\node.EXE\n    npm: 11.6.2 - C:\\nvm4w\\nodejs\\npm.CMD\n    pnpm: Not Found\n  Browsers:\n    Chrome: 145.0.7632.46\n    Edge: Chromium (143.0.3650.96)\n  npmPackages:\n    @emotion/react: ^11.14.0 => 11.14.0\n    @emotion/styled: ^11.14.0 => 11.14.1\n    @mui/core-downloads-tracker:  7.3.7\n    @mui/icons-material: ^7.3.7 => 7.3.7\n    @mui/material: ^7.3.7 => 7.3.7\n    @mui/private-theming:  7.3.7\n    @mui/styled-engine:  7.3.7\n    @mui/system:  7.3.7\n    @mui/types:  7.4.10\n    @mui/utils:  7.3.7\n    @mui/x-data-grid:  8.27.0\n    @mui/x-data-grid-premium: ^8.27.0 => 8.27.0\n    @mui/x-data-grid-pro:  8.27.0\n    @mui/x-date-pickers:  8.27.0\n    @mui/x-date-pickers-pro: ^8.27.0 => 8.27.0\n    @mui/x-internal-exceljs-fork:  4.4.3\n    @mui/x-internals:  8.26.0\n    @mui/x-license:  8.26.0\n    @mui/x-telemetry:  8.20.0\n    @mui/x-virtualizer:  0.3.3\n    @types/react: ^19.0.10 => 19.2.13\n    react: ^19.0.0 => 19.2.4\n    react-dom: ^19.0.0 => 19.2.4\n    typescript: ^5.8.3 => 5.9.3\n```\n</details>\n\n<details>\n  <summary><code>tsonfig.json</code></summary>\n\n```json\n{\n  \"compilerOptions\": {\n    \"allowJs\": true,\n    \"allowSyntheticDefaultImports\": true,\n    \"baseUrl\": \"../\",\n    \"downlevelIteration\": true,\n    \"jsx\": \"react\",\n    \"module\": \"esnext\",\n    \"moduleResolution\": \"node\",\n    \"noImplicitAny\": true,\n    \"outDir\": \"../Bin/wwwroot/\",\n    \"resolveJsonModule\": true,\n    \"skipLibCheck\": true,\n    \"sourceMap\": true,\n    \"target\": \"es2023\"\n  }\n}\n\n```\n</details>\n\n\n\n**Search keywords**: data grid selectors\n\n**Order ID**: 95599",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "High",
+      "completeness": 80,
+      "summary": "Bug report DataGrid. grid selectors expect non-null apiref... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21314,
+    "title": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
+    "url": "https://github.com/mui/mui-x/issues/21314",
+    "author": "datalogyinc-cloud",
+    "authorAvatar": "https://github.com/datalogyinc-cloud.png",
+    "createdAt": "2026-02-12T18:00:59Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "### The problem in depth\n\nIn a data grid I apply filters, reorganize the columns and grouping. The resulting view I am saving with  new name.\nWhen I try to load the saved view it looses all the saved filter, grouping and the column reorganization\n\n<!-- Failed to upload \"solr-search-app.zip\" -->\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\nChrome\nWindows 11\n\n```\n</details>\n\n\n**Search keywords**: saving and reloading the view",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 20,
+      "summary": "Bug report DataGrid. datagrid, saving a view with reorganize columns, f... Needs reproduction.",
+      "classification": "Bug report in DataGrid. No reproduction provided. Includes environment info. ",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": false,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Request Reproduction",
+      "suggestedComment": "Thanks for reporting this issue! To help us investigate, could you please provide a minimal reproduction using [StackBlitz](https://stackblitz.com/) or [CodeSandbox](https://codesandbox.io/)?\n\nA minimal reproduction helps us isolate the problem and fix it faster. You can use our [DataGrid template](https://stackblitz.com/edit/react-ts-datagrid) as a starting point.\n\nPlease also include:\n- Your `@mui/x-data-grid` (or related package) version\n- Steps to reproduce the issue\n- Expected vs actual behavior"
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21310,
+    "title": "[question] Breaking on upgrading version from 8.9.2 to latest version",
+    "url": "https://github.com/mui/mui-x/issues/21310",
+    "author": "Harshit-lawcus",
+    "authorAvatar": "https://github.com/Harshit-lawcus.png",
+    "createdAt": "2026-02-12T14:00:25Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: unknown"
+    ],
+    "body": "### The problem in depth\n\nAfter upgrading from version 8.9.2 to the latest version, the MUI Data Grid component is no longer functioning correctly.\n\n### Your environment\n\n1.  \"react\": \"18.3.1\",\n2.  next : 13.5.6\n3. \"node\": \"v20.17.0\",\n4.  \n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b68883ef-cc0e-412f-b3f8-ef3c33005dff\" />\n\nnpm\": \"10.8.2\"\n\n**Search keywords**: Issue on upgrading to latest version",
+    "triage": {
+      "type": "Question",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 80,
+      "summary": "Question about DataGrid. [question] breaking on upgrading version from 8.9.... Needs reproduction.",
+      "classification": "Question report in DataGrid. No reproduction provided. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": true
+      },
+      "suggestedLabels": [],
+      "suggestedAction": "Answer & Close",
+      "suggestedComment": "Hi! Thanks for reaching out. This looks like a usage question \u2014 let me help.\n\n<!-- AI will investigate and suggest an answer -->\n\nIf this doesn't resolve your question, please feel free to reopen the issue with more details."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21304,
+    "title": "DataGrid: Styles in sx selector .MuiDataGrid-menu are not applied to column menu (cannot change zIndex)",
+    "url": "https://github.com/mui/mui-x/issues/21304",
+    "author": "dcoates83",
+    "authorAvatar": "https://github.com/dcoates83.png",
+    "createdAt": "2026-02-11T20:26:28Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "### Steps to reproduce\n\nSteps:\n1. Open this link to live example[ (codeSandBox)](https://codesandbox.io/p/sandbox/6gzhz4)\n2. Add an sx prop on the DataGrid with a rule for \".MuiDataGrid-menu\" that sets a high zIndex:\n   \".MuiDataGrid-menu\": { zIndex: (theme) => `${theme.zIndex.modal + 10} !important` }.\n3. Run the app in the browser.\n4. Click on any column header menu icon (three dots) to open the column menu.\n5. Open browser dev tools and inspect the opened column menu element.\n6. Check the computed styles and applied CSS rules for the column menu.\n7. Observe that the .MuiDataGrid-menu rule from the DataGrid sx prop is not applied and the zIndex remains unchanged.\n\n\n### Current behavior\n\nRemains unchanged\n\n### Expected behavior\n\nShould update based on api settings\n\n### Context\n\n_No response_\n\n### Your environment\n\nEdge\n\n\n**Search keywords**: zIndex, columnMenu, dataGrid",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 60,
+      "summary": "Bug report DataGrid. datagrid: styles in sx selector .muidatagrid-menu ... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": false,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21279,
+    "title": "DataGrid exportState() does not include chartType",
+    "url": "https://github.com/mui/mui-x/issues/21279",
+    "author": "jamiedruce",
+    "authorAvatar": "https://github.com/jamiedruce.png",
+    "createdAt": "2026-02-10T15:31:18Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "### Steps to reproduce\n\n1. Initialise a datagrid with chart integration\n2. Configure a chart\n3. Export state\n4. Apply exported state to DataGrid\n5. See the chart disappear\n\n### Current behavior\n\nCalling `exportState()` doesnt include the `chartType` property of `chartsIntegration.charts.main`, just `dimensions` and `values`.\n\nThis means you can not export state and fully restore it, without chartType the chart fails to render and open up.\n\nDemo of this here: https://stackblitz.com/edit/cxn6fn8a?file=src%2FDemo.tsx\n\nFork of the demo in the docs. fine initially as chartType is set on initialState. But hit \"export state\" and see that chartType is not included. if you then hit \"apply exported state\" to re-render the DataGrid, you'll see the chart disappear\n\n### Expected behavior\n\n`chartType` should be exported\n\n### Context\n\nTrying to save the state of the DataGrid to our database, and restore it fully when a user returns\n\n### Your environment\n\nN/A i'm on @mui/x-data-grid-premium: \"8.22.0\", but as you'll see from the sandbox, its the same on the lastest version.\n\nTested only on Chrome.\n\n\n\n**Search keywords**: data-grid, charts\n\n**Order ID**: 120665",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 80,
+      "summary": "Bug report DataGrid. datagrid exportstate() does not include charttype... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21278,
+    "title": "[pickers] using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
+    "url": "https://github.com/mui/mui-x/issues/21278",
+    "author": "rvspin",
+    "authorAvatar": "https://github.com/rvspin.png",
+    "createdAt": "2026-02-10T15:06:10Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: pickers"
+    ],
+    "body": "### Steps to reproduce\n\nSteps:\nLink to live example: https://stackblitz.com/edit/6zc5pnrz?file=src%2FDemo.tsx\n\n1. Change the hours in any of the picker.\n\n\n### Current behavior\n\nThe default time is set to 00:32:00 but is showing \"KK:32:00 PM\" in the field. When changing the hours in the picker, KK is still retained in the field display.\n\n<img width=\"517\" height=\"235\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/268eb07d-afd5-46eb-a0f2-d100031f4199\" />\n\n### Expected behavior\n\nFields should show \"00:32:00 PM\" as default and get updated when hours are changed in the picker.\n\n### Context\n\nWe need to accommodate different date and time formats in the date time picker. We've chosen date-fns as the adapter as it has most of the formats we support, and based on the [docs](https://date-fns.org/v4.1.0/docs/format) this particular format is supported. \n\n\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n System:\n    OS: macOS 15.7.3\nBinaries:\n    Node: 22.14.0\n    npm: 11.6.2\n    pnpm: 10.9.0\nBrowsers:\n    Chrome: 144.0.7559.133\nnpmPackages:\n    @emotion/react: ^11.13.0 => 11.14.0 \n    @emotion/styled: ^11.13.0 => 11.14.1 \n    @mui/icons-material: ^6.1.3 => 6.5.0 \n    @mui/material: ^6.4.5 => 6.5.0 \n    @mui/x-date-pickers: ^8.27.0 => 8.27.0 \n    @types/react: ^19.0.0 => 19.1.12 \n```\n</details>\n\n\n\n**Search keywords**: time format KK, date-fns adapter",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid Pro",
+      "priority": "Medium",
+      "completeness": 100,
+      "summary": "Bug report DataGrid Pro. [pickers] using date-fns adapter with time format ... Reproduction provided.",
+      "classification": "Bug report in DataGrid Pro. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": true
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21269,
+    "title": "[Server Side Tree][data grid] Unable to sort the table when the number of rows in the page is less than the number of rows per page",
+    "url": "https://github.com/mui/mui-x/issues/21269",
+    "author": "thomasmauriceco2ai",
+    "authorAvatar": "https://github.com/thomasmauriceco2ai.png",
+    "createdAt": "2026-02-10T08:59:50Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "### Steps to reproduce\n\nSteps:\n1. Open this link to this [ServerSideTreeData demo](https://stackblitz.com/edit/vwqxah5w?file=src%2FDemo.tsx) (found the example [here](https://mui.com/x/react-data-grid/server-side-data/tree-data/#implementing-server-side-tree-data)) \n2. **Set rows per page to 50** in the UI (otherwise the sorting seems to work)\n3. Try to sort the table per website or per rating -> the rows don't get sorted\n\n\n### Current behavior\n\nThe rows don't get sorted when I try to sort them\nIt only happens when the number of rows in the page is less than the number of rows per page\n\n\n### Expected behavior\n\nThe rows get sorted correctly\n\n### Context\n\n_No response_\n\n### Your environment\n\n System:\n    OS: Linux 5.0 undefined\n  Binaries:\n    Node: 20.19.1 - /usr/local/bin/node\n    npm: 10.8.2 - /usr/local/bin/npm\n    pnpm: 8.15.6 - /usr/local/bin/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: Not Found\n  npmPackages:\n    @emotion/react: latest => 11.14.0 \n    @emotion/styled: latest => 11.14.1 \n    @mui/core-downloads-tracker:  7.3.7 \n    @mui/icons-material: latest => 7.3.7 \n    @mui/material: latest => 7.3.7 \n    @mui/private-theming:  7.3.7 \n    @mui/styled-engine:  7.3.7 \n    @mui/system:  7.3.7 \n    @mui/types:  7.4.10 \n    @mui/utils:  7.3.7 \n    @mui/x-data-grid:  8.27.0 \n    @mui/x-data-grid-generator: latest => 8.27.0 \n    @mui/x-data-grid-premium:  8.27.0 \n    @mui/x-data-grid-pro: latest => 8.27.0 \n    @mui/x-internal-exceljs-fork:  4.4.3 \n    @mui/x-internals:  8.26.0 \n    @mui/x-license:  8.26.0 \n    @mui/x-telemetry:  8.20.0 \n    @mui/x-virtualizer:  0.3.3 \n    @types/react: latest => 19.2.13 \n    react: latest => 19.2.4 \n    react-dom: latest => 19.2.4 \n    typescript: latest => 5.9.3\n\n\n\n**Search keywords**: ServerSideTree Sorting Datagrid\n\n**Order ID**: 102731",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 80,
+      "summary": "Bug report DataGrid. [server side tree][data grid] unable to sort the t... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21053,
+    "title": "[tree view] lazy-loaded tree: auto-expand child nodes",
+    "url": "https://github.com/mui/mui-x/issues/21053",
+    "author": "caillou",
+    "authorAvatar": "https://github.com/caillou.png",
+    "createdAt": "2026-01-23T14:49:58Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: tree view",
+      "support: pro standard"
+    ],
+    "body": "### The problem in depth\n\n## Question\n\nI am using a lazy-loaded tree.\n\nWhen loading the child-items, the returned can already contain their own children. E.g. in the following example, clicking on `Switzerland` would return the following sub-tree.\n\n```json\n[{\n  \"id\": \"canton-zh\",\n  \"label\": \"Canton of Zurich\",\n  \"children\": [{\n    \"id\": \"city-zh\",\n    \"label\": \"Z\u00fcrich\",\n    \"children\": [{\n      \"id\": \"office-zh\",\n      \"label\": \"Office Zurich\"\n    }]\n  }]\n}]\n```\n\nI don't find a way to automatically open all sub-items.\n\n## Motivation\n\nIf the sub-tree is nested and only contains a couple of items or sub-items, we don't want the users to have to click their way to the items.\n\n## What I tired\n\n1. I tried it just doing nothing, and hoping for the best.\n2. I tried hacking my way there by making the `expandedItems` controlled.\n3. I tried hacking my way there by using the `apiRef`.\n\nSee the following example on how I tried this:\n\nhttps://stackblitz.com/edit/wzk8muwu-kzh7bgqk?file=src%2FDemo.tsx\n\n## Related Issue\n\nThis might relate to the issue we had here: https://github.com/mui/mui-x/issues/19363\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\nnpmPackages:\n    @base-ui/utils:  0.2.4 \n    @emotion/react: latest => 11.14.0 \n    @emotion/styled: latest => 11.14.1 \n    @mui/core-downloads-tracker:  7.3.7 \n    @mui/material: latest => 7.3.7 \n    @mui/private-theming:  7.3.7 \n    @mui/styled-engine:  7.3.7 \n    @mui/system:  7.3.7 \n    @mui/types:  7.4.10 \n    @mui/utils:  7.3.7 \n    @mui/x-internals:  8.26.0 \n    @mui/x-tree-view: latest => 8.26.0 \n    @types/react: latest => 19.2.9 \n    react: latest => 19.2.3 \n    react-dom: latest => 19.2.3 \n    typescript: latest => 5.9.3 \n```\n</details>\n\n\n**Search keywords**: tree lazy-load auto-expand\n\n**Order ID**: 110649",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid Pro",
+      "priority": "Medium",
+      "completeness": 40,
+      "summary": "Bug report DataGrid Pro. [tree view] lazy-loaded tree: auto-expand child no... Reproduction provided.",
+      "classification": "Bug report in DataGrid Pro. Has reproduction.  Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": false,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21036,
+    "title": "[docs] MCP server mui-mcp does not support resource listing",
+    "url": "https://github.com/mui/mui-x/issues/21036",
+    "author": "f1eeman",
+    "authorAvatar": "https://github.com/f1eeman.png",
+    "createdAt": "2026-01-23T12:08:40Z",
+    "labels": [
+      "docs",
+      "status: waiting for maintainer",
+      "scope: pickers",
+      "support: docs-feedback"
+    ],
+    "body": "### Related page\n\nhttps://mui.com/material-ui/getting-started/mcp/#vs-code-cursor-windsurf\n\n### Kind of issue\n\nOther\n\n### Issue description\n\nWhen trying to use MUI X components (e.g., DateField, DateCalendar) in conjunction with MUI MCP server in Windsurf v1.13.9, i encounter the following error: \n`Failure listing resources: server mui-mcp does not support resources`\nThe documentation does not provide guidance on handling MCP server limitations, which leads to integration issues.\n\n### Context\n\nWindsurf v1.13.9\n```\n{\n  \"mcpServers\": {\n    \"mui-mcp\": {\n      \"args\": [\n        \"-y\",\n        \"@mui/mcp@latest\"\n      ],\n      \"command\": \"npx\",\n      \"disabled\": false\n  }\n}\n```\n\n**Search keywords**: MCP, mui-mcp, Failure listing resources, resource listing, x-date-pickers",
+    "triage": {
+      "type": "Feature",
+      "component": "DatePicker",
+      "priority": "Medium",
+      "completeness": 20,
+      "summary": "Feature request DatePicker. [docs] mcp server mui-mcp does not support resourc... Needs reproduction.",
+      "classification": "Feature report in DatePicker. No reproduction provided.  Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": false,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": false,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "component: pickers"
+      ],
+      "suggestedAction": "Review & Label",
+      "suggestedComment": "Thanks for the feature request! I've flagged this for the team to review.\n\nCould you describe your use case in more detail? Understanding the problem you're trying to solve helps us prioritize and design the right solution."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 20989,
+    "title": "[data grid] Screen reader over-reads DOM after rowReordering live region announcement",
+    "url": "https://github.com/mui/mui-x/issues/20989",
+    "author": "rhysmitchell",
+    "authorAvatar": "https://github.com/rhysmitchell.png",
+    "createdAt": "2026-01-21T09:41:25Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "### Steps to reproduce\n\n1. Open the StackBlitz demo: [https://stackblitz.com/edit/vitejs-vite-pf9vrxek](https://stackblitz.com/edit/vitejs-vite-pf9vrxek)  \n2. Move a row using the row action menu (\"Move up\"/\"Move down\")  \n3. Observe that the live region (role=\"status\", aria-live=\"assertive\") announces the move, but **immediately after, the screen reader dictates the entire grid DOM**, overwhelming the intended message\n\n### Current behavior\n\n- Row visually moves as expected  \n- Screen reader does announce the move, but **followed by the entire DOM of the grid**, making the live region message effectively unreadable or confusing\n\n### Expected behavior\n\n- Row moves always trigger clear, concise screen reader announcements in the live region  \n- Announcement reflects the new position, e.g., \"John Doe moved to row 2 of 5\"  \n- Works consistently for both menu-triggered moves and drag-and-drop reordering, **without reading the entire DOM afterwards**\n\n### Context\n\n- Custom live region implemented as a sibling Box element, visually hidden but with role=\"status\" and aria-live=\"assertive\"  \n- Includes `announce()` helper and `RowActionsCell` component for moving rows  \n- Intended to improve accessibility for keyboard and screen reader users\n\n### Your environment\n\n- OS: Windows 11  \n- Browser: Latest Edge  \n- Screen reader: NVDA  \n\n**Search keywords**: MUI, DataGridPro, rowReordering, live region, screen reader, accessibility, aria-live",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 60,
+      "summary": "Bug report DataGrid. [data grid] screen reader over-reads dom after row... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": false,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 20970,
+    "title": "[data grid] Grouping with checkbox selection and server-side-data",
+    "url": "https://github.com/mui/mui-x/issues/20970",
+    "author": "leonhardanthony",
+    "authorAvatar": "https://github.com/leonhardanthony.png",
+    "createdAt": "2026-01-19T14:18:54Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "feature: Selection",
+      "feature: Server integration",
+      "support: premium standard"
+    ],
+    "body": "### Steps to reproduce\n\nSteps:\n1. [Open this link to live example: (required)](https://stackblitz.com/edit/b2syssnr?file=src%2FDemo.tsx)\n2. Use any exable in the grouping with server side Data and add checkboxSelection\n\n\n### Current behavior\n\nI have a data grid with server-side data, grouping, and checkbox selection.\n\n1. Issue: When a group is selected and then expanded, both the group and its corresponding children become deselected. This happens even if the children were previously loaded and then collapsed and expanded again.\nSteps to Reproduce:\n\u2022 Select a group.\n\u2022 Expand it.\n(Note: This also occurs if the children were loaded previously.)\n\n2. Issue: When you select one child in a group that has multiple children, the parent\u2019s checkbox state becomes indeterminate. If you then close the parent group, it loses its indeterminate state and is not selected (this also applies to any grandparent groups). Upon reopening the group, the previously selected row is deselected again.\nSteps to Reproduce:\n\u2022 Open a group with multiple children (if the group has nested groups, open them until you see children).\n\u2022 Select one or multiple children, but not all (so the group becomes indeterminate).\n\u2022 Close the group.\n\n3. Issue: The behavior described in Issue 2 can also be reproduced without server-side data but only with the \"select all\" checkbox (see https://stackblitz.com/edit/oplssymg?file=src%2FDemo.tsx).\nSteps to Reproduce:\n\u2022 Select a group with multiple children.\n\u2022 Deselect one child so that the group\u2019s state becomes indeterminate.\n\u2022 Close the group.\n\n### Expected behavior\n\n_No response_\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n\n**Search keywords**: checkbox selection, grouping, server-side-data\n\n**Order ID**: 118089",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "Medium",
+      "completeness": 60,
+      "summary": "Bug report DataGrid. [data grid] grouping with checkbox selection and s... Reproduction provided.",
+      "classification": "Bug report in DataGrid. Has reproduction. Includes environment info. Has steps to reproduce.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": false,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "bug \ud83d\udc1b"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
     },
     "status": "pending"
   }
