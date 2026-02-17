@@ -29,7 +29,7 @@ export default function IssueDetail() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch(import.meta.env.BASE_URL + 'data/triage-results.json')
+    fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
       .then(r => r.json())
       .then((data: TriageIssue[]) => {
         const found = data.find(i => i.number === Number(number))

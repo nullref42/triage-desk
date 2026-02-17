@@ -28,7 +28,7 @@ export default function IssuesQueue() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch(import.meta.env.BASE_URL + 'data/triage-results.json')
+    fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
       .then(r => r.json())
       .then((data: TriageIssue[]) => { setIssues(data); setLoading(false) })
       .catch(() => setLoading(false))
