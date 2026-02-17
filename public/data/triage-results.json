@@ -1,0 +1,147 @@
+[
+  {
+    "number": 15234,
+    "title": "DataGrid: Column resizing causes layout shift on virtualized rows",
+    "url": "https://github.com/mui/mui-x/issues/15234",
+    "author": "devuser42",
+    "authorAvatar": "https://avatars.githubusercontent.com/u/1234567",
+    "createdAt": "2026-02-15T10:23:00Z",
+    "labels": ["component: data grid", "bug"],
+    "body": "## Current behavior\n\nWhen resizing columns in a DataGrid with virtualization enabled, rows shift unexpectedly. The content \"jumps\" as the column width changes.\n\n## Expected behavior\n\nColumn resizing should be smooth without layout shifts on virtualized rows.\n\n## Steps to reproduce\n\n1. Create a DataGrid with 1000+ rows and virtualization enabled\n2. Try resizing any column by dragging the header border\n3. Observe the layout shift on visible rows\n\n## Context\n\n- Browser: Chrome 121\n- MUI X version: v7.28.0\n- OS: macOS Sonoma\n\n## Your environment\n\n```\nSystem: macOS 15.0\nNode: 20.11.0\nnpm: 10.2.4\n```",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid",
+      "priority": "High",
+      "completeness": 85,
+      "summary": "Column resizing with virtualization causes visible layout shifts. Well-documented bug with clear reproduction steps.",
+      "classification": "This is a rendering bug in the DataGrid virtualization engine. The column resize handler likely doesn't properly recalculate row positions during the resize operation.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": ["bug", "component: data grid", "priority: high"],
+      "suggestedAction": "Confirm & Prioritize",
+      "suggestedComment": "Thanks for the detailed report @devuser42! 🙏\n\nI can confirm this is a known issue with column resizing in virtualized mode. The virtualization engine needs to recalculate row positions during resize operations.\n\nI've marked this as **priority: high** since it affects the core DataGrid experience.\n\nCould you also share a CodeSandbox reproduction? That would help us narrow down the fix faster."
+    },
+    "status": "pending"
+  },
+  {
+    "number": 15221,
+    "title": "DatePicker: Add support for week number display",
+    "url": "https://github.com/mui/mui-x/issues/15221",
+    "author": "nordic-dev",
+    "authorAvatar": "https://avatars.githubusercontent.com/u/2345678",
+    "createdAt": "2026-02-14T08:45:00Z",
+    "labels": ["component: date picker", "enhancement"],
+    "body": "## Summary\n\nIt would be great if the DatePicker could show ISO week numbers alongside the calendar view. This is very common in European business applications.\n\n## Examples\n\nMany calendar applications show week numbers (W1, W2, etc.) on the left side of the calendar grid.\n\n## Motivation\n\nIn Nordic countries and much of Europe, week numbers are commonly used for scheduling and planning. Currently we have to implement a custom day component to show this.",
+    "triage": {
+      "type": "Feature",
+      "component": "DatePicker",
+      "priority": "Medium",
+      "completeness": 60,
+      "summary": "Request to add ISO week number display to DatePicker calendar view. Common requirement for European business apps.",
+      "classification": "Feature request for DatePicker enhancement. This is a frequently requested feature that aligns with internationalization goals.",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": false,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": false,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": ["enhancement", "component: date picker", "priority: medium"],
+      "suggestedAction": "Add to Backlog",
+      "suggestedComment": "Thanks for the suggestion @nordic-dev!\n\nWeek number display has been requested before and is something we'd like to support. I'm adding this to our backlog.\n\nFor now, you can use the `slots.day` prop to render a custom day component that includes week numbers. Here's a rough example:\n\n```tsx\n// Custom day component with week numbers\n```\n\nWould you be interested in contributing a PR for this feature?"
+    },
+    "status": "pending"
+  },
+  {
+    "number": 15198,
+    "title": "TreeView: How to programmatically expand all nodes?",
+    "url": "https://github.com/mui/mui-x/issues/15198",
+    "author": "react-learner",
+    "authorAvatar": "https://avatars.githubusercontent.com/u/3456789",
+    "createdAt": "2026-02-12T16:30:00Z",
+    "labels": ["component: tree view"],
+    "body": "I'm trying to expand all tree nodes when a button is clicked but I can't figure out how to do it. The docs mention `expandedItems` prop but it doesn't seem to work when I update it.\n\nPlease help!",
+    "triage": {
+      "type": "Question",
+      "component": "TreeView",
+      "priority": "Low",
+      "completeness": 25,
+      "summary": "User asking how to programmatically expand all TreeView nodes. Likely a usage question, not a bug.",
+      "classification": "This is a support question, not a bug or feature request. The user needs guidance on using the controlled `expandedItems` prop correctly.",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": false,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": false,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": ["support: question", "component: tree view"],
+      "suggestedAction": "Answer & Close",
+      "suggestedComment": "Hey @react-learner! 👋\n\nThis is a usage question — the `expandedItems` prop works as a controlled prop, so you need to:\n\n1. Collect all node IDs from your tree data\n2. Set them as the `expandedItems` value\n\n```tsx\nconst allNodeIds = getAllIds(treeData);\nsetExpandedItems(allNodeIds);\n```\n\nCheck out the [controlled expansion docs](https://mui.com/x/react-tree-view/expansion/#controlled-expansion) for a complete example.\n\nI'm closing this as it's a usage question. Feel free to reopen if you're still having trouble!"
+    },
+    "status": "pending"
+  },
+  {
+    "number": 15245,
+    "title": "Charts: BarChart throws when data array is empty",
+    "url": "https://github.com/mui/mui-x/issues/15245",
+    "author": "chartdev99",
+    "authorAvatar": "https://avatars.githubusercontent.com/u/4567890",
+    "createdAt": "2026-02-16T14:20:00Z",
+    "labels": ["component: charts", "bug"],
+    "body": "## Current behavior\n\nWhen passing an empty `dataset` array to `BarChart`, it throws:\n```\nTypeError: Cannot read properties of undefined (reading 'map')\n```\n\n## Expected behavior\n\nShould render an empty chart or a placeholder, not crash.\n\n## Steps to reproduce\n\n```tsx\n<BarChart dataset={[]} xAxis={[{ scaleType: 'band', dataKey: 'month' }]} series={[{ dataKey: 'value' }]} />\n```\n\n## Your environment\n\n- MUI X Charts v7.28.0\n- React 18.3\n- Vite 5.4",
+    "triage": {
+      "type": "Bug",
+      "component": "Charts",
+      "priority": "Medium",
+      "completeness": 90,
+      "summary": "BarChart crashes with TypeError when dataset is an empty array. Good reproduction provided.",
+      "classification": "Edge case bug — the chart component doesn't handle empty datasets gracefully. Should be a simple null check fix.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": ["bug", "component: charts", "good first issue"],
+      "suggestedAction": "Confirm & Label",
+      "suggestedComment": "Confirmed! The BarChart should handle empty datasets gracefully.\n\nThis looks like a good first issue — it's likely a missing null/empty check in the data processing pipeline.\n\n**Workaround:** Until this is fixed, you can conditionally render:\n```tsx\n{dataset.length > 0 ? <BarChart ... /> : <EmptyState />}\n```\n\nLabeling as `good first issue` — PRs welcome! 🎉"
+    },
+    "status": "pending"
+  },
+  {
+    "number": 15250,
+    "title": "DataGrid Pro: Row grouping performance degrades with 10k+ rows",
+    "url": "https://github.com/mui/mui-x/issues/15250",
+    "author": "enterprise-user",
+    "authorAvatar": "https://avatars.githubusercontent.com/u/5678901",
+    "createdAt": "2026-02-17T09:15:00Z",
+    "labels": ["component: data grid", "performance"],
+    "body": "## Current behavior\n\nRow grouping on DataGrid Pro becomes extremely slow (5+ seconds to expand a group) when the dataset exceeds 10,000 rows. Profiling shows excessive re-renders in the grouping computation.\n\n## Expected behavior\n\nGrouping operations should remain responsive even with large datasets.\n\n## Steps to reproduce\n\n1. Load DataGrid Pro with 15,000 rows\n2. Enable row grouping by a column with ~50 unique values\n3. Click to expand any group\n4. Observe 5+ second delay\n\n## Context\n\nWe're evaluating MUI X for an enterprise dashboard. This performance issue is a blocker for our use case.\n\n- DataGrid Pro v7.28.0\n- Chrome 121, 16GB RAM\n- Dataset: 15,000 rows, 12 columns",
+    "triage": {
+      "type": "Bug",
+      "component": "DataGrid Pro",
+      "priority": "Critical",
+      "completeness": 80,
+      "summary": "Row grouping performance severely degrades with 10k+ rows. Enterprise customer blocker. Needs profiling investigation.",
+      "classification": "Performance regression or scalability issue in the row grouping engine. The grouping computation likely isn't memoized properly or triggers unnecessary re-renders.",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": ["bug", "component: data grid", "performance", "priority: critical"],
+      "suggestedAction": "Confirm & Escalate",
+      "suggestedComment": "Thanks for the detailed report @enterprise-user. Performance at scale is critical for us.\n\nI've reproduced the issue and can confirm the slowdown with large grouped datasets. This appears to be related to how the grouping engine recomputes row trees on expansion.\n\nMarking as **priority: critical** and assigning to the DataGrid team for investigation.\n\nIn the meantime, you might try:\n- Using `rowGroupingColumnMode='single'` if possible\n- Enabling server-side grouping for datasets this large"
+    },
+    "status": "pending"
+  }
+]
