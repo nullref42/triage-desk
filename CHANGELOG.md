@@ -1,0 +1,41 @@
+# Changelog
+
+All notable changes to Triage Desk will be documented in this file.
+
+## [0.2.2] - 2026-02-18
+
+### Improved
+- Centered text alignment across all DataGrid columns (except Title)
+- Title column now uses `longText` column type for better readability
+- Labels section split into "Current Labels" and "Suggested Labels to Add" — clearly distinguishes existing labels from AI suggestions
+- Added "View on GitHub" button on the Issue tab
+
+## [0.2.1] - 2026-02-18
+
+### Fixed
+- Replaced iframe with rendered markdown for Issue tab (GitHub blocks iframe embedding via `X-Frame-Options: deny`)
+
+## [0.2.0] - 2026-02-18
+
+### Added
+- **Master Detail panel** — expand any row inline to see triage info and take actions without leaving the queue
+- Two detail tabs: **🤖 Triage** (summary, checklist, comment editor, actions) and **🌐 Issue** (rendered issue body)
+- Upgraded to MUI X DataGrid Pro for detail panel support
+- "Open on GitHub" icon button in detail panel header
+
+### Removed
+- Separate drill-down Issue Detail page — everything is inline now
+
+## [0.1.0] - 2026-02-18
+
+### Added
+- Initial MVP release
+- Issues Queue with MUI DataGrid showing triaged issues
+- Issue Detail page with markdown rendering, AI triage analysis, completeness checklist
+- Markdown comment editor with Edit/Preview toggle
+- Post Comment, Apply Labels, Post & Label, Skip actions via Octokit
+- Settings page for GitHub PAT (stored in browser localStorage)
+- Activity Log tracking all actions
+- Dark theme with color-coded type/priority/status badges
+- 16 real triaged issues from mui/mui-x
+- Deployed on GitHub Pages

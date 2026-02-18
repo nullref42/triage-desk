@@ -1,73 +1,69 @@
-# React + TypeScript + Vite
+# 🪑 Triage Desk
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI-powered GitHub issue triage dashboard for [MUI X](https://github.com/mui/mui-x).
 
-Currently, two official plugins are available:
+**Live:** [nullref42.github.io/triage-desk](https://nullref42.github.io/triage-desk/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## What it does
 
-## React Compiler
+Triage Desk monitors open issues labeled `status: waiting for maintainer` on `mui/mui-x`, analyzes them using AI, and presents maintainers with a dashboard to review and act on triaged issues — all from a single view.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Features
 
-## Expanding the ESLint configuration
+- **Master Detail DataGrid** — expand any row to see the full triage inline
+- **AI Triage Analysis** — classification, priority, completeness checklist, suggested action
+- **Markdown Comment Editor** — pre-filled with a suggested response, editable before posting
+- **One-Click Actions** — Post Comment, Apply Labels, Post & Label, Skip
+- **Issue Body Rendering** — rendered markdown of the original issue, without leaving the dashboard
+- **Activity Log** — tracks every action you take
+- **Hourly Auto-Refresh** — triage data is updated via cron and redeployed automatically
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### How it works
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+┌──────────────┐     ┌───────────────┐     ┌──────────────┐
+│  GitHub API   │────▶│  AI Triage    │────▶│  Static JSON │
+│  (polling)    │     │  (analysis)   │     │  (committed) │
+└──────────────┘     └───────────────┘     └──────┬───────┘
+                                                   │
+                                            ┌──────▼───────┐
+                                            │  GitHub Pages │
+                                            │  (dashboard)  │
+                                            └──────┬───────┘
+                                                   │
+                                            ┌──────▼───────┐
+                                            │  Maintainer   │
+                                            │  (browser)    │
+                                            └──────────────┘
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+1. **Polling**: Issues with `status: waiting for maintainer` are fetched hourly from `mui/mui-x`
+2. **Triage**: Each issue is analyzed — type, component, priority, completeness, suggested action & comment
+3. **Deploy**: Results are committed as `data/triage-results.json` and deployed to GitHub Pages
+4. **Review**: Maintainers open the dashboard, review triage suggestions, and take actions using their own GitHub PAT
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Security
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **No backend** — the dashboard is a static site
+- **PATs stay local** — stored in your browser's `localStorage`, never sent to any server
+- **Actions are yours** — comments and labels are posted using your own token, appearing as you
+
+## Tech Stack
+
+- [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/)
+- [MUI v6](https://mui.com/) + [MUI X DataGrid Pro](https://mui.com/x/react-data-grid/)
+- [Octokit](https://github.com/octokit/rest.js) (client-side GitHub API)
+- [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm)
+- Deployed on [GitHub Pages](https://pages.github.com/)
+
+## Development
+
+```bash
+npm install
+npm run dev     # Start dev server
+npm run build   # Build for production
 ```
+
+## License
+
+MIT
