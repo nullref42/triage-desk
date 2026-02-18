@@ -6,6 +6,16 @@ export interface TriageChecklist {
   hasScreenshot: boolean
 }
 
+export interface Investigation {
+  status: 'queued' | 'in-progress' | 'done'
+  approach?: string
+  painPoints?: string
+  conclusion?: string
+  reasoning?: string
+  suggestedFix?: string
+  completedAt?: string
+}
+
 export interface Triage {
   type: 'Bug' | 'Feature' | 'Question'
   component: string
@@ -17,6 +27,8 @@ export interface Triage {
   suggestedLabels: string[]
   suggestedAction: string
   suggestedComment: string
+  investigation?: Investigation
+  investigationNotes?: string
 }
 
 export interface TriageIssue {

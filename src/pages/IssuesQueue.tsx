@@ -140,6 +140,18 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
             <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Suggested Action</Typography>
             <Chip label={triage.suggestedAction} color="primary" size="small" sx={{ fontWeight: 600, mb: 2 }} />
 
+            {triage.investigation?.status === 'done' && (
+              <Paper sx={{ p: 2, mb: 2, bgcolor: 'rgba(34,197,94,0.06)', border: '1px solid rgba(34,197,94,0.15)', borderRadius: 2 }}>
+                <Typography fontSize={12} fontWeight={700} color="#22c55e" mb={0.5}>🔬 Investigation Complete</Typography>
+                {triage.investigation.conclusion && (
+                  <Typography fontSize={12} color="text.secondary" mb={0.5}>{triage.investigation.conclusion}</Typography>
+                )}
+                {triage.investigation.suggestedFix && (
+                  <Typography fontSize={11} fontFamily="monospace" color="grey.400" sx={{ mt: 0.5, whiteSpace: 'pre-wrap' }}>{triage.investigation.suggestedFix}</Typography>
+                )}
+              </Paper>
+            )}
+
             <Divider sx={{ my: 1.5, borderColor: 'rgba(255,255,255,0.06)' }} />
 
             <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Current Labels</Typography>
@@ -227,8 +239,8 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
         </Box>
       )}
 
-      <Snackbar open={snack.open} autoHideDuration={4000} onClose={() => setSnack(s => ({ ...s, open: false }))}>
-        <Alert severity={snack.severity} variant="filled">{snack.msg}</Alert>
+      <Snackbar open={snack.open} autoHideDuration={4000} onClose={() => setSnack(s => ({ ...s, open: false }))} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
+        <Alert severity={snack.severity} variant="filled" sx={{ minWidth: 300 }}>{snack.msg}</Alert>
       </Snackbar>
     </Box>
   )
@@ -281,12 +293,11 @@ export default function IssuesQueue() {
         <Tab label={`Active (${activeCount})`} value="active" />
         <Tab label={`Archived (${archivedCount})`} value="archived" />
       </Tabs>
-      <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
+      <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden', height: 'calc(100vh - 220px)', minHeight: 400 }}>
         <DataGridPro
           rows={rows}
           columns={columns}
           loading={loading}
-          autoHeight
           disableRowSelectionOnClick
           getDetailPanelContent={getDetailPanelContent}
           getDetailPanelHeight={getDetailPanelHeight}

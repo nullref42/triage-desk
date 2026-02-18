@@ -2,6 +2,16 @@
 
 All notable changes to Triage Desk will be documented in this file.
 
+## [0.3.1] - 2026-02-18
+
+### Improved
+- **DataGrid height** now fills available viewport — no more scrolling to the bottom to see errors
+- **Error snackbar** anchored to top-center for immediate visibility
+- **Investigation Queue** redesigned — focused solely on investigation info: approach, pain points, conclusion, reasoning, and suggested fix
+- **Next investigation time** shown in Investigation Queue header and in each queued issue's detail
+- **Investigation results** now reflected in Issues Queue — when investigation is done, the triage panel shows a summary and suggested fix inline
+- **Investigation data model** expanded: `approach`, `painPoints`, `conclusion`, `reasoning`, `suggestedFix`, `completedAt`
+
 ## [0.3.0] - 2026-02-18
 
 ### Added
