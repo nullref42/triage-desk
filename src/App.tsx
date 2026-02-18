@@ -2,7 +2,6 @@ import { Routes, Route } from 'react-router-dom'
 import { Box } from '@mui/material'
 import Sidebar from './components/Sidebar'
 import IssuesQueue from './pages/IssuesQueue'
-import IssueDetail from './pages/IssueDetail'
 import Settings from './pages/Settings'
 import ActivityLog from './pages/ActivityLog'
 
@@ -13,7 +12,6 @@ export default function App() {
       <Box component="main" sx={{ flexGrow: 1, p: 3, overflow: 'auto' }}>
         <Routes>
           <Route path="/" element={<IssuesQueue />} />
-          <Route path="/issues/:number" element={<IssueDetail />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/activity" element={<ActivityLog />} />
         </Routes>

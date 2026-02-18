@@ -1,10 +1,23 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Box, Typography, LinearProgress } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
-import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid'
+import { useCallback, useEffect, useState } from 'react'
+import {
+  Box, Typography, LinearProgress, Tabs, Tab, TextField, Button,
+  ToggleButtonGroup, ToggleButton, Checkbox, FormControlLabel,
+  Divider, Chip, Avatar, Snackbar, Alert, Tooltip, IconButton,
+} from '@mui/material'
+import { DataGridPro } from '@mui/x-data-grid-pro'
+import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid-pro'
+import SendIcon from '@mui/icons-material/Send'
+import LabelIcon from '@mui/icons-material/Label'
+import SkipNextIcon from '@mui/icons-material/SkipNext'
+import CheckCircleIcon from '@mui/icons-material/CheckCircle'
+import CancelIcon from '@mui/icons-material/Cancel'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 import type { TriageIssue } from '../types'
 import { TypeBadge, PriorityBadge, StatusBadge } from '../components/Badges'
+import { getOctokit } from '../utils/github'
+import { addActivity } from '../utils/activity'
 
 const columns: GridColDef[] = [
   { field: 'number', headerName: '#', width: 80, renderCell: (p: GridRenderCellParams) => <Typography fontWeight={600} fontSize={13}>#{p.value}</Typography> },
@@ -22,10 +35,166 @@ const columns: GridColDef[] = [
   { field: 'status', headerName: 'Status', width: 100, renderCell: (p: GridRenderCellParams) => <StatusBadge status={p.value} /> },
 ]
 
+function DetailPanel({ issue }: { issue: TriageIssue }) {
+  const [tab, setTab] = useState(0)
+  const [comment, setComment] = useState(issue.triage.suggestedComment)
+  const [previewMode, setPreviewMode] = useState<'edit' | 'preview'>('edit')
+  const [selectedLabels, setSelectedLabels] = useState<string[]>(issue.triage.suggestedLabels)
+  const [snack, setSnack] = useState<{ open: boolean; msg: string; severity: 'success' | 'error' }>({ open: false, msg: '', severity: 'success' })
+  const [loading, setLoading] = useState(false)
+
+  const showSnack = (msg: string, severity: 'success' | 'error') => setSnack({ open: true, msg, severity })
+
+  const postComment = async () => {
+    const octokit = getOctokit()
+    if (!octokit) return showSnack('Set your GitHub token in Settings first', 'error')
+    setLoading(true)
+    try {
+      await octokit.issues.createComment({ owner: 'mui', repo: 'mui-x', issue_number: issue.number, body: comment })
+      addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Posted comment' })
+      showSnack('Comment posted!', 'success')
+    } catch (e: any) { showSnack(e.message, 'error') }
+    setLoading(false)
+  }
+
+  const applyLabels = async () => {
+    const octokit = getOctokit()
+    if (!octokit) return showSnack('Set your GitHub token in Settings first', 'error')
+    setLoading(true)
+    try {
+      await octokit.issues.addLabels({ owner: 'mui', repo: 'mui-x', issue_number: issue.number, labels: selectedLabels })
+      addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Applied labels', details: selectedLabels.join(', ') })
+      showSnack('Labels applied!', 'success')
+    } catch (e: any) { showSnack(e.message, 'error') }
+    setLoading(false)
+  }
+
+  const postAndLabel = async () => { await postComment(); await applyLabels() }
+
+  const skip = () => {
+    addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Skipped' })
+    showSnack('Issue skipped', 'success')
+  }
+
+  const { triage } = issue
+
+  return (
+    <Box sx={{ bgcolor: 'rgba(0,0,0,0.15)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', px: 3, pt: 1.5 }}>
+        <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ '& .MuiTab-root': { textTransform: 'none', fontSize: 13, fontWeight: 600, minHeight: 40 } }}>
+          <Tab label="🤖 Triage" />
+          <Tab label="🌐 Issue" />
+        </Tabs>
+        <Box sx={{ flex: 1 }} />
+        <Tooltip title="Open on GitHub">
+          <IconButton size="small" href={issue.url} target="_blank" sx={{ color: 'grey.400' }}>
+            <OpenInNewIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+      </Box>
+
+      {tab === 0 && (
+        <Box sx={{ display: 'flex', gap: 3, p: 3, flexWrap: 'wrap' }}>
+          {/* Left: Summary & Checklist */}
+          <Box sx={{ flex: '1 1 300px', minWidth: 280 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+              <Avatar src={issue.authorAvatar} sx={{ width: 28, height: 28 }} />
+              <Typography fontSize={13} fontWeight={600}>{issue.author}</Typography>
+              <Typography fontSize={12} color="text.secondary">
+                {new Date(issue.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+              </Typography>
+              <TypeBadge type={triage.type} />
+              <PriorityBadge priority={triage.priority} />
+            </Box>
+
+            <Typography fontSize={13} color="text.secondary" mb={2}>{triage.summary}</Typography>
+
+            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Classification</Typography>
+            <Typography fontSize={13} mb={2}>{triage.classification}</Typography>
+
+            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Completeness</Typography>
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 2 }}>
+              {Object.entries(triage.checklist).map(([key, val]) => (
+                <Box key={key} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                  {val ? <CheckCircleIcon sx={{ fontSize: 14, color: '#22c55e' }} /> : <CancelIcon sx={{ fontSize: 14, color: '#ef4444' }} />}
+                  <Typography fontSize={12}>{key.replace(/^has/, '').replace(/([A-Z])/g, ' $1').trim()}</Typography>
+                </Box>
+              ))}
+            </Box>
+
+            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Suggested Action</Typography>
+            <Chip label={triage.suggestedAction} color="primary" size="small" sx={{ fontWeight: 600, mb: 2 }} />
+
+            <Divider sx={{ my: 1.5, borderColor: 'rgba(255,255,255,0.06)' }} />
+            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={1} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Labels</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+              {triage.suggestedLabels.map(l => (
+                <FormControlLabel
+                  key={l}
+                  control={<Checkbox size="small" checked={selectedLabels.includes(l)} onChange={(_, checked) => setSelectedLabels(prev => checked ? [...prev, l] : prev.filter(x => x !== l))} />}
+                  label={<Typography fontSize={12}>{l}</Typography>}
+                  sx={{ mr: 1 }}
+                />
+              ))}
+            </Box>
+          </Box>
+
+          {/* Right: Comment editor & actions */}
+          <Box sx={{ flex: '1 1 400px', minWidth: 350 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+              <Typography fontSize={12} fontWeight={700} color="grey.400" sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Comment</Typography>
+              <ToggleButtonGroup size="small" value={previewMode} exclusive onChange={(_, v) => v && setPreviewMode(v)}>
+                <ToggleButton value="edit" sx={{ px: 1.5, py: 0.25, fontSize: 12 }}>Edit</ToggleButton>
+                <ToggleButton value="preview" sx={{ px: 1.5, py: 0.25, fontSize: 12 }}>Preview</ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+            {previewMode === 'edit' ? (
+              <TextField
+                multiline
+                minRows={5}
+                maxRows={12}
+                fullWidth
+                value={comment}
+                onChange={e => setComment(e.target.value)}
+                sx={{ mb: 1.5, '& .MuiInputBase-root': { fontFamily: 'monospace', fontSize: 12, bgcolor: 'rgba(0,0,0,0.2)' } }}
+              />
+            ) : (
+              <Box sx={{ minHeight: 120, p: 2, bgcolor: 'rgba(0,0,0,0.2)', borderRadius: 2, mb: 1.5, '& p': { lineHeight: 1.6, fontSize: 13 }, '& pre': { bgcolor: 'rgba(0,0,0,0.3)', p: 2, borderRadius: 2, overflow: 'auto' }, '& code': { fontSize: 12 } }}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{comment}</ReactMarkdown>
+              </Box>
+            )}
+            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Button size="small" variant="contained" startIcon={<SendIcon />} onClick={postComment} disabled={loading}>Post Comment</Button>
+              <Button size="small" variant="outlined" startIcon={<LabelIcon />} onClick={applyLabels} disabled={loading}>Apply Labels</Button>
+              <Button size="small" variant="contained" color="secondary" onClick={postAndLabel} disabled={loading}>Post & Label</Button>
+              <Tooltip title="Skip this issue">
+                <Button size="small" variant="text" color="inherit" startIcon={<SkipNextIcon />} onClick={skip}>Skip</Button>
+              </Tooltip>
+            </Box>
+          </Box>
+        </Box>
+      )}
+
+      {tab === 1 && (
+        <Box sx={{ height: 600, p: 1 }}>
+          <iframe
+            src={issue.url}
+            style={{ width: '100%', height: '100%', border: 'none', borderRadius: 8, background: '#0d1117' }}
+            title={`Issue #${issue.number}`}
+          />
+        </Box>
+      )}
+
+      <Snackbar open={snack.open} autoHideDuration={4000} onClose={() => setSnack(s => ({ ...s, open: false }))}>
+        <Alert severity={snack.severity} variant="filled">{snack.msg}</Alert>
+      </Snackbar>
+    </Box>
+  )
+}
+
 export default function IssuesQueue() {
   const [issues, setIssues] = useState<TriageIssue[]>([])
   const [loading, setLoading] = useState(true)
-  const navigate = useNavigate()
 
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
@@ -46,26 +215,39 @@ export default function IssuesQueue() {
     status: i.status,
   }))
 
+  const getDetailPanelContent = useCallback(
+    ({ row }: any) => {
+      const issue = issues.find(i => i.number === row.number)
+      if (!issue) return null
+      return <DetailPanel issue={issue} />
+    },
+    [issues]
+  )
+
+  const getDetailPanelHeight = useCallback(() => 'auto' as const, [])
+
   return (
     <Box>
       <Typography variant="h4" fontWeight={700} mb={0.5}>Issues Queue</Typography>
       <Typography color="text.secondary" mb={3}>Triaged issues from mui/mui-x ready for review</Typography>
       <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
-        <DataGrid
+        <DataGridPro
           rows={rows}
           columns={columns}
           loading={loading}
           autoHeight
           disableRowSelectionOnClick
-          onRowClick={(params) => navigate(`/issues/${params.row.number}`)}
+          getDetailPanelContent={getDetailPanelContent}
+          getDetailPanelHeight={getDetailPanelHeight}
           sx={{
             border: 'none',
             '& .MuiDataGrid-row': { cursor: 'pointer', '&:hover': { bgcolor: 'rgba(108,99,255,0.04)' } },
             '& .MuiDataGrid-columnHeaders': { bgcolor: 'rgba(255,255,255,0.02)' },
             '& .MuiDataGrid-cell': { borderColor: 'rgba(255,255,255,0.04)' },
+            '& .MuiDataGrid-detailPanel': { bgcolor: 'transparent' },
           }}
           pageSizeOptions={[10, 25, 50]}
-          initialState={{ pagination: { paginationModel: { pageSize: 10 } } }}
+          initialState={{ pagination: { paginationModel: { pageSize: 25 } } }}
         />
       </Box>
     </Box>
