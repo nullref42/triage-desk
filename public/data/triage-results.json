@@ -1,5 +1,48 @@
 [
   {
+    "number": 21380,
+    "title": "[question] Unable to customize header filter row background color in DataGridPremium (latest MUI X - 8.23.0)",
+    "url": "https://github.com/mui/mui-x/issues/21380",
+    "author": "sandeepv-ilx",
+    "authorAvatar": "https://github.com/sandeepv-ilx.png",
+    "createdAt": "2026-02-18T14:17:25Z",
+    "updatedAt": "2026-02-18T14:17:48Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "triage": {
+      "type": "Question",
+      "component": "General",
+      "priority": "High",
+      "support": "Premium",
+      "summary": "[question] Unable to customize header filter row background color in DataGridPremium (latest MUI X - 8.23.0)",
+      "suggestedAction": "Review & Respond"
+    },
+    "status": "pending"
+  },
+  {
+    "number": 21379,
+    "title": "[charts] Warn users when the controlled tooltip does not match the trigger",
+    "url": "https://github.com/mui/mui-x/issues/21379",
+    "author": "alexfauquette",
+    "authorAvatar": "https://github.com/alexfauquette.png",
+    "createdAt": "2026-02-18T14:00:30Z",
+    "updatedAt": "2026-02-18T14:00:42Z",
+    "labels": [
+      "status: waiting for maintainer"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "General",
+      "priority": "Medium",
+      "support": null,
+      "summary": "[charts] Warn users when the controlled tooltip does not match the trigger",
+      "suggestedAction": "Investigate"
+    },
+    "status": "pending"
+  },
+  {
     "number": 21376,
     "title": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
     "url": "https://github.com/mui/mui-x/issues/21376",
@@ -30,9 +73,18 @@
         "bug \ud83d\udc1b"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": "Thanks for the detailed report with reproduction! The nonce from CacheProvider should indeed be propagated to DataGrid inline styles. Will investigate."
+      "suggestedComment": "Thanks for the detailed report with reproduction! The issue is that DataGrid injects its own `<style>` tag for CSS variables (separate from Emotion) that doesn't automatically inherit the nonce from Emotion's `CacheProvider`. You need to pass `nonce` directly to the DataGrid component as you discovered. We should auto-read the nonce from the Emotion cache context to make this seamless.",
+      "investigation": {
+        "status": "done",
+        "approach": "Read the issue and reproduction repo details. Examined the DataGrid source code for nonce handling: DataGrid.tsx (prop definition), context.tsx (CSS variables style tag), and models/props/DataGridProps.ts. Checked how Emotion CacheProvider nonce propagates.",
+        "painPoints": "The DataGrid has its own internal <style> tag (in utils/css/context.tsx) for CSS variables that requires a nonce for CSP compliance. This style tag reads nonce from rootProps.nonce, but does not automatically inherit the nonce from Emotion CacheProvider.",
+        "conclusion": "The DataGrid injects a <style> tag for CSS variables (GridCSSVariablesContext in utils/css/context.tsx) that uses rootProps.nonce. However, it does not read the nonce from Emotion cache context automatically. When users set up CSP with Emotion CacheProvider nonce, the DataGrid style tag is injected without the nonce, causing CSP violations. The workaround (passing nonce directly to DataGrid) works but is not discoverable.",
+        "reasoning": "The <style> tag at context.tsx:35 uses rootProps.nonce. Emotion stores nonce in its cache object (cache.nonce). The DataGrid could read this from the Emotion cache context. Additionally, DOM-level inline styles (.style.setProperty) used throughout the DataGrid (column resize, scroll shadows, skeleton loading) would require style-src unsafe-inline in CSP, which is a separate concern.",
+        "suggestedFix": "Auto-read nonce from Emotion cache: In GridCSSVariablesContext, if rootProps.nonce is not provided, try reading it from the Emotion cache via __EmotionCacheContext. This makes CacheProvider nonce propagate automatically. Also document the nonce prop clearly for CSP setups.",
+        "completedAt": "2026-02-18T15:10:00Z"
+      }
     },
-    "status": "pending",
+    "status": "investigated",
     "updatedAt": "2026-02-18T10:50:33Z"
   },
   {
@@ -68,9 +120,18 @@
         "bug \ud83d\udc1b"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": ""
+      "suggestedComment": "This is a transitive dependency vulnerability: `@mui/x-license` -> `@mui/x-telemetry` -> `conf` -> `ajv` (vulnerable <8.18.0). Similar to #21318, MUI is blocked by upstream updates. Workaround with package manager overrides:\n\n```json\n\"pnpm\": { \"overrides\": { \"ajv\": \">=8.18.0\" } }\n```\n\nThe vulnerability is moderate severity (ReDoS on `$data` option) and unlikely to be exploitable in this context.",
+      "investigation": {
+        "status": "done",
+        "approach": "Read the issue. Traced the dependency chain: @mui/x-license -> @mui/x-telemetry -> conf (^11.0.2) -> ajv (<8.18.0 vulnerable). Checked package.json files in the monorepo.",
+        "painPoints": "Transitive dependency vulnerability. The conf package (v11.x) depends on ajv <8.18.0 which has a ReDoS vulnerability (GHSA-2g4f-4pwh-qvx6). MUI cannot directly fix this without conf updating its ajv dependency.",
+        "conclusion": "The vulnerability is in a transitive dependency chain: @mui/x-license -> @mui/x-telemetry -> conf -> ajv. The conf package pins ajv to a vulnerable version. Same pattern as #21318 (qs vulnerability via rasterizehtml). The ajv ReDoS is moderate severity and only affects the $data option. The telemetry package uses conf for storing telemetry configuration locally.",
+        "reasoning": "The conf package is used by @mui/x-telemetry to store local telemetry settings. It uses ajv for JSON schema validation. The ReDoS vulnerability requires crafted input to the $data option, unlikely to be exploitable here since the config schema is controlled by MUI. However, it shows up in security audits.",
+        "suggestedFix": "Short-term: Users should add package manager overrides: \"overrides\": { \"ajv\": \">=8.18.0\" }. Long-term: Add a pnpm override in MUI X workspace, open an issue on conf to update ajv, or consider replacing conf with a lighter config store. Similar to #21318.",
+        "completedAt": "2026-02-18T15:10:00Z"
+      }
     },
-    "status": "pending",
+    "status": "investigated",
     "updatedAt": "2026-02-18T06:58:47Z"
   },
   {
@@ -149,9 +210,18 @@
         "bug \ud83d\udc1b"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": "Thanks for the detailed report and reproduction! I'll investigate this and get back to you."
+      "suggestedComment": "Thanks for the detailed report and reproduction! The root cause is in `useGridTreeData.tsx`: when all rows are at root level (no existing children), `gridRowMaximumTreeDepthSelector` returns 1, which causes the tree data reorder validation to be skipped entirely. \"Inside\" drops are never validated as valid, so the drop indicator doesn't show and the operation is rejected.\n\nThe fix is to remove the `maxTreeDepth === 1` early-return check when `treeData` is true, so \"inside\" drops can be validated even when starting from flat data.",
+      "investigation": {
+        "status": "done",
+        "approach": "Examined tree data row reorder code: useGridRowReorder.tsx (drop position calculation), treeDataReorderExecutor.ts (operation detection - DropOnLeafOperation, DropOnGroupOperation), treeDataReorderValidator.ts (validation rules), useGridTreeData.tsx (isRowReorderValid pipe processor).",
+        "painPoints": "The bug is in the validation gate, not in the reorder operations themselves. The DropOnLeafOperation and DropOnGroupOperation correctly handle \"inside\" drops, but they never get a chance to execute because the validation step short-circuits.",
+        "conclusion": "Root cause is in useGridTreeData.tsx line 48: `if (gridRowMaximumTreeDepthSelector(apiRef) === 1 || !props.treeData) { return initialValue; }`. When initial data has no child nodes, all rows are at depth 0, so maxTreeDepth === 1. This causes isRowReorderValid to return false without running tree data validation. Since \"inside\" drops are only valid through the tree data validator, they get rejected.",
+        "reasoning": "The maxTreeDepth check was added as an optimization to skip tree-specific validation for flat grids. But it incorrectly prevents creating nested structures when starting from flat data. A grid that starts flat but needs nesting will have maxTreeDepth=1 until the first nest succeeds - which it never can because of this check.",
+        "suggestedFix": "Remove or relax the `gridRowMaximumTreeDepthSelector(apiRef) === 1` check in the isRowReorderValid callback in useGridTreeData.tsx. When treeData is true, tree data validation should always run regardless of current tree depth. Change `if (gridRowMaximumTreeDepthSelector(apiRef) === 1 || !props.treeData)` to `if (!props.treeData)`. This allows \"inside\" drops to be validated even when the tree is currently flat.",
+        "completedAt": "2026-02-18T15:10:00Z"
+      }
     },
-    "status": "pending",
+    "status": "investigated",
     "updatedAt": "2026-02-16T13:33:44Z"
   },
   {
