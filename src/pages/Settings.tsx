@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-  Box, Typography, Paper, TextField, Button, Avatar, Alert, InputAdornment, IconButton,
+  Box, Typography, Paper, TextField, Button, Avatar, Alert, InputAdornment, IconButton, 
 } from '@mui/material'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff'
@@ -47,9 +47,12 @@ export default function Settings() {
       <Typography color="text.secondary" mb={3}>Configure your GitHub Personal Access Token</Typography>
       <Paper sx={{ p: 4, maxWidth: 600, bgcolor: 'background.paper', border: '1px solid rgba(255,255,255,0.06)' }}>
         <Typography fontWeight={600} mb={1}>GitHub PAT</Typography>
-        <Typography fontSize={13} color="text.secondary" mb={2}>
+        <Typography fontSize={13} color="text.secondary" mb={1}>
           Required for posting comments and applying labels. Needs <code>repo</code> scope.
         </Typography>
+        <Alert severity="info" variant="outlined" sx={{ mb: 2, fontSize: 12, '& .MuiAlert-message': { fontSize: 12 } }}>
+          🔒 Your token <strong>never leaves your machine</strong>. It's stored only in your browser's localStorage and used exclusively for client-side GitHub API calls. No server, no backend, no third parties — just your browser talking directly to GitHub.
+        </Alert>
         <TextField
           fullWidth
           value={pat}

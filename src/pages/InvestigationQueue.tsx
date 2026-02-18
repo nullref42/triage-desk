@@ -6,19 +6,25 @@ import { DataGridPro } from '@mui/x-data-grid-pro'
 import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid-pro'
 import ScienceIcon from '@mui/icons-material/Science'
 import ScheduleIcon from '@mui/icons-material/Schedule'
+import GitHubIcon from '@mui/icons-material/GitHub'
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import type { TriageIssue } from '../types'
 import { PriorityBadge } from '../components/Badges'
+import { getNextInvestigationTime } from '../utils/time'
 
 const columns: GridColDef[] = [
-  { field: 'number', headerName: '#', width: 100, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
+  { field: 'number', headerName: '#', width: 190, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
     <Chip
-      label={`#${p.value}`}
+      icon={<GitHubIcon sx={{ fontSize: '14px !important' }} />}
+      deleteIcon={<OpenInNewIcon sx={{ fontSize: '12px !important', opacity: 0.6 }} />}
+      onDelete={() => window.open(`https://github.com/mui/mui-x/issues/${p.value}`, '_blank')}
+      label={`mui/mui-x#${p.value}`}
       size="small"
       component="a"
       href={`https://github.com/mui/mui-x/issues/${p.value}`}
       target="_blank"
       clickable
-      sx={{ fontWeight: 600, fontSize: 12, bgcolor: 'rgba(108,99,255,0.12)', color: '#a5a0ff', border: '1px solid rgba(108,99,255,0.25)', '&:hover': { bgcolor: 'rgba(108,99,255,0.2)' } }}
+      sx={{ fontWeight: 600, fontSize: 12, bgcolor: 'rgba(108,99,255,0.08)', color: '#a5a0ff', border: '1px solid rgba(108,99,255,0.2)', '&:hover': { bgcolor: 'rgba(108,99,255,0.15)' }, '& .MuiChip-icon': { color: '#a5a0ff' }, '& .MuiChip-deleteIcon': { color: '#a5a0ff' } }}
     />
   )},
   { field: 'title', headerName: 'Title', flex: 1, minWidth: 300, type: 'longText' as any },
@@ -106,19 +112,6 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
       )}
     </Box>
   )
-}
-
-function getNextInvestigationTime(): string {
-  const now = new Date()
-  // Next investigation at the next even hour
-  const next = new Date(now)
-  next.setHours(next.getHours() + (2 - (next.getHours() % 2)), 0, 0, 0)
-  if (next <= now) next.setHours(next.getHours() + 2)
-  const diff = next.getTime() - now.getTime()
-  const hours = Math.floor(diff / 3600000)
-  const mins = Math.floor((diff % 3600000) / 60000)
-  const timeStr = next.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
-  return `~${timeStr} (in ${hours > 0 ? hours + 'h ' : ''}${mins}m)`
 }
 
 export default function InvestigationQueue() {

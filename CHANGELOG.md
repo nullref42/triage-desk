@@ -2,6 +2,18 @@
 
 All notable changes to Triage Desk will be documented in this file.
 
+## [0.3.2] - 2026-02-18
+
+### Changed
+- **Removed Skip button** — no local state mutations without a database; will revisit when we have persistence
+- **Issue chip redesigned** — now shows GitHub icon + `mui/mui-x#12345` + external link icon
+- **Next scan timer** added to Issues Queue header with timezone
+- **Timezone** now shown on all timers (Issues Queue + Investigation Queue)
+- **Settings security notice** — added prominent info box reinforcing that the PAT never leaves the machine
+
+### Fixed
+- Investigation Queue now uses shared time utility (DRY)
+
 ## [0.3.1] - 2026-02-18
 
 ### Improved

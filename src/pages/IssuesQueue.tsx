@@ -8,7 +8,7 @@ import { DataGridPro } from '@mui/x-data-grid-pro'
 import type { GridColDef, GridRenderCellParams } from '@mui/x-data-grid-pro'
 import SendIcon from '@mui/icons-material/Send'
 import LabelIcon from '@mui/icons-material/Label'
-import SkipNextIcon from '@mui/icons-material/SkipNext'
+import GitHubIcon from '@mui/icons-material/GitHub'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import CancelIcon from '@mui/icons-material/Cancel'
 import OpenInNewIcon from '@mui/icons-material/OpenInNew'
@@ -18,17 +18,22 @@ import type { TriageIssue } from '../types'
 import { TypeBadge, PriorityBadge, StatusBadge } from '../components/Badges'
 import { getOctokit } from '../utils/github'
 import { addActivity } from '../utils/activity'
+import { getNextTriageRunTime } from '../utils/time'
+import ScheduleIcon from '@mui/icons-material/Schedule'
 
 const columns: GridColDef[] = [
-  { field: 'number', headerName: '#', width: 100, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
+  { field: 'number', headerName: '#', width: 190, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
     <Chip
-      label={`#${p.value}`}
+      icon={<GitHubIcon sx={{ fontSize: '14px !important' }} />}
+      deleteIcon={<OpenInNewIcon sx={{ fontSize: '12px !important', opacity: 0.6 }} />}
+      onDelete={() => window.open(`https://github.com/mui/mui-x/issues/${p.value}`, '_blank')}
+      label={`mui/mui-x#${p.value}`}
       size="small"
       component="a"
       href={`https://github.com/mui/mui-x/issues/${p.value}`}
       target="_blank"
       clickable
-      sx={{ fontWeight: 600, fontSize: 12, bgcolor: 'rgba(108,99,255,0.12)', color: '#a5a0ff', border: '1px solid rgba(108,99,255,0.25)', '&:hover': { bgcolor: 'rgba(108,99,255,0.2)' } }}
+      sx={{ fontWeight: 600, fontSize: 12, bgcolor: 'rgba(108,99,255,0.08)', color: '#a5a0ff', border: '1px solid rgba(108,99,255,0.2)', '&:hover': { bgcolor: 'rgba(108,99,255,0.15)' }, '& .MuiChip-icon': { color: '#a5a0ff' }, '& .MuiChip-deleteIcon': { color: '#a5a0ff' } }}
     />
   )},
   { field: 'title', headerName: 'Title', flex: 1, minWidth: 250, type: 'longText' as any },
@@ -84,11 +89,6 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
   const postAndLabel = async () => {
     const posted = await postComment()
     if (posted) await applyLabels()
-  }
-
-  const skip = () => {
-    addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Skipped' })
-    showSnack('Issue skipped', 'success')
   }
 
   const { triage } = issue
@@ -208,9 +208,6 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
               <Button size="small" variant="contained" startIcon={<SendIcon />} onClick={postComment} disabled={loading}>Post Comment</Button>
               <Button size="small" variant="outlined" startIcon={<LabelIcon />} onClick={applyLabels} disabled={loading}>Apply Labels</Button>
               <Button size="small" variant="contained" color="secondary" onClick={postAndLabel} disabled={loading}>Post & Label</Button>
-              <Tooltip title="Skip this issue">
-                <Button size="small" variant="text" color="inherit" startIcon={<SkipNextIcon />} onClick={skip}>Skip</Button>
-              </Tooltip>
             </Box>
           </Box>
         </Box>
@@ -287,7 +284,11 @@ export default function IssuesQueue() {
 
   return (
     <Box>
-      <Typography variant="h4" fontWeight={700} mb={0.5}>Issues Queue</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5 }}>
+        <Typography variant="h4" fontWeight={700}>Issues Queue</Typography>
+        <Box sx={{ flex: 1 }} />
+        <Chip icon={<ScheduleIcon sx={{ fontSize: 14 }} />} label={`Next scan: ${getNextTriageRunTime()}`} size="small" variant="outlined" sx={{ fontSize: 12, borderColor: 'rgba(255,255,255,0.1)' }} />
+      </Box>
       <Typography color="text.secondary" mb={2}>Triaged issues from mui/mui-x ready for review</Typography>
       <Tabs value={view} onChange={(_, v) => setView(v)} sx={{ mb: 2, '& .MuiTab-root': { textTransform: 'none', fontWeight: 600, fontSize: 13, minHeight: 36 } }}>
         <Tab label={`Active (${activeCount})`} value="active" />
