@@ -2,6 +2,19 @@
 
 All notable changes to Triage Desk will be documented in this file.
 
+## [0.3.0] - 2026-02-18
+
+### Added
+- **Investigation Queue** — dedicated view for issues needing codebase investigation, with investigation status tracking (Queued / In Progress / Done)
+- **Active/Archived tabs** on Issues Queue — closed or resolved issues move to Archived, keeping the active queue clean
+- **GitHub link chip** on `#` column — click the issue number to open it directly on GitHub
+
+### Improved
+- **PAT error handling** — Post Comment / Apply Labels / Post & Label now show a clear error message when no PAT is configured, instead of silently failing
+- **Horizontal scroll isolation** — detail panel content no longer causes the entire DataGrid to scroll; content adjusts to available width
+- **Vertical centering** fixed on all DataGrid cells (#, Complete, etc.)
+- **Labels section** now clearly separates "Current Labels" from "Suggested Labels to Add"
+
 ## [0.2.2] - 2026-02-18
 
 ### Improved

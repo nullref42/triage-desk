@@ -7,11 +7,13 @@ import BugReportIcon from '@mui/icons-material/BugReport'
 import SettingsIcon from '@mui/icons-material/Settings'
 import HistoryIcon from '@mui/icons-material/History'
 import DashboardIcon from '@mui/icons-material/Dashboard'
+import ScienceIcon from '@mui/icons-material/Science'
 
 const DRAWER_WIDTH = 240
 
 const navItems = [
   { label: 'Issues Queue', path: '/', icon: <DashboardIcon /> },
+  { label: 'Investigation', path: '/investigate', icon: <ScienceIcon /> },
   { label: 'Settings', path: '/settings', icon: <SettingsIcon /> },
   { label: 'Activity Log', path: '/activity', icon: <HistoryIcon /> },
 ]

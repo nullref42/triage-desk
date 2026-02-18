@@ -20,7 +20,17 @@ import { getOctokit } from '../utils/github'
 import { addActivity } from '../utils/activity'
 
 const columns: GridColDef[] = [
-  { field: 'number', headerName: '#', width: 80, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <Typography fontWeight={600} fontSize={13}>#{p.value}</Typography> },
+  { field: 'number', headerName: '#', width: 100, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
+    <Chip
+      label={`#${p.value}`}
+      size="small"
+      component="a"
+      href={`https://github.com/mui/mui-x/issues/${p.value}`}
+      target="_blank"
+      clickable
+      sx={{ fontWeight: 600, fontSize: 12, bgcolor: 'rgba(108,99,255,0.12)', color: '#a5a0ff', border: '1px solid rgba(108,99,255,0.25)', '&:hover': { bgcolor: 'rgba(108,99,255,0.2)' } }}
+    />
+  )},
   { field: 'title', headerName: 'Title', flex: 1, minWidth: 250, type: 'longText' as any },
   { field: 'type', headerName: 'Type', width: 110, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <TypeBadge type={p.value} /> },
   { field: 'component', headerName: 'Component', width: 130, align: 'center', headerAlign: 'center' },
@@ -45,31 +55,36 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
 
   const showSnack = (msg: string, severity: 'success' | 'error') => setSnack({ open: true, msg, severity })
 
-  const postComment = async () => {
+  const postComment = async (): Promise<boolean> => {
     const octokit = getOctokit()
-    if (!octokit) return showSnack('Set your GitHub token in Settings first', 'error')
+    if (!octokit) { showSnack('Set your GitHub token in Settings first. Go to Settings → add your PAT.', 'error'); return false }
     setLoading(true)
     try {
       await octokit.issues.createComment({ owner: 'mui', repo: 'mui-x', issue_number: issue.number, body: comment })
       addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Posted comment' })
       showSnack('Comment posted!', 'success')
-    } catch (e: any) { showSnack(e.message, 'error') }
-    setLoading(false)
+      setLoading(false)
+      return true
+    } catch (e: any) { showSnack(e.message, 'error'); setLoading(false); return false }
   }
 
-  const applyLabels = async () => {
+  const applyLabels = async (): Promise<boolean> => {
     const octokit = getOctokit()
-    if (!octokit) return showSnack('Set your GitHub token in Settings first', 'error')
+    if (!octokit) { showSnack('Set your GitHub token in Settings first. Go to Settings → add your PAT.', 'error'); return false }
     setLoading(true)
     try {
       await octokit.issues.addLabels({ owner: 'mui', repo: 'mui-x', issue_number: issue.number, labels: selectedLabels })
       addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Applied labels', details: selectedLabels.join(', ') })
       showSnack('Labels applied!', 'success')
-    } catch (e: any) { showSnack(e.message, 'error') }
-    setLoading(false)
+      setLoading(false)
+      return true
+    } catch (e: any) { showSnack(e.message, 'error'); setLoading(false); return false }
   }
 
-  const postAndLabel = async () => { await postComment(); await applyLabels() }
+  const postAndLabel = async () => {
+    const posted = await postComment()
+    if (posted) await applyLabels()
+  }
 
   const skip = () => {
     addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: 'Skipped' })
@@ -79,7 +94,7 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
   const { triage } = issue
 
   return (
-    <Box sx={{ bgcolor: 'rgba(0,0,0,0.15)', borderTop: '1px solid rgba(255,255,255,0.04)' }}>
+    <Box sx={{ bgcolor: 'rgba(0,0,0,0.15)', borderTop: '1px solid rgba(255,255,255,0.04)', overflow: 'hidden' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', px: 3, pt: 1.5 }}>
         <Tabs value={tab} onChange={(_, v) => setTab(v)} sx={{ '& .MuiTab-root': { textTransform: 'none', fontSize: 13, fontWeight: 600, minHeight: 40 } }}>
           <Tab label="🤖 Triage" />
@@ -94,9 +109,9 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
       </Box>
 
       {tab === 0 && (
-        <Box sx={{ display: 'flex', gap: 3, p: 3, flexWrap: 'wrap' }}>
+        <Box sx={{ display: 'flex', gap: 3, p: 3, flexWrap: 'wrap', overflow: 'hidden', width: '100%', boxSizing: 'border-box' }}>
           {/* Left: Summary & Checklist */}
-          <Box sx={{ flex: '1 1 300px', minWidth: 280 }}>
+          <Box sx={{ flex: '1 1 280px', minWidth: 0, overflow: 'hidden' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
               <Avatar src={issue.authorAvatar} sx={{ width: 28, height: 28 }} />
               <Typography fontSize={13} fontWeight={600}>{issue.author}</Typography>
@@ -154,7 +169,7 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
           </Box>
 
           {/* Right: Comment editor & actions */}
-          <Box sx={{ flex: '1 1 400px', minWidth: 350 }}>
+          <Box sx={{ flex: '1 1 350px', minWidth: 0, overflow: 'hidden' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
               <Typography fontSize={12} fontWeight={700} color="grey.400" sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Comment</Typography>
               <ToggleButtonGroup size="small" value={previewMode} exclusive onChange={(_, v) => v && setPreviewMode(v)}>
@@ -190,7 +205,7 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
       )}
 
       {tab === 1 && (
-        <Box sx={{ p: 3, maxHeight: 600, overflow: 'auto' }}>
+        <Box sx={{ p: 3, maxHeight: 600, overflow: 'auto', width: '100%', boxSizing: 'border-box' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
             <Avatar src={issue.authorAvatar} sx={{ width: 32, height: 32 }} />
             <Typography fontWeight={600} fontSize={14}>{issue.author}</Typography>
@@ -222,6 +237,7 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
 export default function IssuesQueue() {
   const [issues, setIssues] = useState<TriageIssue[]>([])
   const [loading, setLoading] = useState(true)
+  const [view, setView] = useState<'active' | 'archived'>('active')
 
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
@@ -230,7 +246,11 @@ export default function IssuesQueue() {
       .catch(() => setLoading(false))
   }, [])
 
-  const rows = issues.map(i => ({
+  const filteredIssues = issues.filter(i => view === 'archived' ? i.status === 'archived' : i.status !== 'archived')
+  const archivedCount = issues.filter(i => i.status === 'archived').length
+  const activeCount = issues.filter(i => i.status !== 'archived').length
+
+  const rows = filteredIssues.map(i => ({
     id: i.number,
     number: i.number,
     title: i.title,
@@ -256,7 +276,11 @@ export default function IssuesQueue() {
   return (
     <Box>
       <Typography variant="h4" fontWeight={700} mb={0.5}>Issues Queue</Typography>
-      <Typography color="text.secondary" mb={3}>Triaged issues from mui/mui-x ready for review</Typography>
+      <Typography color="text.secondary" mb={2}>Triaged issues from mui/mui-x ready for review</Typography>
+      <Tabs value={view} onChange={(_, v) => setView(v)} sx={{ mb: 2, '& .MuiTab-root': { textTransform: 'none', fontWeight: 600, fontSize: 13, minHeight: 36 } }}>
+        <Tab label={`Active (${activeCount})`} value="active" />
+        <Tab label={`Archived (${archivedCount})`} value="archived" />
+      </Tabs>
       <Box sx={{ bgcolor: 'background.paper', borderRadius: 3, border: '1px solid rgba(255,255,255,0.06)', overflow: 'hidden' }}>
         <DataGridPro
           rows={rows}
@@ -270,7 +294,7 @@ export default function IssuesQueue() {
             border: 'none',
             '& .MuiDataGrid-row': { cursor: 'pointer', '&:hover': { bgcolor: 'rgba(108,99,255,0.04)' } },
             '& .MuiDataGrid-columnHeaders': { bgcolor: 'rgba(255,255,255,0.02)' },
-            '& .MuiDataGrid-cell': { borderColor: 'rgba(255,255,255,0.04)' },
+            '& .MuiDataGrid-cell': { borderColor: 'rgba(255,255,255,0.04)', display: 'flex', alignItems: 'center' },
             '& .MuiDataGrid-detailPanel': { bgcolor: 'transparent' },
           }}
           pageSizeOptions={[10, 25, 50]}

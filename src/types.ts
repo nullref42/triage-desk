@@ -29,7 +29,7 @@ export interface TriageIssue {
   labels: string[]
   body: string
   triage: Triage
-  status: 'pending' | 'done' | 'skipped'
+  status: 'pending' | 'done' | 'skipped' | 'archived'
 }
 
 export interface ActivityEntry {
