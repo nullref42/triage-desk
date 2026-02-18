@@ -20,19 +20,19 @@ import { getOctokit } from '../utils/github'
 import { addActivity } from '../utils/activity'
 
 const columns: GridColDef[] = [
-  { field: 'number', headerName: '#', width: 80, renderCell: (p: GridRenderCellParams) => <Typography fontWeight={600} fontSize={13}>#{p.value}</Typography> },
-  { field: 'title', headerName: 'Title', flex: 1, minWidth: 250 },
-  { field: 'type', headerName: 'Type', width: 110, renderCell: (p: GridRenderCellParams) => <TypeBadge type={p.value} /> },
-  { field: 'component', headerName: 'Component', width: 130 },
-  { field: 'priority', headerName: 'Priority', width: 110, renderCell: (p: GridRenderCellParams) => <PriorityBadge priority={p.value} /> },
-  { field: 'completeness', headerName: 'Complete', width: 100, renderCell: (p: GridRenderCellParams) => (
+  { field: 'number', headerName: '#', width: 80, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <Typography fontWeight={600} fontSize={13}>#{p.value}</Typography> },
+  { field: 'title', headerName: 'Title', flex: 1, minWidth: 250, type: 'longText' as any },
+  { field: 'type', headerName: 'Type', width: 110, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <TypeBadge type={p.value} /> },
+  { field: 'component', headerName: 'Component', width: 130, align: 'center', headerAlign: 'center' },
+  { field: 'priority', headerName: 'Priority', width: 110, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <PriorityBadge priority={p.value} /> },
+  { field: 'completeness', headerName: 'Complete', width: 120, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, width: '100%' }}>
       <LinearProgress variant="determinate" value={p.value} sx={{ flex: 1, borderRadius: 4, height: 6, bgcolor: 'rgba(255,255,255,0.05)', '& .MuiLinearProgress-bar': { bgcolor: p.value > 70 ? '#22c55e' : p.value > 40 ? '#eab308' : '#ef4444' } }} />
       <Typography fontSize={12} color="text.secondary">{p.value}%</Typography>
     </Box>
   )},
-  { field: 'suggestedAction', headerName: 'Action', width: 160 },
-  { field: 'status', headerName: 'Status', width: 100, renderCell: (p: GridRenderCellParams) => <StatusBadge status={p.value} /> },
+  { field: 'suggestedAction', headerName: 'Action', width: 160, align: 'center', headerAlign: 'center' },
+  { field: 'status', headerName: 'Status', width: 100, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <StatusBadge status={p.value} /> },
 ]
 
 function DetailPanel({ issue }: { issue: TriageIssue }) {
@@ -126,16 +126,30 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
             <Chip label={triage.suggestedAction} color="primary" size="small" sx={{ fontWeight: 600, mb: 2 }} />
 
             <Divider sx={{ my: 1.5, borderColor: 'rgba(255,255,255,0.06)' }} />
-            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={1} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Labels</Typography>
+
+            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Current Labels</Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1.5 }}>
+              {issue.labels.length > 0 ? issue.labels.map(l => (
+                <Chip key={l} label={l} size="small" variant="outlined" sx={{ fontSize: 11 }} />
+              )) : (
+                <Typography fontSize={12} color="text.secondary">None</Typography>
+              )}
+            </Box>
+
+            <Typography fontSize={12} fontWeight={700} color="grey.400" mb={0.5} sx={{ textTransform: 'uppercase', letterSpacing: 1 }}>Suggested Labels to Add</Typography>
             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-              {triage.suggestedLabels.map(l => (
-                <FormControlLabel
-                  key={l}
-                  control={<Checkbox size="small" checked={selectedLabels.includes(l)} onChange={(_, checked) => setSelectedLabels(prev => checked ? [...prev, l] : prev.filter(x => x !== l))} />}
-                  label={<Typography fontSize={12}>{l}</Typography>}
-                  sx={{ mr: 1 }}
-                />
-              ))}
+              {triage.suggestedLabels.filter(l => !issue.labels.includes(l)).length > 0 ? (
+                triage.suggestedLabels.filter(l => !issue.labels.includes(l)).map(l => (
+                  <FormControlLabel
+                    key={l}
+                    control={<Checkbox size="small" checked={selectedLabels.includes(l)} onChange={(_, checked) => setSelectedLabels(prev => checked ? [...prev, l] : prev.filter(x => x !== l))} />}
+                    label={<Chip label={l} size="small" sx={{ fontSize: 11, bgcolor: 'rgba(108,99,255,0.15)', border: '1px solid rgba(108,99,255,0.3)' }} />}
+                    sx={{ mr: 0.5 }}
+                  />
+                ))
+              ) : (
+                <Typography fontSize={12} color="text.secondary">All suggested labels already applied ✅</Typography>
+              )}
             </Box>
           </Box>
 
@@ -183,6 +197,10 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
             <Typography color="text.secondary" fontSize={13}>
               opened on {new Date(issue.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
             </Typography>
+            <Box sx={{ flex: 1 }} />
+            <Button size="small" variant="outlined" startIcon={<OpenInNewIcon />} href={issue.url} target="_blank" sx={{ textTransform: 'none', fontSize: 12 }}>
+              View on GitHub
+            </Button>
           </Box>
           <Box sx={{ display: 'flex', gap: 0.5, mb: 2, flexWrap: 'wrap' }}>
             {issue.labels.map(l => <Chip key={l} label={l} size="small" variant="outlined" sx={{ fontSize: 11 }} />)}
