@@ -176,12 +176,21 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
       )}
 
       {tab === 1 && (
-        <Box sx={{ height: 600, p: 1 }}>
-          <iframe
-            src={issue.url}
-            style={{ width: '100%', height: '100%', border: 'none', borderRadius: 8, background: '#0d1117' }}
-            title={`Issue #${issue.number}`}
-          />
+        <Box sx={{ p: 3, maxHeight: 600, overflow: 'auto' }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
+            <Avatar src={issue.authorAvatar} sx={{ width: 32, height: 32 }} />
+            <Typography fontWeight={600} fontSize={14}>{issue.author}</Typography>
+            <Typography color="text.secondary" fontSize={13}>
+              opened on {new Date(issue.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', gap: 0.5, mb: 2, flexWrap: 'wrap' }}>
+            {issue.labels.map(l => <Chip key={l} label={l} size="small" variant="outlined" sx={{ fontSize: 11 }} />)}
+          </Box>
+          <Divider sx={{ mb: 2, borderColor: 'rgba(255,255,255,0.06)' }} />
+          <Box sx={{ '& img': { maxWidth: '100%' }, '& pre': { bgcolor: 'rgba(0,0,0,0.3)', p: 2, borderRadius: 2, overflow: 'auto' }, '& code': { fontSize: 13 }, '& p': { lineHeight: 1.7 }, '& h1,& h2,& h3': { mt: 2, mb: 1 } }}>
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>{issue.body}</ReactMarkdown>
+          </Box>
         </Box>
       )}
 
