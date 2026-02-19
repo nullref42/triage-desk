@@ -1,0 +1,525 @@
+[
+  {
+    "number": 21376,
+    "title": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
+    "url": "https://github.com/mui/mui-x/issues/21376",
+    "author": "visualjerk",
+    "authorAvatar": "https://github.com/visualjerk.png",
+    "createdAt": "2026-02-18T10:43:09Z",
+    "updatedAt": "2026-02-18T10:50:33Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "triage": {
+      "type": "Security",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Pro",
+      "completeness": 40,
+      "suggestedAction": "Investigate",
+      "ageDays": 0,
+      "hasMemberResponse": false,
+      "commentCount": 0,
+      "investigation": {
+        "status": "done",
+        "approach": "Examined DataGrid CSP/nonce handling in context.tsx and DataGridProps. Checked if Emotion CacheProvider nonce is read automatically.",
+        "painPoints": "DataGrid uses its own inline <style> tags (via GridCSSVariablesContext) that accept a `nonce` prop, but this nonce is NOT automatically inherited from Emotion's CacheProvider. Users must pass `nonce` prop directly to DataGrid, which is undiscoverable.",
+        "conclusion": "The DataGrid's CSS variables injection (utils/css/context.tsx) uses `rootProps.nonce` for its inline <style> tags, but does not read the nonce from Emotion's cache context. This means setting up CacheProvider with a nonce (standard Emotion CSP approach) doesn't propagate to DataGrid's own styles.",
+        "reasoning": "Emotion's CacheProvider stores nonce in its cache object. The DataGrid should ideally read from that cache (via `@emotion/react`'s `useEmotionCache` or similar) as a fallback when the `nonce` prop isn't explicitly provided. The workaround (passing `nonce` directly) works but breaks the expected Emotion integration pattern.",
+        "suggestedFix": "In `packages/x-data-grid/src/utils/css/context.tsx`, fall back to reading the nonce from the Emotion cache context when `rootProps.nonce` is not provided. Import `__unsafe_useEmotionCache` or equivalent from `@emotion/react` and use `cache.nonce` as fallback.",
+        "completedAt": "2026-02-19T11:11:50.922105+00:00"
+      },
+      "suggestedComment": "Thanks for the detailed report and reproduction! You're right \u2014 the DataGrid's inline `<style>` tags (used for CSS variables) don't automatically pick up the nonce from Emotion's `CacheProvider`. The `nonce` prop on DataGrid is a workaround, but we should ideally read it from the Emotion cache context as a fallback. We'll look into inheriting the nonce automatically. For now, passing `<DataGrid nonce=\"...\" />` is the recommended workaround."
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21368,
+    "title": "ajv has ReDoS when using `$data` option",
+    "url": "https://github.com/mui/mui-x/issues/21368",
+    "author": "damiangreen",
+    "authorAvatar": "https://github.com/damiangreen.png",
+    "createdAt": "2026-02-18T06:58:38Z",
+    "updatedAt": "2026-02-18T06:58:47Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "scope: pickers",
+      "scope: tree view",
+      "scope: charts"
+    ],
+    "triage": {
+      "type": "Security",
+      "component": "Charts",
+      "priority": "High",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Investigate",
+      "ageDays": 0,
+      "hasMemberResponse": false,
+      "commentCount": 0,
+      "investigation": {
+        "status": "done",
+        "approach": "Traced the dependency chain: @mui/x-license \u2192 @mui/x-telemetry \u2192 conf \u2192 ajv (vulnerable). Checked conf's package.json for ajv version constraints.",
+        "painPoints": "The vulnerability is in a transitive dependency (ajv < 8.18.0) pulled in via conf@11.x which is used by x-telemetry for persistent config storage. MUI doesn't directly use ajv's $data option, so actual risk is minimal, but it triggers audit warnings.",
+        "conclusion": "This is a transitive dependency issue. The chain is: @mui/x-license \u2192 @mui/x-telemetry \u2192 conf@11.0.2 \u2192 ajv (vulnerable). The fix depends on `conf` updating its ajv dependency to >=8.18.0. MUI doesn't control this directly.",
+        "reasoning": "The ReDoS vulnerability in ajv only applies when using the `$data` option, which conf may or may not use. Regardless, the audit warning is valid and users with strict security policies need it resolved. The practical fix is either: (1) wait for conf to update ajv, (2) override in package.json, or (3) evaluate if conf can be replaced.",
+        "suggestedFix": "Short-term: document the pnpm/npm override workaround. Medium-term: check if conf has a newer version with updated ajv, or evaluate replacing conf with a lighter alternative in x-telemetry. File an issue upstream on sindresorhus/conf if not already tracked.",
+        "completedAt": "2026-02-19T11:11:50.922105+00:00"
+      },
+      "suggestedComment": "Thanks for reporting. This is a transitive dependency issue: `@mui/x-license` \u2192 `@mui/x-telemetry` \u2192 `conf` \u2192 `ajv` (vulnerable). MUI doesn't use ajv's `$data` option directly, so the practical risk is low, but we understand it triggers audit warnings.\n\nFor now, the override workaround you found is the recommended approach:\n```json\n\"pnpm\": { \"overrides\": { \"ajv\": \">=8.18.0\" } }\n```\nWe'll look into updating the upstream dependency chain."
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21329,
+    "title": "[data grid] Group row at bottom?",
+    "url": "https://github.com/mui/mui-x/issues/21329",
+    "author": "mbiggs-gresham",
+    "authorAvatar": "https://github.com/mbiggs-gresham.png",
+    "createdAt": "2026-02-13T14:54:40Z",
+    "updatedAt": "2026-02-16T13:33:56Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Premium",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 5,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21318,
+    "title": "[charts-pro] GHSA-w7fw-mjwx-w883 vulnerability",
+    "url": "https://github.com/mui/mui-x/issues/21318",
+    "author": "damiangreen",
+    "authorAvatar": "https://github.com/damiangreen.png",
+    "createdAt": "2026-02-13T02:22:39Z",
+    "updatedAt": "2026-02-13T10:51:18Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: charts"
+    ],
+    "triage": {
+      "type": "Security",
+      "component": "Charts",
+      "priority": "High",
+      "support": "Community",
+      "completeness": 80,
+      "suggestedAction": "Investigate",
+      "ageDays": 5,
+      "hasMemberResponse": true,
+      "commentCount": 3,
+      "investigation": {
+        "status": "done",
+        "approach": "Traced dependency chain: @mui/x-charts-premium \u2192 rasterizehtml@1.4.0 \u2192 url \u2192 qs (vulnerable >=6.7.0 <=6.14.1). Checked if rasterizehtml has updates.",
+        "painPoints": "rasterizehtml@1.4.0 is pinned and hasn't been updated since 2019. Its dependency `url` pulls in a vulnerable version of `qs`. rasterizehtml is used for HTML-to-canvas rendering in charts export. The vulnerability is low severity (DoS via crafted query strings).",
+        "conclusion": "Same pattern as #21368 \u2014 transitive dependency vulnerability through rasterizehtml, which is effectively unmaintained. The `qs` vulnerability (GHSA-w7fw-mjwx-w883) is low severity. A maintainer (bernardobelchior) already responded with the workaround. The upstream fix requires rasterizehtml to update its deps, which is unlikely given its maintenance status.",
+        "reasoning": "rasterizehtml is used for chart export-to-image functionality. Long-term, MUI may want to evaluate alternatives (html2canvas, modern Canvas API, or custom rendering). Short-term, the override workaround is appropriate. The vulnerability itself is low-risk since qs parsing with malicious input is not a typical charts use case.",
+        "suggestedFix": "Short-term: users can override qs to >=6.14.2. Medium-term: evaluate replacing rasterizehtml with a maintained alternative for chart export. The maintainer already provided guidance in the comments.",
+        "completedAt": "2026-02-19T11:11:50.922105+00:00"
+      },
+      "suggestedComment": "As noted by @bernardobelchior, the patched version of `qs` is within the allowed range, so `npm upgrade qs` or `pnpm update qs` should resolve the audit warning. This is a transitive dependency from `rasterizehtml` which is used for chart image export.\n\nFor strict lockfile setups, an override works:\n```json\n\"overrides\": { \"qs\": \">=6.14.2\" }\n```\nWe're tracking the upstream dependency situation."
+    },
+    "status": "in-discussion"
+  },
+  {
+    "number": 21315,
+    "title": "Grid selectors expect non-null apiRef",
+    "url": "https://github.com/mui/mui-x/issues/21315",
+    "author": "JohannesByle",
+    "authorAvatar": "https://github.com/JohannesByle.png",
+    "createdAt": "2026-02-12T19:36:34Z",
+    "updatedAt": "2026-02-12T19:36:57Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Premium",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 6,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21279,
+    "title": "DataGrid exportState() does not include chartType",
+    "url": "https://github.com/mui/mui-x/issues/21279",
+    "author": "jamiedruce",
+    "authorAvatar": "https://github.com/jamiedruce.png",
+    "createdAt": "2026-02-10T15:31:18Z",
+    "updatedAt": "2026-02-12T14:58:14Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Premium",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 8,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21269,
+    "title": "[Server Side Tree][data grid] Unable to sort the table when the number of rows in the page is less than the number of rows per page",
+    "url": "https://github.com/mui/mui-x/issues/21269",
+    "author": "thomasmauriceco2ai",
+    "authorAvatar": "https://github.com/thomasmauriceco2ai.png",
+    "createdAt": "2026-02-10T08:59:50Z",
+    "updatedAt": "2026-02-10T09:00:14Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Premium",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 8,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21053,
+    "title": "[tree view] lazy-loaded tree: auto-expand child nodes",
+    "url": "https://github.com/mui/mui-x/issues/21053",
+    "author": "caillou",
+    "authorAvatar": "https://github.com/caillou.png",
+    "createdAt": "2026-01-23T14:49:58Z",
+    "updatedAt": "2026-02-10T11:06:14Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: tree view",
+      "support: pro standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Tree View",
+      "priority": "High",
+      "support": "Pro",
+      "completeness": 80,
+      "suggestedAction": "Monitor",
+      "ageDays": 26,
+      "hasMemberResponse": true,
+      "commentCount": 4
+    },
+    "status": "in-discussion"
+  },
+  {
+    "number": 20989,
+    "title": "[data grid] Screen reader over-reads DOM after rowReordering live region announcement",
+    "url": "https://github.com/mui/mui-x/issues/20989",
+    "author": "rhysmitchell",
+    "authorAvatar": "https://github.com/rhysmitchell.png",
+    "createdAt": "2026-01-21T09:41:25Z",
+    "updatedAt": "2026-01-21T15:11:36Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 28,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 20970,
+    "title": "[data grid] Grouping with checkbox selection and server-side-data",
+    "url": "https://github.com/mui/mui-x/issues/20970",
+    "author": "leonhardanthony",
+    "authorAvatar": "https://github.com/leonhardanthony.png",
+    "createdAt": "2026-01-19T14:18:54Z",
+    "updatedAt": "2026-01-30T07:42:44Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "feature: Selection",
+      "feature: Server integration",
+      "support: premium standard"
+    ],
+    "triage": {
+      "type": "Feature",
+      "component": "Data Grid",
+      "priority": "High",
+      "support": "Premium",
+      "completeness": 80,
+      "suggestedAction": "Monitor",
+      "ageDays": 30,
+      "hasMemberResponse": true,
+      "commentCount": 4
+    },
+    "status": "in-discussion"
+  },
+  {
+    "number": 21379,
+    "title": "[charts] Warn users when the controlled tooltip does not match the trigger",
+    "url": "https://github.com/mui/mui-x/issues/21379",
+    "author": "alexfauquette",
+    "authorAvatar": "https://github.com/alexfauquette.png",
+    "createdAt": "2026-02-18T14:00:30Z",
+    "updatedAt": "2026-02-18T15:41:25Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: charts"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Charts",
+      "priority": "Medium",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 0,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21357,
+    "title": "[data grid] getRowId prop does not work with server-side tree data",
+    "url": "https://github.com/mui/mui-x/issues/21357",
+    "author": "ahmedBilal5",
+    "authorAvatar": "https://github.com/ahmedBilal5.png",
+    "createdAt": "2026-02-17T10:55:27Z",
+    "updatedAt": "2026-02-17T11:06:06Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "Medium",
+      "support": "Pro",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 1,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21347,
+    "title": "DataGridPro TreeData: \u201cinside\u201d Drop Not Triggered When Initial Data Contains No Child Nodes",
+    "url": "https://github.com/mui/mui-x/issues/21347",
+    "author": "Abassion",
+    "authorAvatar": "https://github.com/Abassion.png",
+    "createdAt": "2026-02-16T12:48:58Z",
+    "updatedAt": "2026-02-19T01:13:37Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "Medium",
+      "support": "Pro",
+      "completeness": 60,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 2,
+      "hasMemberResponse": false,
+      "commentCount": 1
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21314,
+    "title": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
+    "url": "https://github.com/mui/mui-x/issues/21314",
+    "author": "datalogyinc-cloud",
+    "authorAvatar": "https://github.com/datalogyinc-cloud.png",
+    "createdAt": "2026-02-12T18:00:59Z",
+    "updatedAt": "2026-02-16T13:34:19Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "Medium",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 6,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21304,
+    "title": "DataGrid: Styles in sx selector .MuiDataGrid-menu are not applied to column menu (cannot change zIndex)",
+    "url": "https://github.com/mui/mui-x/issues/21304",
+    "author": "dcoates83",
+    "authorAvatar": "https://github.com/dcoates83.png",
+    "createdAt": "2026-02-11T20:26:28Z",
+    "updatedAt": "2026-02-12T14:51:36Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Data Grid",
+      "priority": "Medium",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 7,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21278,
+    "title": "[pickers] using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
+    "url": "https://github.com/mui/mui-x/issues/21278",
+    "author": "rvspin",
+    "authorAvatar": "https://github.com/rvspin.png",
+    "createdAt": "2026-02-10T15:06:10Z",
+    "updatedAt": "2026-02-10T15:09:30Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: pickers"
+    ],
+    "triage": {
+      "type": "Bug",
+      "component": "Date/Time Pickers",
+      "priority": "Medium",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 8,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21320,
+    "title": "[docs] Demo TreeDataSyncRowData crashes",
+    "url": "https://github.com/mui/mui-x/issues/21320",
+    "author": "Abassion",
+    "authorAvatar": "https://github.com/Abassion.png",
+    "createdAt": "2026-02-13T09:14:15Z",
+    "updatedAt": "2026-02-16T13:24:30Z",
+    "labels": [
+      "docs",
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "triage": {
+      "type": "Docs",
+      "component": "Data Grid",
+      "priority": "Low",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 5,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21310,
+    "title": "[question] Breaking on upgrading version from 8.9.2 to latest version",
+    "url": "https://github.com/mui/mui-x/issues/21310",
+    "author": "Harshit-lawcus",
+    "authorAvatar": "https://github.com/Harshit-lawcus.png",
+    "createdAt": "2026-02-12T14:00:25Z",
+    "updatedAt": "2026-02-12T14:00:36Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: unknown"
+    ],
+    "triage": {
+      "type": "Question",
+      "component": "Data Grid",
+      "priority": "Low",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Answer or Close",
+      "ageDays": 6,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  },
+  {
+    "number": 21036,
+    "title": "[docs] MCP server mui-mcp does not support resource listing",
+    "url": "https://github.com/mui/mui-x/issues/21036",
+    "author": "f1eeman",
+    "authorAvatar": "https://github.com/f1eeman.png",
+    "createdAt": "2026-01-23T12:08:40Z",
+    "updatedAt": "2026-01-26T15:44:46Z",
+    "labels": [
+      "docs",
+      "status: waiting for maintainer",
+      "scope: pickers",
+      "support: docs-feedback"
+    ],
+    "triage": {
+      "type": "Docs",
+      "component": "Date/Time Pickers",
+      "priority": "Low",
+      "support": "Community",
+      "completeness": 40,
+      "suggestedAction": "Review & Respond",
+      "ageDays": 26,
+      "hasMemberResponse": false,
+      "commentCount": 0
+    },
+    "status": "needs-attention"
+  }
+]
