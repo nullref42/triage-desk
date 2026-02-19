@@ -1,412 +1,804 @@
-{
-  "lastScan": "2026-02-19T17:00:23.312028+00:00",
-  "totalCount": 22,
-  "byPriority": {
-    "high": 11,
-    "medium": 3,
-    "normal": 8
+[
+  {
+    "number": 21398,
+    "title": "[question] How do you apply maintaining the expanded state of a group when the sort model changes for example?",
+    "url": "https://github.com/mui/mui-x/issues/21398",
+    "author": "mbiggs-gresham",
+    "authorAvatar": "https://github.com/mbiggs-gresham.png",
+    "createdAt": "2026-02-19T14:14:42Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Question",
+      "component": "data-grid",
+      "priority": "High",
+      "completeness": 50,
+      "summary": "How do you apply maintaining the expanded state of a group when the sort model changes for example?",
+      "classification": "feature-request",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "suggestedAction": "Respond & Label",
+      "suggestedComment": "Thanks for reporting this, @mbiggs-gresham. We'll look into it."
+    },
+    "status": "pending"
   },
-  "byComponent": {
-    "data-grid": 17,
-    "tree-view": 1,
-    "pickers": 2,
-    "charts": 2
+  {
+    "number": 21397,
+    "title": "[data grid] Row grouping with a datasource doesn't respect the order the rows are returned",
+    "url": "https://github.com/mui/mui-x/issues/21397",
+    "author": "mbiggs-gresham",
+    "authorAvatar": "https://github.com/mbiggs-gresham.png",
+    "createdAt": "2026-02-19T14:05:51Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
+      "component": "data-grid",
+      "priority": "High",
+      "completeness": 70,
+      "summary": "Row grouping with a datasource doesn't respect the order the rows are returned",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @mbiggs-gresham. This is a confirmed bug in how server-side row grouping handles re-fetched data after sort changes.\n\n**Root cause:** When `keepChildrenExpanded` is active (default for grouped data), `handleGroupedDataUpdate` uses `updateRows()` which preserves the existing tree node order instead of respecting the new server-returned order. The flat data path correctly uses `setRows()` which does reorder.\n\n**Workaround:** You can try setting `keepChildrenExpanded: false` on the data source to force the `setRows` path, though this will collapse expanded groups on sort.\n\nWe'll work on a fix to properly handle row reordering in the grouped data update path.",
+      "investigation": {
+        "status": "done",
+        "approach": "Traced server-side row grouping data flow: sortModelChange \u2192 debouncedFetchRows \u2192 handleGroupedDataUpdate \u2192 updateRows/updateNestedRows. Analyzed how row order is preserved in the tree.",
+        "painPoints": "When keepChildrenExpanded is true (default for grouped data re-fetches), handleGroupedDataUpdate uses apiRef.current.updateRows() which performs insert/modify/delete operations. The tree preserves the original insertion order of children \u2014 updateRows modifies existing rows in-place without reordering them. The cache also stores responses keyed by params, but sorting order changes may hit stale cache entries.",
+        "conclusion": "Bug confirmed. The root cause is in handleGroupedDataUpdate (useGridDataSourceBasePro.ts ~L342). When rows are re-fetched after a sort change, updateRows() preserves existing tree node order rather than respecting the new server-returned order. Additionally, the data source cache may serve stale pre-sort responses. The fix needs to either: (1) delete and re-insert rows to establish new order, or (2) clear cache on sort model change and use setRows path for grouped data.",
+        "reasoning": "Server-side sorting means the server controls row order. When sortModel changes, fetchRows is called correctly, but the response handling in handleGroupedDataUpdate with keepChildrenExpanded=true calls updateRows which does not reorder existing nodes. The flat strategy (handleFlatDataUpdate) uses setRows which does respect order. The grouped strategy should do the same when sort changes.",
+        "suggestedFix": "In handleGroupedDataUpdate, detect when the fetch was triggered by a sortModelChange (could pass a flag through fetchParams). When sorting changed, use the setRows path (keepChildrenExpanded=false behavior) instead of updateRows, or implement a reorder step after updateRows. Also ensure cache.clear() is called on sortModelChange for grouped data strategies.",
+        "completedAt": "2026-02-19T21:13:53.971551+00:00"
+      }
+    },
+    "status": "pending"
   },
-  "issues": [
-    {
-      "number": 21398,
-      "title": "[question] How do you apply maintaining the expanded state of a group when the sort model changes for example?",
-      "user": "mbiggs-gresham",
-      "url": "https://github.com/mui/mui-x/issues/21398",
+  {
+    "number": 21329,
+    "title": "[data grid] Group row at bottom?",
+    "url": "https://github.com/mui/mui-x/issues/21329",
+    "author": "mbiggs-gresham",
+    "authorAvatar": "https://github.com/mbiggs-gresham.png",
+    "createdAt": "2026-02-13T14:54:40Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "feature-request",
-      "priority": "high",
-      "ageDays": 0,
-      "staleDays": 0,
-      "labels": [
+      "priority": "High",
+      "completeness": 70,
+      "summary": "Group row at bottom?",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: premium standard"
       ],
-      "createdAt": "2026-02-19T14:14:42Z",
-      "updatedAt": "2026-02-19T14:15:08Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @mbiggs-gresham. We'll look into it."
     },
-    {
-      "number": 21397,
-      "title": "[data grid] Row grouping with a datasource doesn't respect the order the rows are returned",
-      "user": "mbiggs-gresham",
-      "url": "https://github.com/mui/mui-x/issues/21397",
+    "status": "pending"
+  },
+  {
+    "number": 21315,
+    "title": "Grid selectors expect non-null apiRef",
+    "url": "https://github.com/mui/mui-x/issues/21315",
+    "author": "JohannesByle",
+    "authorAvatar": "https://github.com/JohannesByle.png",
+    "createdAt": "2026-02-12T19:36:34Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 0,
-      "staleDays": 0,
-      "labels": [
+      "priority": "High",
+      "completeness": 70,
+      "summary": "Grid selectors expect non-null apiRef",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: premium standard"
       ],
-      "createdAt": "2026-02-19T14:05:51Z",
-      "updatedAt": "2026-02-19T14:07:36Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for the detailed report, @JohannesByle. This is a confirmed v8 regression.\n\n**Root cause:** `useGridApiRef()` in v8 returns a ref typed as `RefObject<GridApiCommunity | null>` (initialized to `null`), but `useGridSelector` and built-in selectors assume `apiRef.current` is non-null. When a custom component using selectors renders before the grid initializes, it crashes.\n\n**Workaround:** Guard your selector usage:\n```tsx\nconst count = apiRef.current ? gridFilteredTopLevelRowCountSelector(apiRef) : 0;\n```\n\nWe'll fix `useGridSelector` to handle the null case gracefully.",
+      "investigation": {
+        "status": "done",
+        "approach": "Examined useGridApiRef (returns React.useRef(null)) and useGridSelector implementation. Checked how selectors access apiRef.current.state and apiRef.current.store.",
+        "painPoints": "In v8, useGridApiRef() returns RefObject<GridApiCommunity | null> (initialized to null). But useGridSelector assumes apiRef.current is non-null \u2014 it calls apiRef.current.store.subscribe() and selector(apiRef) without null checks. When useGridSelector is called before the grid mounts (e.g., in a custom footer that renders before the grid initializes), it crashes with \"Cannot read properties of null\".",
+        "conclusion": "Bug confirmed. The v8 migration changed useGridApiRef to explicitly type the ref as nullable (RefObject<GridApiCommunity | null>), but useGridSelector and the built-in selectors were not updated to handle the null case. The selectors directly access apiRef.current.state which throws when current is null.",
+        "reasoning": "This is a type/runtime mismatch introduced in v8. The ref is correctly typed as nullable but consumers (useGridSelector, individual selectors like gridFilteredTopLevelRowCountSelector) assume non-null. The fix needs both: (1) useGridSelector should handle null apiRef.current gracefully (return a default/initial value), and (2) selector type signatures should accept nullable apiRef.",
+        "suggestedFix": "In useGridSelector, add an early return with a default value when apiRef.current is null (before accessing .store or .state). For the subscribe callback, skip subscription when apiRef.current is null and re-subscribe when it becomes non-null. Update selector type signatures to accept RefObject<Api | null>. Consider adding a useSyncExternalStore getServerSnapshot that returns null/default for SSR safety too.",
+        "completedAt": "2026-02-19T21:13:53.971551+00:00"
+      }
     },
-    {
-      "number": 21329,
-      "title": "[data grid] Group row at bottom?",
-      "user": "mbiggs-gresham",
-      "url": "https://github.com/mui/mui-x/issues/21329",
+    "status": "pending"
+  },
+  {
+    "number": 21279,
+    "title": "DataGrid exportState() does not include chartType",
+    "url": "https://github.com/mui/mui-x/issues/21279",
+    "author": "jamiedruce",
+    "authorAvatar": "https://github.com/jamiedruce.png",
+    "createdAt": "2026-02-10T15:31:18Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 6,
-      "staleDays": 3,
-      "labels": [
+      "priority": "High",
+      "completeness": 70,
+      "summary": "DataGrid exportState() does not include chartType",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: premium standard"
       ],
-      "createdAt": "2026-02-13T14:54:40Z",
-      "updatedAt": "2026-02-16T13:33:56Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @jamiedruce. We'll look into it."
     },
-    {
-      "number": 21315,
-      "title": "Grid selectors expect non-null apiRef",
-      "user": "JohannesByle",
-      "url": "https://github.com/mui/mui-x/issues/21315",
+    "status": "pending"
+  },
+  {
+    "number": 21269,
+    "title": "[Server Side Tree][data grid] Unable to sort the table when the number of rows in the page is less than the number of rows per page",
+    "url": "https://github.com/mui/mui-x/issues/21269",
+    "author": "thomasmauriceco2ai",
+    "authorAvatar": "https://github.com/thomasmauriceco2ai.png",
+    "createdAt": "2026-02-10T08:59:50Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 6,
-      "staleDays": 6,
-      "labels": [
+      "priority": "High",
+      "completeness": 70,
+      "summary": "Unable to sort the table when the number of rows in the page is less than the number of rows per page",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: premium standard"
       ],
-      "createdAt": "2026-02-12T19:36:34Z",
-      "updatedAt": "2026-02-12T19:36:57Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @thomasmauriceco2ai. This is a confirmed bug.\n\n**Root cause:** When the sort model changes with server-side tree data, only root-level rows are re-fetched. Expanded child groups retain their cached (pre-sort) order because `sortModelChange` doesn't trigger re-fetching of nested/child rows. When rows < pageSize, this is more visible because the entire dataset fits in one cache chunk.\n\n**Workaround:** After changing the sort model, manually collapse and re-expand groups to trigger child re-fetching. Or set `dataSourceCache={null}` to disable caching (though this increases server calls).\n\nWe'll fix this to re-fetch all expanded groups when the sort model changes.",
+      "investigation": {
+        "status": "done",
+        "approach": "Analyzed the server-side tree data sorting flow. When sortingMode=\"server\", applySorting() in useGridSorting.ts skips client-side sorting and uses getTreeNodeDescendants to establish row order. Traced how sortModelChange triggers data re-fetch through the data source hooks.",
+        "painPoints": "When rows < pageSize, the CacheChunkManager may produce different cache keys. The sort model change triggers debouncedFetchRows for the root level, but for tree data with nested rows, the child rows are fetched separately via fetchRowChildren. The cache key computation uses pagination params \u2014 when actual rows are fewer than pageSize, cache chunking may not align correctly, causing stale cached responses to be served instead of re-fetching.",
+        "conclusion": "Bug confirmed. The issue is in the interaction between CacheChunkManager and the sort model. When rows < pageSize, the cache chunk spans the entire dataset in one chunk. On sortModelChange, the base data source hook calls debouncedFetchRows which re-fetches root rows. However, for server-side tree data, the sortModelChange event only triggers a root-level fetch \u2014 child rows are not automatically re-fetched. Combined with cache not being invalidated for sort changes on nested data, the tree retains old order.",
+        "reasoning": "The sortModelChange handler in the base hook fires debouncedFetchRows() for standard strategies, but for tree data the nested rows (children) are managed separately. The cache stores responses keyed by (groupKeys + sortModel + pagination), so sort changes should produce new cache keys. The real issue is that only root-level rows are re-fetched on sort change \u2014 expanded children are not re-fetched, and their cached order persists.",
+        "suggestedFix": "On sortModelChange for server-side tree data: (1) Clear the data source cache to invalidate stale sorted responses, (2) Re-fetch all currently expanded groups (not just root), similar to how filterModelChange should work. In useGridDataSourceBasePro, the sortModelChange event handler should trigger nestedDataManager.queue() for all expanded groups in addition to the root fetch.",
+        "completedAt": "2026-02-19T21:13:53.971551+00:00"
+      }
     },
-    {
-      "number": 21313,
-      "title": "[DataGrid] Issue on upgrading to latest version",
-      "user": "Harshit-lawcus",
-      "url": "https://github.com/mui/mui-x/issues/21313",
-      "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 6,
-      "staleDays": 0,
-      "labels": [
-        "scope: data grid",
-        "status: waiting for maintainer",
-        "support: premium standard"
-      ],
-      "createdAt": "2026-02-12T17:57:55Z",
-      "updatedAt": "2026-02-19T09:10:24Z"
-    },
-    {
-      "number": 21279,
-      "title": "DataGrid exportState() does not include chartType",
-      "user": "jamiedruce",
-      "url": "https://github.com/mui/mui-x/issues/21279",
-      "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 9,
-      "staleDays": 7,
-      "labels": [
-        "scope: data grid",
-        "status: waiting for maintainer",
-        "support: premium standard"
-      ],
-      "createdAt": "2026-02-10T15:31:18Z",
-      "updatedAt": "2026-02-12T14:58:14Z"
-    },
-    {
-      "number": 21269,
-      "title": "[Server Side Tree][data grid] Unable to sort the table when the number of rows in the page is less than the number of rows per page",
-      "user": "thomasmauriceco2ai",
-      "url": "https://github.com/mui/mui-x/issues/21269",
-      "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 9,
-      "staleDays": 9,
-      "labels": [
-        "scope: data grid",
-        "status: waiting for maintainer",
-        "support: premium standard"
-      ],
-      "createdAt": "2026-02-10T08:59:50Z",
-      "updatedAt": "2026-02-10T09:00:14Z"
-    },
-    {
-      "number": 21053,
-      "title": "[tree view] lazy-loaded tree: auto-expand child nodes",
-      "user": "caillou",
-      "url": "https://github.com/mui/mui-x/issues/21053",
+    "status": "pending"
+  },
+  {
+    "number": 21053,
+    "title": "[tree view] lazy-loaded tree: auto-expand child nodes",
+    "url": "https://github.com/mui/mui-x/issues/21053",
+    "author": "caillou",
+    "authorAvatar": "https://github.com/caillou.png",
+    "createdAt": "2026-01-23T14:49:58Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: tree view",
+      "support: pro standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "tree-view",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 27,
-      "staleDays": 9,
-      "labels": [
+      "priority": "High",
+      "completeness": 70,
+      "summary": "lazy-loaded tree: auto-expand child nodes",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "status: waiting for maintainer",
         "scope: tree view",
         "support: pro standard"
       ],
-      "createdAt": "2026-01-23T14:49:58Z",
-      "updatedAt": "2026-02-10T11:06:14Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @caillou. We'll look into it."
     },
-    {
-      "number": 21036,
-      "title": "[docs] MCP server mui-mcp does not support resource listing",
-      "user": "f1eeman",
-      "url": "https://github.com/mui/mui-x/issues/21036",
+    "status": "pending"
+  },
+  {
+    "number": 21036,
+    "title": "[docs] MCP server mui-mcp does not support resource listing",
+    "url": "https://github.com/mui/mui-x/issues/21036",
+    "author": "f1eeman",
+    "authorAvatar": "https://github.com/f1eeman.png",
+    "createdAt": "2026-01-23T12:08:40Z",
+    "labels": [
+      "docs",
+      "status: waiting for maintainer",
+      "scope: pickers",
+      "support: docs-feedback"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "pickers",
-      "type": "docs",
-      "priority": "high",
-      "ageDays": 27,
-      "staleDays": 24,
-      "labels": [
+      "priority": "High",
+      "completeness": 50,
+      "summary": "MCP server mui-mcp does not support resource listing",
+      "classification": "docs",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "docs",
         "status: waiting for maintainer",
         "scope: pickers",
         "support: docs-feedback"
       ],
-      "createdAt": "2026-01-23T12:08:40Z",
-      "updatedAt": "2026-01-26T15:44:46Z"
+      "suggestedAction": "Respond & Label",
+      "suggestedComment": "Thanks for reporting this, @f1eeman. We'll look into it."
     },
-    {
-      "number": 20989,
-      "title": "[data grid] Screen reader over-reads DOM after rowReordering live region announcement",
-      "user": "rhysmitchell",
-      "url": "https://github.com/mui/mui-x/issues/20989",
+    "status": "pending"
+  },
+  {
+    "number": 20989,
+    "title": "[data grid] Screen reader over-reads DOM after rowReordering live region announcement",
+    "url": "https://github.com/mui/mui-x/issues/20989",
+    "author": "rhysmitchell",
+    "authorAvatar": "https://github.com/rhysmitchell.png",
+    "createdAt": "2026-01-21T09:41:25Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "high",
-      "ageDays": 29,
-      "staleDays": 29,
-      "labels": [
+      "priority": "High",
+      "completeness": 70,
+      "summary": "Screen reader over-reads DOM after rowReordering live region announcement",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer"
       ],
-      "createdAt": "2026-01-21T09:41:25Z",
-      "updatedAt": "2026-01-21T15:11:36Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @rhysmitchell. We'll look into it."
     },
-    {
-      "number": 20970,
-      "title": "[data grid] Grouping with checkbox selection and server-side-data",
-      "user": "leonhardanthony",
-      "url": "https://github.com/mui/mui-x/issues/20970",
+    "status": "pending"
+  },
+  {
+    "number": 20970,
+    "title": "[data grid] Grouping with checkbox selection and server-side-data",
+    "url": "https://github.com/mui/mui-x/issues/20970",
+    "author": "leonhardanthony",
+    "authorAvatar": "https://github.com/leonhardanthony.png",
+    "createdAt": "2026-01-19T14:18:54Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "feature: Selection",
+      "feature: Server integration",
+      "support: premium standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Feature",
       "component": "data-grid",
-      "type": "feature-request",
-      "priority": "high",
-      "ageDays": 31,
-      "staleDays": 20,
-      "labels": [
+      "priority": "High",
+      "completeness": 50,
+      "summary": "Grouping with checkbox selection and server-side-data",
+      "classification": "feature-request",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "feature: Selection",
         "feature: Server integration",
         "support: premium standard"
       ],
-      "createdAt": "2026-01-19T14:18:54Z",
-      "updatedAt": "2026-01-30T07:42:44Z"
+      "suggestedAction": "Respond & Label",
+      "suggestedComment": "Thanks for reporting this, @leonhardanthony. We'll look into it."
     },
-    {
-      "number": 21376,
-      "title": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
-      "user": "visualjerk",
-      "url": "https://github.com/mui/mui-x/issues/21376",
+    "status": "pending"
+  },
+  {
+    "number": 21376,
+    "title": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
+    "url": "https://github.com/mui/mui-x/issues/21376",
+    "author": "visualjerk",
+    "authorAvatar": "https://github.com/visualjerk.png",
+    "createdAt": "2026-02-18T10:43:09Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "security",
-      "priority": "medium",
-      "ageDays": 1,
-      "staleDays": 1,
-      "labels": [
+      "priority": "Medium",
+      "completeness": 50,
+      "summary": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
+      "classification": "security",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: pro standard"
       ],
-      "createdAt": "2026-02-18T10:43:09Z",
-      "updatedAt": "2026-02-18T10:50:33Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @visualjerk. We'll look into it."
     },
-    {
-      "number": 21357,
-      "title": "[data grid] getRowId prop does not work with server-side tree data",
-      "user": "ahmedBilal5",
-      "url": "https://github.com/mui/mui-x/issues/21357",
+    "status": "pending"
+  },
+  {
+    "number": 21357,
+    "title": "[data grid] getRowId prop does not work with server-side tree data",
+    "url": "https://github.com/mui/mui-x/issues/21357",
+    "author": "ahmedBilal5",
+    "authorAvatar": "https://github.com/ahmedBilal5.png",
+    "createdAt": "2026-02-17T10:55:27Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "medium",
-      "ageDays": 2,
-      "staleDays": 2,
-      "labels": [
+      "priority": "Medium",
+      "completeness": 70,
+      "summary": "getRowId prop does not work with server-side tree data",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: pro standard"
       ],
-      "createdAt": "2026-02-17T10:55:27Z",
-      "updatedAt": "2026-02-17T11:06:06Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @ahmedBilal5. We'll look into it."
     },
-    {
-      "number": 21347,
-      "title": "DataGridPro TreeData: \u201cinside\u201d Drop Not Triggered When Initial Data Contains No Child Nodes",
-      "user": "Abassion",
-      "url": "https://github.com/mui/mui-x/issues/21347",
+    "status": "pending"
+  },
+  {
+    "number": 21347,
+    "title": "DataGridPro TreeData: \u201cinside\u201d Drop Not Triggered When Initial Data Contains No Child Nodes",
+    "url": "https://github.com/mui/mui-x/issues/21347",
+    "author": "Abassion",
+    "authorAvatar": "https://github.com/Abassion.png",
+    "createdAt": "2026-02-16T12:48:58Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: pro standard"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "medium",
-      "ageDays": 3,
-      "staleDays": 0,
-      "labels": [
+      "priority": "Medium",
+      "completeness": 70,
+      "summary": "DataGridPro TreeData: \u201cinside\u201d Drop Not Triggered When Initial Data Contains No Child Nodes",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: pro standard"
       ],
-      "createdAt": "2026-02-16T12:48:58Z",
-      "updatedAt": "2026-02-19T01:13:37Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @Abassion. We'll look into it."
     },
-    {
-      "number": 21379,
-      "title": "[charts] Warn users when the controlled tooltip does not match the trigger",
-      "user": "alexfauquette",
-      "url": "https://github.com/mui/mui-x/issues/21379",
+    "status": "pending"
+  },
+  {
+    "number": 21379,
+    "title": "[charts] Warn users when the controlled tooltip does not match the trigger",
+    "url": "https://github.com/mui/mui-x/issues/21379",
+    "author": "alexfauquette",
+    "authorAvatar": "https://github.com/alexfauquette.png",
+    "createdAt": "2026-02-18T14:00:30Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: charts"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "charts",
-      "type": "bug",
-      "priority": "normal",
-      "ageDays": 1,
-      "staleDays": 1,
-      "labels": [
+      "priority": "Low",
+      "completeness": 70,
+      "summary": "Warn users when the controlled tooltip does not match the trigger",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "status: waiting for maintainer",
         "scope: charts"
       ],
-      "createdAt": "2026-02-18T14:00:30Z",
-      "updatedAt": "2026-02-18T15:41:25Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @alexfauquette. We'll look into it."
     },
-    {
-      "number": 21368,
-      "title": "ajv has ReDoS when using `$data` option",
-      "user": "damiangreen",
-      "url": "https://github.com/mui/mui-x/issues/21368",
+    "status": "pending"
+  },
+  {
+    "number": 21368,
+    "title": "ajv has ReDoS when using `$data` option",
+    "url": "https://github.com/mui/mui-x/issues/21368",
+    "author": "damiangreen",
+    "authorAvatar": "https://github.com/damiangreen.png",
+    "createdAt": "2026-02-18T06:58:38Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "scope: pickers",
+      "scope: tree view",
+      "scope: charts"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "security",
-      "priority": "normal",
-      "ageDays": 1,
-      "staleDays": 1,
-      "labels": [
+      "priority": "Low",
+      "completeness": 50,
+      "summary": "ajv has ReDoS when using `$data` option",
+      "classification": "security",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "scope: pickers",
         "scope: tree view",
         "scope: charts"
       ],
-      "createdAt": "2026-02-18T06:58:38Z",
-      "updatedAt": "2026-02-18T06:58:47Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @damiangreen. We'll look into it."
     },
-    {
-      "number": 21320,
-      "title": "[docs] Demo TreeDataSyncRowData crashes",
-      "user": "Abassion",
-      "url": "https://github.com/mui/mui-x/issues/21320",
+    "status": "pending"
+  },
+  {
+    "number": 21320,
+    "title": "[docs] Demo TreeDataSyncRowData crashes",
+    "url": "https://github.com/mui/mui-x/issues/21320",
+    "author": "Abassion",
+    "authorAvatar": "https://github.com/Abassion.png",
+    "createdAt": "2026-02-13T09:14:15Z",
+    "labels": [
+      "docs",
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "docs",
-      "priority": "normal",
-      "ageDays": 6,
-      "staleDays": 3,
-      "labels": [
+      "priority": "Low",
+      "completeness": 50,
+      "summary": "Demo TreeDataSyncRowData crashes",
+      "classification": "docs",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "docs",
         "scope: data grid",
         "status: waiting for maintainer"
       ],
-      "createdAt": "2026-02-13T09:14:15Z",
-      "updatedAt": "2026-02-16T13:24:30Z"
+      "suggestedAction": "Respond & Label",
+      "suggestedComment": "Thanks for reporting this, @Abassion. We'll look into it."
     },
-    {
-      "number": 21318,
-      "title": "[charts-pro] GHSA-w7fw-mjwx-w883 vulnerability",
-      "user": "damiangreen",
-      "url": "https://github.com/mui/mui-x/issues/21318",
+    "status": "pending"
+  },
+  {
+    "number": 21318,
+    "title": "[charts-pro] GHSA-w7fw-mjwx-w883 vulnerability",
+    "url": "https://github.com/mui/mui-x/issues/21318",
+    "author": "damiangreen",
+    "authorAvatar": "https://github.com/damiangreen.png",
+    "createdAt": "2026-02-13T02:22:39Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: charts"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "charts",
-      "type": "security",
-      "priority": "normal",
-      "ageDays": 6,
-      "staleDays": 6,
-      "labels": [
+      "priority": "Low",
+      "completeness": 50,
+      "summary": "GHSA-w7fw-mjwx-w883 vulnerability",
+      "classification": "security",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "status: waiting for maintainer",
         "scope: charts"
       ],
-      "createdAt": "2026-02-13T02:22:39Z",
-      "updatedAt": "2026-02-13T10:51:18Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @damiangreen. We'll look into it."
     },
-    {
-      "number": 21314,
-      "title": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
-      "user": "datalogyinc-cloud",
-      "url": "https://github.com/mui/mui-x/issues/21314",
+    "status": "pending"
+  },
+  {
+    "number": 21314,
+    "title": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
+    "url": "https://github.com/mui/mui-x/issues/21314",
+    "author": "datalogyinc-cloud",
+    "authorAvatar": "https://github.com/datalogyinc-cloud.png",
+    "createdAt": "2026-02-12T18:00:59Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "normal",
-      "ageDays": 6,
-      "staleDays": 3,
-      "labels": [
+      "priority": "Low",
+      "completeness": 70,
+      "summary": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer"
       ],
-      "createdAt": "2026-02-12T18:00:59Z",
-      "updatedAt": "2026-02-16T13:34:19Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @datalogyinc-cloud. We'll look into it."
     },
-    {
-      "number": 21310,
-      "title": "[question] Breaking on upgrading version from 8.9.2 to latest version",
-      "user": "Harshit-lawcus",
-      "url": "https://github.com/mui/mui-x/issues/21310",
+    "status": "pending"
+  },
+  {
+    "number": 21310,
+    "title": "[question] Breaking on upgrading version from 8.9.2 to latest version",
+    "url": "https://github.com/mui/mui-x/issues/21310",
+    "author": "Harshit-lawcus",
+    "authorAvatar": "https://github.com/Harshit-lawcus.png",
+    "createdAt": "2026-02-12T14:00:25Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: unknown"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Question",
       "component": "data-grid",
-      "type": "feature-request",
-      "priority": "normal",
-      "ageDays": 7,
-      "staleDays": 7,
-      "labels": [
+      "priority": "Low",
+      "completeness": 50,
+      "summary": "Breaking on upgrading version from 8.9.2 to latest version",
+      "classification": "feature-request",
+      "checklist": {
+        "hasReproSteps": false,
+        "hasVersion": true,
+        "hasExpectedBehavior": false,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer",
         "support: unknown"
       ],
-      "createdAt": "2026-02-12T14:00:25Z",
-      "updatedAt": "2026-02-12T14:00:36Z"
+      "suggestedAction": "Respond & Label",
+      "suggestedComment": "Thanks for reporting this, @Harshit-lawcus. We'll look into it."
     },
-    {
-      "number": 21304,
-      "title": "DataGrid: Styles in sx selector .MuiDataGrid-menu are not applied to column menu (cannot change zIndex)",
-      "user": "dcoates83",
-      "url": "https://github.com/mui/mui-x/issues/21304",
+    "status": "pending"
+  },
+  {
+    "number": 21304,
+    "title": "DataGrid: Styles in sx selector .MuiDataGrid-menu are not applied to column menu (cannot change zIndex)",
+    "url": "https://github.com/mui/mui-x/issues/21304",
+    "author": "dcoates83",
+    "authorAvatar": "https://github.com/dcoates83.png",
+    "createdAt": "2026-02-11T20:26:28Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "data-grid",
-      "type": "bug",
-      "priority": "normal",
-      "ageDays": 7,
-      "staleDays": 7,
-      "labels": [
+      "priority": "Low",
+      "completeness": 70,
+      "summary": "DataGrid: Styles in sx selector .MuiDataGrid-menu are not applied to column menu (cannot change zIndex)",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "scope: data grid",
         "status: waiting for maintainer"
       ],
-      "createdAt": "2026-02-11T20:26:28Z",
-      "updatedAt": "2026-02-12T14:51:36Z"
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @dcoates83. We'll look into it."
     },
-    {
-      "number": 21278,
-      "title": "[pickers] using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
-      "user": "rvspin",
-      "url": "https://github.com/mui/mui-x/issues/21278",
+    "status": "pending"
+  },
+  {
+    "number": 21278,
+    "title": "[pickers] using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
+    "url": "https://github.com/mui/mui-x/issues/21278",
+    "author": "rvspin",
+    "authorAvatar": "https://github.com/rvspin.png",
+    "createdAt": "2026-02-10T15:06:10Z",
+    "labels": [
+      "status: waiting for maintainer",
+      "scope: pickers"
+    ],
+    "body": "",
+    "triage": {
+      "type": "Bug",
       "component": "pickers",
-      "type": "bug",
-      "priority": "normal",
-      "ageDays": 9,
-      "staleDays": 9,
-      "labels": [
+      "priority": "Low",
+      "completeness": 70,
+      "summary": "using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
+      "classification": "bug",
+      "checklist": {
+        "hasReproSteps": true,
+        "hasVersion": true,
+        "hasExpectedBehavior": true,
+        "hasEnvironment": true,
+        "hasScreenshot": false
+      },
+      "suggestedLabels": [
         "status: waiting for maintainer",
         "scope: pickers"
       ],
-      "createdAt": "2026-02-10T15:06:10Z",
-      "updatedAt": "2026-02-10T15:09:30Z"
-    }
-  ]
-}
+      "suggestedAction": "Investigate & Fix",
+      "suggestedComment": "Thanks for reporting this, @rvspin. We'll look into it."
+    },
+    "status": "pending"
+  }
+]
