@@ -1,5 +1,9 @@
 {
-  "lastScan": "2026-02-19T03:02:02.518365+00:00",
-  "issueCount": 19,
-  "newIssues": []
+  "lastScan": "2026-02-19T15:01:06.574468+00:00",
+  "issueCount": 22,
+  "newIssues": [
+    21397,
+    21398
+  ],
+  "resolvedIssues": []
 }

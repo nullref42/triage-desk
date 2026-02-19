@@ -1,18 +1,54 @@
 {
-  "lastScan": "2026-02-19T11:01:00.914774+00:00",
-  "totalCount": 20,
+  "lastScan": "2026-02-19T17:00:23.312028+00:00",
+  "totalCount": 22,
   "byPriority": {
-    "high": 9,
+    "high": 11,
     "medium": 3,
     "normal": 8
   },
   "byComponent": {
-    "data-grid": 15,
+    "data-grid": 17,
     "tree-view": 1,
     "pickers": 2,
     "charts": 2
   },
   "issues": [
+    {
+      "number": 21398,
+      "title": "[question] How do you apply maintaining the expanded state of a group when the sort model changes for example?",
+      "user": "mbiggs-gresham",
+      "url": "https://github.com/mui/mui-x/issues/21398",
+      "component": "data-grid",
+      "type": "feature-request",
+      "priority": "high",
+      "ageDays": 0,
+      "staleDays": 0,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-19T14:14:42Z",
+      "updatedAt": "2026-02-19T14:15:08Z"
+    },
+    {
+      "number": 21397,
+      "title": "[data grid] Row grouping with a datasource doesn't respect the order the rows are returned",
+      "user": "mbiggs-gresham",
+      "url": "https://github.com/mui/mui-x/issues/21397",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 0,
+      "staleDays": 0,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-19T14:05:51Z",
+      "updatedAt": "2026-02-19T14:07:36Z"
+    },
     {
       "number": 21329,
       "title": "[data grid] Group row at bottom?",
@@ -21,8 +57,8 @@
       "component": "data-grid",
       "type": "bug",
       "priority": "high",
-      "ageDays": 5,
-      "staleDays": 2,
+      "ageDays": 6,
+      "staleDays": 3,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer",
@@ -75,8 +111,8 @@
       "component": "data-grid",
       "type": "bug",
       "priority": "high",
-      "ageDays": 8,
-      "staleDays": 6,
+      "ageDays": 9,
+      "staleDays": 7,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer",
@@ -111,8 +147,8 @@
       "component": "tree-view",
       "type": "bug",
       "priority": "high",
-      "ageDays": 26,
-      "staleDays": 8,
+      "ageDays": 27,
+      "staleDays": 9,
       "labels": [
         "status: waiting for maintainer",
         "scope: tree view",
@@ -129,8 +165,8 @@
       "component": "pickers",
       "type": "docs",
       "priority": "high",
-      "ageDays": 26,
-      "staleDays": 23,
+      "ageDays": 27,
+      "staleDays": 24,
       "labels": [
         "docs",
         "status: waiting for maintainer",
@@ -149,7 +185,7 @@
       "type": "bug",
       "priority": "high",
       "ageDays": 29,
-      "staleDays": 28,
+      "staleDays": 29,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer"
@@ -165,7 +201,7 @@
       "component": "data-grid",
       "type": "feature-request",
       "priority": "high",
-      "ageDays": 30,
+      "ageDays": 31,
       "staleDays": 20,
       "labels": [
         "scope: data grid",
@@ -204,7 +240,7 @@
       "type": "bug",
       "priority": "medium",
       "ageDays": 2,
-      "staleDays": 1,
+      "staleDays": 2,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer",
@@ -221,7 +257,7 @@
       "component": "data-grid",
       "type": "bug",
       "priority": "medium",
-      "ageDays": 2,
+      "ageDays": 3,
       "staleDays": 0,
       "labels": [
         "scope: data grid",
@@ -239,8 +275,8 @@
       "component": "charts",
       "type": "bug",
       "priority": "normal",
-      "ageDays": 0,
-      "staleDays": 0,
+      "ageDays": 1,
+      "staleDays": 1,
       "labels": [
         "status: waiting for maintainer",
         "scope: charts"
@@ -277,7 +313,7 @@
       "type": "docs",
       "priority": "normal",
       "ageDays": 6,
-      "staleDays": 2,
+      "staleDays": 3,
       "labels": [
         "docs",
         "scope: data grid",
@@ -312,7 +348,7 @@
       "type": "bug",
       "priority": "normal",
       "ageDays": 6,
-      "staleDays": 2,
+      "staleDays": 3,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer"
@@ -328,8 +364,8 @@
       "component": "data-grid",
       "type": "feature-request",
       "priority": "normal",
-      "ageDays": 6,
-      "staleDays": 6,
+      "ageDays": 7,
+      "staleDays": 7,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer",
@@ -347,7 +383,7 @@
       "type": "bug",
       "priority": "normal",
       "ageDays": 7,
-      "staleDays": 6,
+      "staleDays": 7,
       "labels": [
         "scope: data grid",
         "status: waiting for maintainer"
@@ -363,8 +399,8 @@
       "component": "pickers",
       "type": "bug",
       "priority": "normal",
-      "ageDays": 8,
-      "staleDays": 8,
+      "ageDays": 9,
+      "staleDays": 9,
       "labels": [
         "status: waiting for maintainer",
         "scope: pickers"
