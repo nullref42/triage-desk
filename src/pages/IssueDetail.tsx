@@ -31,7 +31,8 @@ export default function IssueDetail() {
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
       .then(r => r.json())
-      .then((data: TriageIssue[]) => {
+      .then((raw: TriageIssue[] | { issues: TriageIssue[] }) => {
+        const data = Array.isArray(raw) ? raw : raw.issues ?? []
         const found = data.find(i => i.number === Number(number))
         if (found) {
           setIssue(found)

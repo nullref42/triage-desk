@@ -251,7 +251,11 @@ export default function IssuesQueue() {
   useEffect(() => {
     fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
       .then(r => r.json())
-      .then((data: TriageIssue[]) => { setIssues(data); setLoading(false) })
+      .then((data: TriageIssue[] | { issues: TriageIssue[] }) => {
+        const list = Array.isArray(data) ? data : data.issues ?? []
+        setIssues(list)
+        setLoading(false)
+      })
       .catch(() => setLoading(false))
   }, [])
 
