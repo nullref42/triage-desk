@@ -101,7 +101,7 @@
       "priority": "High",
       "completeness": 70,
       "summary": "Group row at bottom?",
-      "classification": "bug",
+      "classification": "feature-request",
       "checklist": {
         "hasReproSteps": true,
         "hasVersion": true,
@@ -115,9 +115,18 @@
         "support: premium standard"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": "Thanks for reporting this, @mbiggs-gresham. We'll look into it."
+      "suggestedComment": "Thanks for the suggestion, @mbiggs-gresham! This is a valid feature request for financial/reporting use cases.\n\n**Current state:** The Data Grid's row grouping always renders the group header row *above* its children. There's an existing `footerId` concept in the tree node structure (used for aggregation footers), but no option to move the group row itself below its children.\n\n**Feasibility:** This would require changes to the tree flattening logic (`getTreeNodeDescendants` in `gridRowsUtils.ts`) and the sorting/rendering pipeline to optionally place the group node after its children instead of before. For single-level grouping it's more straightforward; multi-level adds complexity.\n\nWe've tracked this as a feature request. No ETA yet, but the architecture doesn't fundamentally prevent it."
     },
-    "status": "pending"
+    "status": "pending",
+    "investigation": {
+      "status": "done",
+      "approach": "Analyzed the tree structure and flattening logic in gridRowsUtils.ts. The getTreeNodeDescendants function always outputs the parent group node first, then children, then optionally a footerId. Checked useGridSorting.ts which calls getTreeNodeDescendants to build the sorted row list.",
+      "painPoints": "The tree flattening in getTreeNodeDescendants (gridRowsUtils.ts:222) hardcodes group-node-first ordering. The group row is always placed before its children in the flat row list. There's a footerId mechanism for aggregation rows but no equivalent 'move group header to bottom' option. The rendering pipeline (virtualization, row indexing) also assumes group nodes precede their children.",
+      "conclusion": "This is a feature request, not a bug. The current architecture places group rows above children by design. A 'groupRowPosition: top | bottom' option would need changes to: (1) getTreeNodeDescendants to conditionally place the group node after children, (2) the expansion/collapse UI logic since clicking a bottom-positioned group row has different UX, (3) possibly the aggregation footer rendering to avoid conflicts. For single-depth grouping this is feasible; multi-level nesting would need careful design.",
+      "reasoning": "Financial applications commonly need summary/aggregate rows below detail rows. The existing footerId on group nodes shows the architecture already supports post-children elements. Extending this to optionally reposition the group header row itself is architecturally possible but non-trivial.",
+      "suggestedFix": "Add a `groupRowPosition` prop (or per-grouping-rule config) with values 'top' (default) | 'bottom'. In getTreeNodeDescendants, when position is 'bottom', push the parent node ID after all children instead of before. Update the expansion toggle logic to work correctly regardless of position. Consider reusing the existing footer mechanism as inspiration.",
+      "completedAt": "2026-02-21T05:10:00.000000+00:00"
+    }
   },
   {
     "number": 21315,
@@ -198,9 +207,18 @@
         "support: premium standard"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": "Thanks for reporting this, @jamiedruce. We'll look into it."
+      "suggestedComment": "Already resolved by @arminmeh. The `exportState()` intentionally stores chart configuration in a separate integration context key. Use `apiRef.current.restoreState(exportedState)` instead of passing to `initialState` \u2014 it handles both internal state and integration context.\n\nSee: https://github.com/mui/mui-x/issues/21279#issuecomment-3932291614"
     },
-    "status": "pending"
+    "status": "pending",
+    "investigation": {
+      "status": "done",
+      "approach": "Reviewed the GitHub issue comments. Already answered and closed by @arminmeh on 2026-02-20.",
+      "painPoints": "The charts integration stores chartType in a separate integration context key (not in the main grid state) because the charting library is swappable via proxy components. exportState() does include it, but in a different key than the user expected.",
+      "conclusion": "Not a bug \u2014 by design. The chartType is stored in the integration context, not the main state object. Using apiRef.current.restoreState() correctly restores both the internal state and the integration context (including chartType). The user was incorrectly passing the exported state to initialState instead of using restoreState.",
+      "reasoning": "The charts integration feature is designed to be charting-library-agnostic. Chart configuration (type, etc.) lives in an integration context separate from grid state. restoreState handles both; initialState only handles grid state.",
+      "suggestedFix": "No code fix needed. Documentation could be improved to clarify the difference between exportState/restoreState vs initialState when charts integration is enabled.",
+      "completedAt": "2026-02-21T05:10:00.000000+00:00"
+    }
   },
   {
     "number": 21269,
@@ -281,9 +299,18 @@
         "support: pro standard"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": "Thanks for reporting this, @caillou. We'll look into it."
+      "suggestedComment": "Thanks for the detailed report, @caillou. This is a valid enhancement request \u2014 auto-expanding lazy-loaded children when the response already includes nested sub-trees.\n\n**Current limitation:** When `getTreeItems` returns nested children, the Tree View adds them to the tree but doesn't auto-expand them. Calling `setItemExpansion` in `onExpandedItemsChange` triggers another fetch (as noted in #21088), creating a loop.\n\nAs @flaviendelangle mentioned, the two main approaches are:\n1. `onItemsLazyLoaded` callback \u2014 gives full control over what to expand after a lazy load completes\n2. `expandLazyLoadedItems` boolean \u2014 simpler but less flexible\n\nThe callback approach (option 1) seems more robust. It would need to expand items via an internal path that skips re-fetching (using the existing `setItemExpansionUnfiltered` method)."
     },
-    "status": "pending"
+    "status": "pending",
+    "investigation": {
+      "status": "done",
+      "approach": "Examined the TreeView lazy loading plugin (lazyLoading/selectors.ts, types.ts), the expansion plugin (TreeViewExpansionPlugin.ts), and how items are processed after a lazy load response. Checked the distinction between setItemExpansion (triggers lazy load) and setItemExpansionUnfiltered (doesn't trigger lazy load).",
+      "painPoints": "The expansion plugin has two methods: setItemExpansion (public, triggers lazy loading) and setItemExpansionUnfiltered (internal, skips lazy loading). When getTreeItems returns nested children, they're added to the tree but not expanded. Calling setItemExpansion to expand them triggers another fetch \u2014 creating a loop. The workaround of using setItemExpansionUnfiltered via apiRef isn't documented or easily accessible. There's no callback after lazy load completion to react to the loaded items.",
+      "conclusion": "Feature request confirmed. The Tree View needs either: (1) an onItemsLazyLoaded callback that fires after items are loaded, allowing users to expand specific items via setItemExpansionUnfiltered (no re-fetch), or (2) an expandLazyLoadedItems prop that automatically expands all loaded items that have children. The maintainer (@flaviendelangle) already acknowledged this and prefers option 1 for flexibility. Key insight: expansion after lazy load MUST use the unfiltered path to avoid re-triggering fetches.",
+      "reasoning": "This is a common pattern in file browsers and org charts where expanding a node reveals a pre-fetched subtree. The architecture already has the right internal method (setItemExpansionUnfiltered) \u2014 it just needs to be exposed at the right lifecycle point.",
+      "suggestedFix": "Add an onItemsLazyLoaded callback prop that fires after getTreeItems resolves and items are inserted into the tree. The callback receives the loaded items array. Users can then call apiRef.current.setItemExpansion for items they want expanded \u2014 but internally, this expansion should use setItemExpansionUnfiltered to avoid re-triggering lazy loading. Additionally, mark items whose children were already loaded in the cache so subsequent expansion doesn't re-fetch.",
+      "completedAt": "2026-02-21T05:10:00.000000+00:00"
+    }
   },
   {
     "number": 21036,
@@ -355,9 +382,18 @@
         "status: waiting for maintainer"
       ],
       "suggestedAction": "Investigate & Fix",
-      "suggestedComment": "Thanks for reporting this, @rhysmitchell. We'll look into it."
+      "suggestedComment": "Thanks for reporting this accessibility issue, @rhysmitchell.\n\n**Analysis:** The issue is likely caused by the custom `aria-live=\"assertive\"` live region triggering NVDA to re-read the DOM context. When the grid DOM mutates during row reordering (rows physically move in the DOM due to virtualization updates), NVDA interprets the DOM changes as new content and reads them.\n\n**Recommendations:**\n1. Use `aria-live=\"polite\"` instead of `assertive` \u2014 polite waits for the user to be idle\n2. Use `aria-atomic=\"true\"` on the live region so only the region's content is announced, not surrounding DOM\n3. Ensure the live region is outside the grid's DOM tree to avoid NVDA reading grid mutations as part of the announcement\n4. Add a small delay (e.g., `setTimeout` 100ms) before updating the live region text, so the DOM mutation settles first\n\nThis appears to be an NVDA-specific behavior with `assertive` live regions during DOM mutations."
     },
-    "status": "pending"
+    "status": "pending",
+    "investigation": {
+      "status": "done",
+      "approach": "Examined GridRowReorderCell.tsx for row reordering implementation. Searched for built-in aria-live regions in the data grid codebase. The issue describes a custom live region implementation (not built into MUI X) that interacts poorly with NVDA during row reorder DOM mutations.",
+      "painPoints": "The Data Grid doesn't have a built-in aria-live region for row reordering announcements \u2014 the user implemented a custom one. When rows are reordered, the grid's virtualization engine re-renders/repositions DOM elements. NVDA with aria-live='assertive' picks up these DOM mutations as new content to announce, causing it to read the entire grid. This is a known NVDA behavior: assertive live regions during large DOM changes can cause over-reading.",
+      "conclusion": "This is primarily a usage guidance issue rather than a Data Grid bug. The user's custom aria-live='assertive' region interacts poorly with NVDA during the DOM mutations caused by row reordering. The grid itself doesn't provide built-in screen reader announcements for row reordering. Solutions involve: isolating the live region from grid DOM, using 'polite' instead of 'assertive', aria-atomic='true', and debouncing the announcement after DOM settles. MUI X could consider adding built-in accessible announcements for row reordering as an enhancement.",
+      "reasoning": "NVDA is known to over-read when aria-live='assertive' regions update during large DOM mutations. The grid's virtualization causes significant DOM changes during reorder. The live region being a sibling of the grid means NVDA may include grid content in its reading context.",
+      "suggestedFix": "For the user: (1) Move the live region outside the grid container entirely, (2) Use aria-live='polite' + aria-atomic='true', (3) Debounce the announcement by ~150ms to let DOM settle. For MUI X: Consider adding a built-in onRowReorderAnnouncement callback or slot that handles accessible announcements with proper timing and isolation, similar to how AG Grid handles reorder announcements.",
+      "completedAt": "2026-02-21T05:10:00.000000+00:00"
+    }
   },
   {
     "number": 20970,
