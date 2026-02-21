@@ -1,16 +1,16 @@
 {
-  "lastScan": "2026-02-21T13:01:14.635286+00:00",
+  "lastScan": "2026-02-21T16:00:58.425863+00:00",
   "totalCount": 20,
   "byPriority": {
     "premium": 6,
-    "community": 9,
-    "pro": 5
+    "pro": 5,
+    "community": 9
   },
   "byComponent": {
     "data-grid": 14,
-    "pickers": 2,
     "tree-view": 1,
-    "charts": 2,
-    "other": 1
+    "other": 1,
+    "pickers": 2,
+    "charts": 2
   }
 }
