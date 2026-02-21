@@ -1,6 +1,15 @@
 {
-  "lastScan": "2026-02-21T00:00:29.513395+00:00",
-  "totalIssues": 19,
-  "newIssues": [],
-  "resolvedIssues": []
+  "lastScan": "2026-02-21T06:00:57.455732+00:00",
+  "totalCount": 19,
+  "byPriority": {
+    "high": 9,
+    "medium": 3,
+    "normal": 7
+  },
+  "byComponent": {
+    "data-grid": 14,
+    "tree-view": 1,
+    "pickers": 2,
+    "charts": 2
+  }
 }
