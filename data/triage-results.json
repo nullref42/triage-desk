@@ -18,7 +18,7 @@
     "scope": "data-grid",
     "priority": "premium",
     "type": "feature-request",
-    "ageDays": 32,
+    "ageDays": 33,
     "isNew": false
   },
   {
@@ -58,27 +58,7 @@
     "scope": "data-grid",
     "priority": "premium",
     "type": "bug",
-    "ageDays": 7,
-    "isNew": false
-  },
-  {
-    "number": 21413,
-    "title": "[question]  Vulnerability in minimatch causing npm audit to fail",
-    "url": "https://github.com/mui/mui-x/issues/21413",
-    "author": "justin-wilxite",
-    "authorAvatar": "https://github.com/justin-wilxite.png",
-    "createdAt": "2026-02-20T12:18:13Z",
-    "updatedAt": "2026-02-20T15:24:08Z",
-    "labels": [
-      "scope: data grid",
-      "status: waiting for maintainer",
-      "support: premium standard"
-    ],
-    "body": "### The problem in depth\n\nHi, sorry if the solution here is obvious but there's a recent security vulnerability in minimatch and it seems like @mui/x-internal-exceljs-fork has a dependency on it\n\nhttps://github.com/advisories/GHSA-3ppc-4f35-3m26\n\nIf I use the latest MUI X I get this output from `npm audit fix --force`\n\n```\n# npm audit report\n\nminimatch  <10.2.1\nSeverity: high\nminimatch has a ReDoS via repeated wildcards with non-matching literal in pattern - https://github.com/advisories/GHSA-3ppc-4f35-3m26\nfix available via `npm audit fix`\nnode_modules/archiver-utils/node_modules/minimatch\nnode_modules/readdir-glob/node_modules/minimatch\n  glob  3.0.0 - 10.5.0\n  Depends on vulnerable versions of minimatch\n  node_modules/archiver-utils/node_modules/glob\n    archiver-utils  >=0.2.0\n    Depends on vulnerable versions of glob\n    node_modules/archiver-utils\n      archiver  >=0.20.0\n      Depends on vulnerable versions of archiver-utils\n      Depends on vulnerable versions of readdir-glob\n      Depends on vulnerable versions of zip-stream\n      node_modules/archiver\n        @mui/x-internal-exceljs-fork  *\n        Depends on vulnerable versions of archiver\n        node_modules/@mui/x-internal-exceljs-fork\n          @mui/x-data-grid-premium  >=8.15.0\n          Depends on vulnerable versions of @mui/x-internal-exceljs-fork\n          node_modules/@mui/x-data-grid-premium\n      zip-stream  0.8.0 - 6.0.1\n      Depends on vulnerable versions of archiver-utils\n      node_modules/zip-stream\n  readdir-glob  <=2.0.1\n  Depends on vulnerable versions of minimatch\n  node_modules/readdir-glob\n\n8 high severity vulnerabilities\n\nTo address all issues, run:\n  npm audit fix\n```\n\nHowever if I downgrade to an earlier version of MUI X it still fails:\n\n```\n@mui/x-data-grid-premium  <=8.14.1\n          Depends on vulnerable versions of exceljs\n          node_modules/@mui/x-data-grid-premium\n```\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n**Search keywords**: minimatch\n\n**Order ID**: 122137",
-    "scope": "data-grid",
-    "priority": "premium",
-    "type": "bug",
-    "ageDays": 1,
+    "ageDays": 8,
     "isNew": false
   },
   {
@@ -97,8 +77,8 @@
     "body": "### The problem in depth\n\nThe docs give an example of maintaining the group expansion state here https://mui.com/x/react-data-grid/server-side-data/row-grouping/#row-expansion-state-persistence however this is triggered from a button click. How would you achieve the same when the sort model changes for example?\n\n1. Sort model changes\n2. `getRows` is called and new data returned\n3. Expanded state is lost\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n**Search keywords**: datasource row grouping expanded state\n\n**Order ID**: 45466",
     "scope": "data-grid",
     "priority": "premium",
-    "type": "bug",
-    "ageDays": 1,
+    "type": "feature-request",
+    "ageDays": 2,
     "isNew": false
   },
   {
@@ -118,6 +98,26 @@
     "scope": "data-grid",
     "priority": "premium",
     "type": "bug",
+    "ageDays": 2,
+    "isNew": false
+  },
+  {
+    "number": 21413,
+    "title": "[question]  Vulnerability in minimatch causing npm audit to fail",
+    "url": "https://github.com/mui/mui-x/issues/21413",
+    "author": "justin-wilxite",
+    "authorAvatar": "https://github.com/justin-wilxite.png",
+    "createdAt": "2026-02-20T12:18:13Z",
+    "updatedAt": "2026-02-20T15:24:08Z",
+    "labels": [
+      "scope: data grid",
+      "status: waiting for maintainer",
+      "support: premium standard"
+    ],
+    "body": "### The problem in depth\n\nHi, sorry if the solution here is obvious but there's a recent security vulnerability in minimatch and it seems like @mui/x-internal-exceljs-fork has a dependency on it\n\nhttps://github.com/advisories/GHSA-3ppc-4f35-3m26\n\nIf I use the latest MUI X I get this output from `npm audit fix --force`\n\n```\n# npm audit report\n\nminimatch  <10.2.1\nSeverity: high\nminimatch has a ReDoS via repeated wildcards with non-matching literal in pattern - https://github.com/advisories/GHSA-3ppc-4f35-3m26\nfix available via `npm audit fix`\nnode_modules/archiver-utils/node_modules/minimatch\nnode_modules/readdir-glob/node_modules/minimatch\n  glob  3.0.0 - 10.5.0\n  Depends on vulnerable versions of minimatch\n  node_modules/archiver-utils/node_modules/glob\n    archiver-utils  >=0.2.0\n    Depends on vulnerable versions of glob\n    node_modules/archiver-utils\n      archiver  >=0.20.0\n      Depends on vulnerable versions of archiver-utils\n      Depends on vulnerable versions of readdir-glob\n      Depends on vulnerable versions of zip-stream\n      node_modules/archiver\n        @mui/x-internal-exceljs-fork  *\n        Depends on vulnerable versions of archiver\n        node_modules/@mui/x-internal-exceljs-fork\n          @mui/x-data-grid-premium  >=8.15.0\n          Depends on vulnerable versions of @mui/x-internal-exceljs-fork\n          node_modules/@mui/x-data-grid-premium\n      zip-stream  0.8.0 - 6.0.1\n      Depends on vulnerable versions of archiver-utils\n      node_modules/zip-stream\n  readdir-glob  <=2.0.1\n  Depends on vulnerable versions of minimatch\n  node_modules/readdir-glob\n\n8 high severity vulnerabilities\n\nTo address all issues, run:\n  npm audit fix\n```\n\nHowever if I downgrade to an earlier version of MUI X it still fails:\n\n```\n@mui/x-data-grid-premium  <=8.14.1\n          Depends on vulnerable versions of exceljs\n          node_modules/@mui/x-data-grid-premium\n```\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n**Search keywords**: minimatch\n\n**Order ID**: 122137",
+    "scope": "data-grid",
+    "priority": "premium",
+    "type": "feature-request",
     "ageDays": 1,
     "isNew": false
   },
@@ -138,7 +138,7 @@
     "scope": "tree-view",
     "priority": "pro",
     "type": "bug",
-    "ageDays": 28,
+    "ageDays": 29,
     "isNew": false
   },
   {
@@ -197,7 +197,7 @@
     "body": "### Steps to reproduce\n\nSteps:\n1. Clone [reproduction repo:](https://github.com/visualjerk/mui-x-data-grid-csp) `git clone https://github.com/visualjerk/mui-x-data-grid-csp.git`\n2. Install dependencies: `yarn install`\n3. Run and open example: `yarn dev`\n\n### Current behavior\n\nSome styles are not loaded, because of CSP errors.\n\n<img width=\"1727\" height=\"672\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/13e397b1-86db-4a8c-a04e-977845be1a10\" />\n\n### Expected behavior\n\nThe styles are loaded without CSP errors.\n\n### Context\n\nWorkaround\n\nAdd the nonce directly to DataGrid:\n\n```\n<DataGrid nonce=\"N0NCE\" />\n```\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  System:\n    OS: macOS 26.2\n  Binaries:\n    Node: 22.22.0 - /Users/jbayreuther/.local/share/mise/installs/node/22.22.0/bin/node\n    npm: 10.9.4 - /Users/jbayreuther/.local/share/mise/installs/node/22.22.0/bin/npm\n    pnpm: 10.28.1 - /Users/jbayreuther/Library/pnpm/pnpm\n  Browsers:\n    Brave: 1.85.116 (using this)\n    Chrome: 144.0.7559.135\n    Edge: Not Found\n    Firefox: Not Found\n    Safari: 26.2\n  npmPackages:\n    @emotion/react: ^11.14.0 => 11.14.0 \n    @emotion/styled: ^11.14.0 => 11.14.0 \n    @mui/core-downloads-tracker:  7.3.8 \n    @mui/material: ^7.3.8 => 7.3.8 \n    @mui/private-theming:  7.3.8 \n    @mui/styled-engine:  7.3.8 \n    @mui/system:  7.3.8 \n    @mui/types:  7.4.11 \n    @mui/utils:  7.3.8 \n    @mui/x-data-grid: ^8.27.1 => 8.27.1 \n    @mui/x-internals:  8.26.0 \n    @mui/x-virtualizer:  0.3.3 \n    @types/react: ^19.0.10 => 19.1.2 \n    react: ^19.0.0 => 19.1.0 \n    react-dom: ^19.0.0 => 19.1.0 \n    typescript: ~5.7.2 => 5.7.3 \n```\n</details>\n\n\n\n**Search keywords**: datagrid, csp, emotion, cacheprovider, inline styles, nonce\n\n**Order ID**: 109756",
     "scope": "data-grid",
     "priority": "pro",
-    "type": "bug",
+    "type": "security",
     "ageDays": 3,
     "isNew": false
   },
@@ -295,7 +295,7 @@
     "body": "### The problem in depth\n\nAfter upgrading from version 8.9.2 to the latest version, the MUI Data Grid component is no longer functioning correctly.\n\n### Your environment\n\n1.  \"react\": \"18.3.1\",\n2.  next : 13.5.6\n3. \"node\": \"v20.17.0\",\n4.  \n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b68883ef-cc0e-412f-b3f8-ef3c33005dff\" />\n\nnpm\": \"10.8.2\"\n\n**Search keywords**: Issue on upgrading to latest version",
     "scope": "data-grid",
     "priority": "community",
-    "type": "bug",
+    "type": "feature-request",
     "ageDays": 9,
     "isNew": false
   },
@@ -312,7 +312,7 @@
       "scope: data grid",
       "status: waiting for maintainer"
     ],
-    "body": "<!-- Please make sure you have fulfilled the following items before submitting -->\n<!-- Checked checkbox should look like this: [x] -->\n- [x] I have [searched for similar issues](https://github.com/mui/mui-x/issues?q=is%3Aissue%20%5Bdocs%5D%20Demo%20TreeDataSyncRowData%20crashes) in this repository and believe that this is not a duplicate.\n\n## Steps to reproduce\n1. Visit https://mui.com/x/react-data-grid/tree-data/\n2. ??\n3. demo *TreeDataSyncRowData* crashes\n\n## Your environment\n| Tech         | Version |\n|--------------|---------|\n| Version  | v8.27.0  |\n| Netlify deploy | undefined |\n| Browser      | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 |",
+    "body": "\n<!-- Please make sure you have fulfilled the following items before submitting -->\n<!-- Checked checkbox should look like this: [x] -->\n- [x] I have [searched for similar issues](https://github.com/mui/mui-x/issues?q=is%3Aissue%20%5Bdocs%5D%20Demo%20TreeDataSyncRowData%20crashes) in this repository and believe that this is not a duplicate.\n\n## Steps to reproduce\n1. Visit https://mui.com/x/react-data-grid/tree-data/\n2. ??\n3. demo *TreeDataSyncRowData* crashes\n\n## Your environment\n| Tech         | Version |\n|--------------|---------|\n| Version  | v8.27.0  |\n| Netlify deploy | undefined |\n| Browser      | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 |\n",
     "scope": "data-grid",
     "priority": "community",
     "type": "docs",
@@ -334,7 +334,7 @@
     "body": "### Steps to reproduce\n\n```pnpm audit --prod --registry=https://registry.npmjs.org/\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502 low                 \u2502 qs's arrayLimit bypass in comma parsing allows denial  \u2502\n\u2502                     \u2502 of service                                             \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Package             \u2502 qs                                                     \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Vulnerable versions \u2502 >=6.7.0 <=6.14.1                                       \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Patched versions    \u2502 >=6.14.2                                               \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 Paths               \u2502 .>@mui/x-charts-premium>rasterizehtml>url>qs           \u2502\n\u251c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u253c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2524\n\u2502 More info           \u2502 https://github.com/advisories/GHSA-w7fw-mjwx-w883      \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2534\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n1 vulnerabilities found\nSeverity: 1 low\n\u2009ELIFECYCLE\u2009 Command failed with exit code 1.\n```\n\n### Current behavior\n\n_No response_\n\n### Expected behavior\n\n_No response_\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  System:\n    OS: Linux 6.17 Ubuntu 25.10 25.10 (Questing Quokka)\n  Binaries:\n    Node: 24.10.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/node\n    npm: 11.7.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/npm\n    pnpm: 10.27.0 - /home/edge-case/.local/share/pnpm/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: 147.0.3\n  npmPackages:\n    @mui/icons-material: ^7.3.7 => 7.3.7 \n    @mui/material: ^7.3.7 => 7.3.7 \n    @mui/material-nextjs: ^7.3.7 => 7.3.7 \n    @mui/x-charts-premium: ^8.27.0 => 8.27.0 \n    @mui/x-data-grid-premium: ^8.27.0 => 8.27.0 \n    @mui/x-date-pickers-pro: ^8.27.0 => 8.27.0 \n    @mui/x-license: ^8.26.0 => 8.26.0 \n    @types/react: ^19.2.10 => 19.2.10 \n    react: ^19.2.4 => 19.2.4 \n    react-dom: ^19.2.4 => 19.2.4 \n    typescript: ^5.9.3 => 5.9.3 \n\n\n```\n</details>\n\n\n\n**Search keywords**: GHSA-w7fw-mjwx-w883",
     "scope": "charts",
     "priority": "community",
-    "type": "bug",
+    "type": "security",
     "ageDays": 8,
     "isNew": false
   },
@@ -369,7 +369,7 @@
       "status: waiting for maintainer",
       "scope: charts"
     ],
-    "body": "If the user is controlling the state then it is an intentional behaviour, it is not about \"magic\", it is about user intention.\n\nHow likely is it that the user will update the state without wanting it to be updated? \ud83d\ude06\n\nWe could at least warn users if they update the state and it won't have any effect \ud83e\udd37\n\n_Originally posted by @JCQuintas in https://github.com/mui/mui-x/pull/21351#discussion_r2822409299_",
+    "body": "If the user is controlling the state then it is an intentional behaviour, it is not about \"magic\", it is about user intention.\r\n\r\nHow likely is it that the user will update the state without wanting it to be updated? \ud83d\ude06\r\n\r\nWe could at least warn users if they update the state and it won't have any effect \ud83e\udd37\r\n\r\n_Originally posted by @JCQuintas in https://github.com/mui/mui-x/pull/21351#discussion_r2822409299_\r\n            ",
     "scope": "charts",
     "priority": "community",
     "type": "bug",
