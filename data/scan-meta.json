@@ -1,8 +1,0 @@
-{
-  "lastScan": "2026-02-24T03:01:00Z",
-  "totalIssues": 24,
-  "newIssues": 1,
-  "byPriority": { "critical": 0, "high": 7, "medium": 8, "low": 9 },
-  "byCategory": { "bug": 11, "feature": 5, "question": 4, "docs": 2, "security": 3, "performance": 0 },
-  "byComponent": { "data-grid": 15, "tree-view": 4, "pickers": 3, "charts": 3 }
-}
