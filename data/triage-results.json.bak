@@ -1,0 +1,486 @@
+{
+  "lastScan": "2026-02-22T19:00:42.944Z",
+  "totalIssues": 21,
+  "issues": [
+    {
+      "number": 21429,
+      "title": "[tree view] Support skeleton UI",
+      "url": "https://github.com/mui/mui-x/issues/21429",
+      "author": "Janpot",
+      "createdAt": "2026-02-22T13:48:15Z",
+      "updatedAt": "2026-02-22T14:07:48Z",
+      "labels": [
+        "status: waiting for maintainer"
+      ],
+      "body": "### Summary\n\nAllow labels to be a `React.ReactNode` so I can pass `<Skeleton />` to it and render a beautiful loading state that stays close to the real treeview. Or just a `loading` prop to show skeleton items.\n\n### Examples\n\n_No response_\n\n### Motivation\n\n_No response_\n\n\n**Search keywords**: RichTreeView loading skeleton\n",
+      "triage": {
+        "category": "feature",
+        "priority": "medium",
+        "component": "tree view",
+        "summary": "Request for skeleton UI support in RichTreeView, allowing labels as ReactNode or a loading prop.",
+        "suggestedAction": "Consider adding a loading/skeleton prop to RichTreeView. Low effort, good DX improvement.",
+        "isRegression": false,
+        "affectedArea": "skeleton UI"
+      }
+    },
+    {
+      "number": 21424,
+      "title": "[pickers] Add year range picker",
+      "url": "https://github.com/mui/mui-x/issues/21424",
+      "author": "caillou",
+      "createdAt": "2026-02-21T09:00:54Z",
+      "updatedAt": "2026-02-21T09:01:14Z",
+      "labels": [
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "body": "### Summary\n\nSimilar to the request for [request for month range](https://github.com/mui/mui-x/issues/4995), we need a `<YearRange />` component in our application. \n\n\n\n### Examples\n\n<img width=\"958\" height=\"1038\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/cae84728-f438-4386-9b69-7f821ef263ab\" />\n\n### Motivation\n\nOur forms express `project year` as either a year or a range, e.g. `2021` or `2021-2025`.\n\nFor now, we've implemented this, using a mask on top of a `TextField`.\n\nHaving a UI element for this would be very helpful.\n\n\n**Search keywords**: year range picker\n\n**Order ID**: 110649\n",
+      "triage": {
+        "category": "feature",
+        "priority": "medium",
+        "component": "pickers",
+        "summary": "Request for a YearRange picker component similar to the existing month range picker.",
+        "suggestedAction": "Evaluate demand and feasibility. Link to existing month range request #4995.",
+        "isRegression": false,
+        "affectedArea": "year range picker"
+      }
+    },
+    {
+      "number": 21413,
+      "title": "[question]  Vulnerability in minimatch causing npm audit to fail",
+      "url": "https://github.com/mui/mui-x/issues/21413",
+      "author": "justin-wilxite",
+      "createdAt": "2026-02-20T12:18:13Z",
+      "updatedAt": "2026-02-20T15:24:08Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "body": "### The problem in depth\n\nHi, sorry if the solution here is obvious but there's a recent security vulnerability in minimatch and it seems like @mui/x-internal-exceljs-fork has a dependency on it\n\nhttps://github.com/advisories/GHSA-3ppc-4f35-3m26\n\nIf I use the latest MUI X I get this output from `npm audit fix --force`\n\n```\n# npm audit report\n\nminimatch  <10.2.1\nSeverity: high\nminimatch has a ReDoS via repeated wildcards with non-matching literal in pattern - https://github.com/advisories/GHSA-3ppc-4f35-3m26\nfix available via `npm audit fix`\nnode_modules/archiver-utils/node_modules/minimatch\nnode_modules/readdir-glob/node_modules/minimatch\n  glob  3.0.0 - 10.5.0\n  Depends on vulnerable versions of minimatch\n  node_modules/archiver-utils/node_modules/glob\n    archiver-utils  >=0.2.0\n    Depends on vulnerable versions of glob\n    node_modules/archiver-utils\n      archiver  >=0.20.0\n      Depends on vulnerable versions of archiver-utils\n      Depends on vulnerable versions of readdir-glob\n      Depends on vulnerable versions of zip-stream\n      node_modules/archiver\n        @mui/x-internal-exceljs-fork  *\n        Depends on vulnerable versions of archiver\n        node_modules/@mui/x-internal-exceljs-fork\n          @mui/x-data-grid-premium  >=8.15.0\n          Depends on vulnerable versions of @mui/x-internal-exceljs-fork\n          node_modules/@mui/x-data-grid-premium\n      zip-stream  0.8.0 - 6.0.1\n      Depends on vulnerable versions of archiver-utils\n      node_modules/zip-stream\n  readdir-glob  <=2.0.1\n  Depends on vulnerable versions of minimatch\n  node_modules/readdir-glob\n\n8 high severity vulnerabilities\n\nTo address all issues, run:\n  npm audit fix\n```\n\nHowever if I downgrade to an earlier version of MUI X it still fails:\n\n```\n@mui/x-data-grid-premium  <=8.14.1\n          Depends on vulnerable versions of exceljs\n          node_modules/@mui/x-data-grid-premium\n```\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n**Search keywords**: minimatch\n\n**Order ID**: 122137\n",
+      "triage": {
+        "category": "security",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "Vulnerability in minimatch dependency (GHSA-3ppc-4f35-3m26) via @mui/x-internal-exceljs-fork causing npm audit failures.",
+        "suggestedAction": "Update exceljs fork to use minimatch >=10.2.1 or patch the dependency chain.",
+        "isRegression": false,
+        "affectedArea": "dependencies"
+      }
+    },
+    {
+      "number": 21398,
+      "title": "[question] How do you apply maintaining the expanded state of a group when the sort model changes for example?",
+      "url": "https://github.com/mui/mui-x/issues/21398",
+      "author": "mbiggs-gresham",
+      "createdAt": "2026-02-19T14:14:42Z",
+      "updatedAt": "2026-02-19T14:15:08Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "body": "### The problem in depth\n\nThe docs give an example of maintaining the group expansion state here https://mui.com/x/react-data-grid/server-side-data/row-grouping/#row-expansion-state-persistence however this is triggered from a button click. How would you achieve the same when the sort model changes for example?\n\n1. Sort model changes\n2. `getRows` is called and new data returned\n3. Expanded state is lost\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n**Search keywords**: datasource row grouping expanded state\n\n**Order ID**: 45466\n",
+      "triage": {
+        "category": "question",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "User asks how to maintain group expansion state when sort model changes with server-side row grouping.",
+        "suggestedAction": "Provide guidance on persisting expanded state across sort changes, or document the pattern.",
+        "isRegression": false,
+        "affectedArea": "row grouping"
+      }
+    },
+    {
+      "number": 21397,
+      "title": "[data grid] Row grouping with a datasource doesn't respect the order the rows are returned",
+      "url": "https://github.com/mui/mui-x/issues/21397",
+      "author": "mbiggs-gresham",
+      "createdAt": "2026-02-19T14:05:51Z",
+      "updatedAt": "2026-02-19T14:07:36Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\n1. Open this link to live example: https://mui.com/x/react-data-grid/server-side-data/row-grouping/#implementating-server-side-row-grouping\n2. Expand a few groups in the demo\n3. Apply a sort to a column (eg title)\n4. The sort is never respected.\n\n\n### Current behavior\n\nWhen using a datasource with row grouping, the order in which the rows are returned from the `getRows` is never respected after the first render.\n\nI've tried invaliding the cache, but it never seems to update. In my own code i'm returning an array of 2 parent rows ordered [0, 1]. When the sortmodel updates, I flip the rows to [1, 0] but the grid never updates to reflect this. \n\n### Expected behavior\n\nChanging the order of the rows from `getRows` should be reflected in the grid.\n\n### Context\n\nI want group grids using a datasource to be updated when I update the sortmodel.\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n\n**Search keywords**: datasource row grouping\n\n**Order ID**: 45466\n",
+      "triage": {
+        "category": "bug",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "Server-side row grouping with datasource ignores the order of rows returned from getRows after initial render.",
+        "suggestedAction": "Investigate cache invalidation logic for datasource row grouping. Reproduction available in MUI docs demo.",
+        "isRegression": false,
+        "affectedArea": "row grouping"
+      }
+    },
+    {
+      "number": 21379,
+      "title": "[charts] Warn users when the controlled tooltip does not match the trigger",
+      "url": "https://github.com/mui/mui-x/issues/21379",
+      "author": "alexfauquette",
+      "createdAt": "2026-02-18T14:00:30Z",
+      "updatedAt": "2026-02-18T15:41:25Z",
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: charts"
+      ],
+      "body": "If the user is controlling the state then it is an intentional behaviour, it is not about \"magic\", it is about user intention.\r\n\r\nHow likely is it that the user will update the state without wanting it to be updated? 😆\r\n\r\nWe could at least warn users if they update the state and it won't have any effect 🤷\r\n\r\n_Originally posted by @JCQuintas in https://github.com/mui/mui-x/pull/21351#discussion_r2822409299_\r\n            \n",
+      "triage": {
+        "category": "feature",
+        "priority": "low",
+        "component": "charts",
+        "summary": "Internal request to add a warning when controlled tooltip state doesn't match the trigger configuration.",
+        "suggestedAction": "Add a dev-mode warning for mismatched controlled tooltip/trigger combinations.",
+        "isRegression": false,
+        "affectedArea": "tooltip"
+      }
+    },
+    {
+      "number": 21376,
+      "title": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
+      "url": "https://github.com/mui/mui-x/issues/21376",
+      "author": "visualjerk",
+      "createdAt": "2026-02-18T10:43:09Z",
+      "updatedAt": "2026-02-18T10:50:33Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\n1. Clone [reproduction repo:](https://github.com/visualjerk/mui-x-data-grid-csp) `git clone https://github.com/visualjerk/mui-x-data-grid-csp.git`\n2. Install dependencies: `yarn install`\n3. Run and open example: `yarn dev`\n\n### Current behavior\n\nSome styles are not loaded, because of CSP errors.\n\n<img width=\"1727\" height=\"672\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/13e397b1-86db-4a8c-a04e-977845be1a10\" />\n\n### Expected behavior\n\nThe styles are loaded without CSP errors.\n\n### Context\n\nWorkaround\n\nAdd the nonce directly to DataGrid:\n\n```\n<DataGrid nonce=\"N0NCE\" />\n```\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  System:\n    OS: macOS 26.2\n  Binaries:\n    Node: 22.22.0 - /Users/jbayreuther/.local/share/mise/installs/node/22.22.0/bin/node\n    npm: 10.9.4 - /Users/jbayreuther/.local/share/mise/installs/node/22.22.0/bin/npm\n    pnpm: 10.28.1 - /Users/jbayreuther/Library/pnpm/pnpm\n  Browsers:\n    Brave: 1.85.116 (using this)\n    Chrome: 144.0.7559.135\n    Edge: Not Found\n    Firefox: Not Found\n    Safari: 26.2\n  npmPackages:\n    @emotion/react: ^11.14.0 => 11.14.0 \n    @emotion/styled: ^11.14.0 => 11.14.0 \n    @mui/core-downloads-tracker:  7.3.8 \n    @mui/material: ^7.3.8 => 7.3.8 \n    @mui/private-theming:  7.3.8 \n    @mui/styled-engine:  7.3.8 \n    @mui/system:  7.3.8 \n    @mui/types:  7.4.11 \n    @mui/utils:  7.3.8 \n    @mui/x-data-grid: ^8.27.1 => 8.27.1 \n    @mui/x-internals:  8.26.0 \n    @mui/x-virtualizer:  0.3.3 \n    @types/react: ^19.0.10 => 19.1.2 \n    react: ^19.0.0 => 19.1.0 \n    react-dom: ^19.0.0 => 19.1.0 \n    typescript: ~5.7.2 => 5.7.3 \n```\n</details>\n\n\n\n**Search keywords**: datagrid, csp, emotion, cacheprovider, inline styles, nonce\n\n**Order ID**: 109756\n",
+      "triage": {
+        "category": "bug",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "DataGrid inline styles bypass Emotion CacheProvider nonce, causing CSP violations. Workaround: pass nonce directly to DataGrid.",
+        "suggestedAction": "Fix DataGrid to inherit nonce from Emotion CacheProvider instead of requiring separate nonce prop. Reproduction repo provided.",
+        "isRegression": false,
+        "affectedArea": "CSP"
+      }
+    },
+    {
+      "number": 21368,
+      "title": "ajv has ReDoS when using `$data` option",
+      "url": "https://github.com/mui/mui-x/issues/21368",
+      "author": "damiangreen",
+      "createdAt": "2026-02-18T06:58:38Z",
+      "updatedAt": "2026-02-18T06:58:47Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "scope: pickers",
+        "scope: tree view",
+        "scope: charts"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\n1. Open this link to live example: (required)\n2. add a package with \"@mui/x-license\": \"^8.26.0\",\n3. pnpm audit --prod --registry=https://registry.npmjs.org/\n\n\n### Current behavior\n\npnpm audit --prod --registry=https://registry.npmjs.org/\n┌─────────────────────┬────────────────────────────────────────────────────────┐\n│ moderate            │ ajv has ReDoS when using `$data` option                │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Package             │ ajv                                                    │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Vulnerable versions │ <8.18.0                                                │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Patched versions    │ >=8.18.0                                               │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Paths               │ .>@mui/x-license>@mui/x-telemetry>conf>ajv             │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ More info           │ https://github.com/advisories/GHSA-2g4f-4pwh-qvx6      │\n└─────────────────────┴────────────────────────────────────────────────────────┘\n1 vulnerabilities found\nSeverity: 1 moderate\n ELIFECYCLE  Command failed with exit code 1.\n\n### Expected behavior\n\nno security vulner\n\n### Context\n\nworking around with an override\n\n```\n  \"pnpm\": {\n    \"overrides\": {\n      \"ajv\": \">=8.18.0\"\n    }\n  }\n```\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n\n  System:\n    OS: Linux 6.17 Ubuntu 25.10 25.10 (Questing Quokka)\n  Binaries:\n    Node: 24.10.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/node\n    npm: 11.7.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/npm\n    pnpm: 10.27.0 - /home/edge-case/.local/share/pnpm/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: 147.0.3\n  npmPackages:\n    @mui/icons-material: ^7.3.7 => 7.3.7 \n    @mui/material: ^7.3.8 => 7.3.8 \n    @mui/material-nextjs: ^7.3.8 => 7.3.8 \n    @mui/x-charts-premium: ^8.27.0 => 8.27.0 \n    @mui/x-data-grid-premium: ^8.27.1 => 8.27.1 \n    @mui/x-date-pickers-pro: ^8.27.0 => 8.27.0 \n    @mui/x-license: ^8.26.0 => 8.26.0 \n    @types/react: ^19.2.10 => 19.2.10 \n    react: ^19.2.4 => 19.2.4 \n    react-dom: ^19.2.4 => 19.2.4 \n    typescript: ^5.9.3 => 5.9.3 \n\n\n```\n</details>\n\n\n\n**Search keywords**: ajv has ReDoS when using `$data` option\n",
+      "triage": {
+        "category": "security",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "ajv ReDoS vulnerability (GHSA-2g4f-4pwh-qvx6) in @mui/x-license → @mui/x-telemetry → conf → ajv dependency chain.",
+        "suggestedAction": "Update conf or ajv dependency to >=8.18.0 to resolve the vulnerability.",
+        "isRegression": false,
+        "affectedArea": "dependencies"
+      }
+    },
+    {
+      "number": 21357,
+      "title": "[data grid] getRowId prop does not work with server-side tree data",
+      "url": "https://github.com/mui/mui-x/issues/21357",
+      "author": "ahmedBilal5",
+      "createdAt": "2026-02-17T10:55:27Z",
+      "updatedAt": "2026-02-17T11:06:06Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "body": "### Steps to reproduce\n\nThe server-side tree data grid is having problems when row id is provided through the `getRowId `prop instead of from the data itself.\n\nSteps:\n1. Open this [link](https://stackblitz.com/edit/wyr8jahq-evdddasn?file=src%2FDemo.tsx) to live example. A data-grid-pro using server side tree data should load.\n2. Expand a node in the tree. \n3. Do either of\n    a.  Collapse the same node and expand it again. \n    b.  Click _Increment the counter_  to re-calculate memoized datasource.\n\nError:\n\n> Uncaught Error: MUI X: The Data Grid component requires all rows to have a unique `id` property.\n> Alternatively, you can use the `getRowId` prop to specify a custom id for each row.\n> A row was provided without id when calling updateRows():\n\nAdding id property to the data itself and removing `getRowId` prop makes the grid work fine\n\n@arminmeh  @MBilalShafi \n\n### Current behavior\n\nError:\n\n> Uncaught Error: MUI X: The Data Grid component requires all rows to have a unique `id` property.\n> Alternatively, you can use the `getRowId` prop to specify a custom id for each row.\n> A row was provided without id when calling updateRows():\n\n### Expected behavior\n\ngrid should work same as it does when adding id property to the data itself and removing `getRowId` prop\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n\n**Search keywords**: server-side tree data data-grid-pro\n\n**Order ID**: 123695\n",
+      "triage": {
+        "category": "bug",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "getRowId prop doesn't work with server-side tree data; expanding/collapsing nodes throws 'unique id' error.",
+        "suggestedAction": "Fix server-side tree data to use getRowId for internal row ID resolution. StackBlitz reproduction provided.",
+        "isRegression": false,
+        "affectedArea": "tree data"
+      }
+    },
+    {
+      "number": 21347,
+      "title": "DataGridPro TreeData: \"inside\" Drop Not Triggered When Initial Data Contains No Child Nodes",
+      "url": "https://github.com/mui/mui-x/issues/21347",
+      "author": "Abassion",
+      "createdAt": "2026-02-16T12:48:58Z",
+      "updatedAt": "2026-02-19T01:13:37Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\n\n1. Open this link to[ live example](https://codesandbox.io/p/devbox/gallant-cori-m65h6y?file=%2Fsrc%2FMinimalReproExample.tsx%3A7%2C16&from-embed=&workspaceId=ws_YFu8e5BekFdaAY26SxE6q6)\n2. Drag a file into the \"src\" folder.\n\n### Current behavior\n\n\nThe file **is not** reordered as a child inside the \"src\" folder.\n\n### Expected behavior\n\nThe file **should** be reordered as a child inside the \"src\" folder.\n\n\n### Context\n\nThe goal is to have an empty file system where the user can create files and folders and be able to reorder them, nest them ...etc.\n\n### Your environment\n\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n\n  System:\n    OS: Linux 5.0 undefined\n  Binaries:\n    Node: 20.19.1 - /usr/local/bin/node\n    npm: 10.8.2 - /usr/local/bin/npm\n    pnpm: 8.15.6 - /usr/local/bin/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: Not Found\n  npmPackages:\n    @emotion/react: latest => 11.14.0 \n    @emotion/styled: latest => 11.14.1 \n    @mui/core-downloads-tracker:  7.3.8 \n    @mui/icons-material: latest => 7.3.8 \n    @mui/material: latest => 7.3.8 \n    @mui/private-theming:  7.3.8 \n    @mui/styled-engine:  7.3.8 \n    @mui/system:  7.3.8 \n    @mui/types:  7.4.11 \n    @mui/utils:  7.3.8 \n    @mui/x-data-grid: latest => 8.27.1 \n    @mui/x-data-grid-pro: latest => 8.27.1 \n    @mui/x-internals:  8.26.0 \n    @mui/x-license:  8.26.0 \n    @mui/x-telemetry:  8.20.0 \n    @mui/x-virtualizer:  0.3.3 \n    @types/react: latest => 19.2.14 \n    react: latest => 19.2.4 \n    react-dom: latest => 19.2.4 \n    typescript: latest => 5.9.3 \n```\n</details>\n\n\n**Search keywords**: MUI DataGridPro treeData rowReordering inside drop not working\n\n**Order ID**: 116191\n",
+      "triage": {
+        "category": "bug",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "TreeData row reordering 'inside' drop doesn't trigger when initial data has no child nodes.",
+        "suggestedAction": "Investigate drop target detection for empty parent nodes in TreeData. CodeSandbox reproduction provided.",
+        "isRegression": false,
+        "affectedArea": "tree data"
+      }
+    },
+    {
+      "number": 21329,
+      "title": "[data grid] Group row at bottom?",
+      "url": "https://github.com/mui/mui-x/issues/21329",
+      "author": "mbiggs-gresham",
+      "createdAt": "2026-02-13T14:54:40Z",
+      "updatedAt": "2026-02-16T13:33:56Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "body": "### Summary\n\nWhat would be the possibility of the group grid supporting the group row being at the bottom underneath the expanded child rows? So group row is present, expand it, and it shunts down to underneath the children. This may only make sense for grids with only 1 level deep. \n\nIn many financial applications you want the aggregate data for each group to be underneath. A group quite commonly may only contain 2 child rows, so something at the top or bottom of grid doesn't really work. It needs to be part of the group itself. I don't think this is currently possible, but would it be difficult to implement?\n\n\n### Examples\n\n_No response_\n\n### Motivation\n\n_No response_\n\n\n**Search keywords**: group grid\n\n**Order ID**: 45466\n",
+      "triage": {
+        "category": "feature",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "Request for group row to appear at the bottom of expanded children, common in financial applications.",
+        "suggestedAction": "Evaluate feasibility of bottom-positioned group rows. Could be a prop like groupRowPosition='bottom'.",
+        "isRegression": false,
+        "affectedArea": "row grouping"
+      }
+    },
+    {
+      "number": 21320,
+      "title": "[docs] Demo TreeDataSyncRowData crashes",
+      "url": "https://github.com/mui/mui-x/issues/21320",
+      "author": "Abassion",
+      "createdAt": "2026-02-13T09:14:15Z",
+      "updatedAt": "2026-02-16T13:24:30Z",
+      "labels": [
+        "docs",
+        "scope: data grid",
+        "status: waiting for maintainer"
+      ],
+      "body": "\n<!-- Please make sure you have fulfilled the following items before submitting -->\n<!-- Checked checkbox should look like this: [x] -->\n- [x] I have [searched for similar issues](https://github.com/mui/mui-x/issues?q=is%3Aissue%20%5Bdocs%5D%20Demo%20TreeDataSyncRowData%20crashes) in this repository and believe that this is not a duplicate.\n\n## Steps to reproduce\n1. Visit https://mui.com/x/react-data-grid/tree-data/\n2. ??\n3. demo *TreeDataSyncRowData* crashes\n\n## Your environment\n| Tech         | Version |\n|--------------|---------|\n| Version  | v8.27.0  |\n| Netlify deploy | undefined |\n| Browser      | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/144.0.0.0 Safari/537.36 |\n\n",
+      "triage": {
+        "category": "docs",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "TreeDataSyncRowData demo on the docs site crashes.",
+        "suggestedAction": "Fix the broken demo on the tree data documentation page.",
+        "isRegression": false,
+        "affectedArea": "tree data"
+      }
+    },
+    {
+      "number": 21318,
+      "title": "[charts-pro] GHSA-w7fw-mjwx-w883 vulnerability",
+      "url": "https://github.com/mui/mui-x/issues/21318",
+      "author": "damiangreen",
+      "createdAt": "2026-02-13T02:22:39Z",
+      "updatedAt": "2026-02-13T10:51:18Z",
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: charts"
+      ],
+      "body": "### Steps to reproduce\n\n```pnpm audit --prod --registry=https://registry.npmjs.org/\n┌─────────────────────┬────────────────────────────────────────────────────────┐\n│ low                 │ qs's arrayLimit bypass in comma parsing allows denial  │\n│                     │ of service                                             │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Package             │ qs                                                     │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Vulnerable versions │ >=6.7.0 <=6.14.1                                       │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Patched versions    │ >=6.14.2                                               │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ Paths               │ .>@mui/x-charts-premium>rasterizehtml>url>qs           │\n├─────────────────────┼────────────────────────────────────────────────────────┤\n│ More info           │ https://github.com/advisories/GHSA-w7fw-mjwx-w883      │\n└─────────────────────┴────────────────────────────────────────────────────────┘\n1 vulnerabilities found\nSeverity: 1 low\n ELIFECYCLE  Command failed with exit code 1.\n```\n\n### Current behavior\n\n_No response_\n\n### Expected behavior\n\n_No response_\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  System:\n    OS: Linux 6.17 Ubuntu 25.10 25.10 (Questing Quokka)\n  Binaries:\n    Node: 24.10.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/node\n    npm: 11.7.0 - /home/edge-case/.nvm/versions/node/v24.10.0/bin/npm\n    pnpm: 10.27.0 - /home/edge-case/.local/share/pnpm/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: 147.0.3\n  npmPackages:\n    @mui/icons-material: ^7.3.7 => 7.3.7 \n    @mui/material: ^7.3.7 => 7.3.7 \n    @mui/material-nextjs: ^7.3.7 => 7.3.7 \n    @mui/x-charts-premium: ^8.27.0 => 8.27.0 \n    @mui/x-data-grid-premium: ^8.27.0 => 8.27.0 \n    @mui/x-date-pickers-pro: ^8.27.0 => 8.27.0 \n    @mui/x-license: ^8.26.0 => 8.26.0 \n    @types/react: ^19.2.10 => 19.2.10 \n    react: ^19.2.4 => 19.2.4 \n    react-dom: ^19.2.4 => 19.2.4 \n    typescript: ^5.9.3 => 5.9.3 \n\n\n```\n</details>\n\n\n\n**Search keywords**: GHSA-w7fw-mjwx-w883\n",
+      "triage": {
+        "category": "security",
+        "priority": "high",
+        "component": "charts",
+        "summary": "qs vulnerability (GHSA-w7fw-mjwx-w883) via @mui/x-charts-premium → rasterizehtml → url → qs dependency.",
+        "suggestedAction": "Update rasterizehtml or qs dependency to >=6.14.2.",
+        "isRegression": false,
+        "affectedArea": "dependencies"
+      }
+    },
+    {
+      "number": 21314,
+      "title": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
+      "url": "https://github.com/mui/mui-x/issues/21314",
+      "author": "datalogyinc-cloud",
+      "createdAt": "2026-02-12T18:00:59Z",
+      "updatedAt": "2026-02-16T13:34:19Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer"
+      ],
+      "body": "### The problem in depth\n\nIn a data grid I apply filters, reorganize the columns and grouping. The resulting view I am saving with  new name.\nWhen I try to load the saved view it looses all the saved filter, grouping and the column reorganization\n\n<!-- Failed to upload \"solr-search-app.zip\" -->\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\nChrome\nWindows 11\n\n```\n</details>\n\n\n**Search keywords**: saving and reloading the view\n",
+      "triage": {
+        "category": "bug",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "Saving a DataGrid view with reorganized columns, filters, and grouping doesn't restore correctly when loaded.",
+        "suggestedAction": "Request reproduction steps/code. Investigate view state serialization for column order + grouping.",
+        "isRegression": false,
+        "affectedArea": "state management"
+      }
+    },
+    {
+      "number": 21310,
+      "title": "[question] Breaking on upgrading version from 8.9.2 to latest version",
+      "url": "https://github.com/mui/mui-x/issues/21310",
+      "author": "Harshit-lawcus",
+      "createdAt": "2026-02-12T14:00:25Z",
+      "updatedAt": "2026-02-12T14:00:36Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: unknown"
+      ],
+      "body": "### The problem in depth\n\nAfter upgrading from version 8.9.2 to the latest version, the MUI Data Grid component is no longer functioning correctly.\n\n### Your environment\n\n1.  \"react\": \"18.3.1\",\n2.  next : 13.5.6\n3. \"node\": \"v20.17.0\",\n4.  \n\n<img width=\"2880\" height=\"1800\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/b68883ef-cc0e-412f-b3f8-ef3c33005dff\" />\n\nnpm\": \"10.8.2\"\n\n**Search keywords**: Issue on upgrading to latest version\n",
+      "triage": {
+        "category": "question",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "DataGrid breaks after upgrading from v8.9.2 to latest. No reproduction or details provided.",
+        "suggestedAction": "Ask for reproduction, environment details, and specific error messages. May need migration guide reference.",
+        "isRegression": false,
+        "affectedArea": "upgrade"
+      }
+    },
+    {
+      "number": 21278,
+      "title": "[pickers] using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
+      "url": "https://github.com/mui/mui-x/issues/21278",
+      "author": "rvspin",
+      "createdAt": "2026-02-10T15:06:10Z",
+      "updatedAt": "2026-02-10T15:09:30Z",
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: pickers"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\nLink to live example: https://stackblitz.com/edit/6zc5pnrz?file=src%2FDemo.tsx\n\n1. Change the hours in any of the picker.\n\n\n### Current behavior\n\nThe default time is set to 00:32:00 but is showing \"KK:32:00 PM\" in the field. When changing the hours in the picker, KK is still retained in the field display.\n\n<img width=\"517\" height=\"235\" alt=\"Image\" src=\"https://github.com/user-attachments/assets/268eb07d-afd5-46eb-a0f2-d100031f4199\" />\n\n### Expected behavior\n\nFields should show \"00:32:00 PM\" as default and get updated when hours are changed in the picker.\n\n### Context\n\nWe need to accommodate different date and time formats in the date time picker. We've chosen date-fns as the adapter as it has most of the formats we support, and based on the [docs](https://date-fns.org/v4.1.0/docs/format) this particular format is supported. \n\n\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n System:\n    OS: macOS 15.7.3\nBinaries:\n    Node: 22.14.0\n    npm: 11.6.2\n    pnpm: 10.9.0\nBrowsers:\n    Chrome: 144.0.7559.133\nnpmPackages:\n    @emotion/react: ^11.13.0 => 11.14.0 \n    @emotion/styled: ^11.13.0 => 11.14.1 \n    @mui/icons-material: ^6.1.3 => 6.5.0 \n    @mui/material: ^6.4.5 => 6.5.0 \n    @mui/x-date-pickers: ^8.27.0 => 8.27.0 \n    @types/react: ^19.0.0 => 19.1.12 \n```\n</details>\n\n\n\n**Search keywords**: time format KK, date-fns adapter\n",
+      "triage": {
+        "category": "bug",
+        "priority": "medium",
+        "component": "pickers",
+        "summary": "date-fns KK hour format (0-11) displays literal 'KK' instead of numeric value in time picker field.",
+        "suggestedAction": "Investigate date-fns adapter format token handling for KK. StackBlitz reproduction provided.",
+        "isRegression": false,
+        "affectedArea": "time format"
+      }
+    },
+    {
+      "number": 21269,
+      "title": "[Server Side Tree][data grid] Unable to sort the table when the number of rows in the page is less than the number of rows per page",
+      "url": "https://github.com/mui/mui-x/issues/21269",
+      "author": "thomasmauriceco2ai",
+      "createdAt": "2026-02-10T08:59:50Z",
+      "updatedAt": "2026-02-10T09:00:14Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\n1. Open this link to this [ServerSideTreeData demo](https://stackblitz.com/edit/vwqxah5w?file=src%2FDemo.tsx) (found the example [here](https://mui.com/x/react-data-grid/server-side-data/tree-data/#implementing-server-side-tree-data)) \n2. **Set rows per page to 50** in the UI (otherwise the sorting seems to work)\n3. Try to sort the table per website or per rating -> the rows don't get sorted\n\n\n### Current behavior\n\nThe rows don't get sorted when I try to sort them\nIt only happens when the number of rows in the page is less than the number of rows per page\n\n\n### Expected behavior\n\nThe rows get sorted correctly\n\n### Context\n\n_No response_\n\n### Your environment\n\n System:\n    OS: Linux 5.0 undefined\n  Binaries:\n    Node: 20.19.1 - /usr/local/bin/node\n    npm: 10.8.2 - /usr/local/bin/npm\n    pnpm: 8.15.6 - /usr/local/bin/pnpm\n  Browsers:\n    Chrome: Not Found\n    Firefox: Not Found\n  npmPackages:\n    @emotion/react: latest => 11.14.0 \n    @emotion/styled: latest => 11.14.1 \n    @mui/core-downloads-tracker:  7.3.7 \n    @mui/icons-material: latest => 7.3.7 \n    @mui/material: latest => 7.3.7 \n    @mui/private-theming:  7.3.7 \n    @mui/styled-engine:  7.3.7 \n    @mui/system:  7.3.7 \n    @mui/types:  7.4.10 \n    @mui/utils:  7.3.7 \n    @mui/x-data-grid:  8.27.0 \n    @mui/x-data-grid-generator: latest => 8.27.0 \n    @mui/x-data-grid-premium:  8.27.0 \n    @mui/x-data-grid-pro: latest => 8.27.0 \n    @mui/x-internal-exceljs-fork:  4.4.3 \n    @mui/x-internals:  8.26.0 \n    @mui/x-license:  8.26.0 \n    @mui/x-telemetry:  8.20.0 \n    @mui/x-virtualizer:  0.3.3 \n    @types/react: latest => 19.2.13 \n    react: latest => 19.2.4 \n    react-dom: latest => 19.2.4 \n    typescript: latest => 5.9.3\n\n\n\n**Search keywords**: ServerSideTree Sorting Datagrid\n\n**Order ID**: 102731\n",
+      "triage": {
+        "category": "bug",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "Server-side tree data sorting fails when page has fewer rows than the rows-per-page setting.",
+        "suggestedAction": "Fix sorting logic for partial pages in server-side tree data. StackBlitz reproduction provided.",
+        "isRegression": false,
+        "affectedArea": "tree data"
+      }
+    },
+    {
+      "number": 21053,
+      "title": "[tree view] lazy-loaded tree: auto-expand child nodes",
+      "url": "https://github.com/mui/mui-x/issues/21053",
+      "author": "caillou",
+      "createdAt": "2026-01-23T14:49:58Z",
+      "updatedAt": "2026-02-10T11:06:14Z",
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: tree view",
+        "support: pro standard"
+      ],
+      "body": "### The problem in depth\n\n## Question\n\nI am using a lazy-loaded tree.\n\nWhen loading the child-items, the returned can already contain their own children. E.g. in the following example, clicking on `Switzerland` would return the following sub-tree.\n\n```json\n[{\n  \"id\": \"canton-zh\",\n  \"label\": \"Canton of Zurich\",\n  \"children\": [{\n    \"id\": \"city-zh\",\n    \"label\": \"Zürich\",\n    \"children\": [{\n      \"id\": \"office-zh\",\n      \"label\": \"Office Zurich\"\n    }]\n  }]\n}]\n```\n\nI don't find a way to automatically open all sub-items.\n\n## Motivation\n\nIf the sub-tree is nested and only contains a couple of items or sub-items, we don't want the users to have to click their way to the items.\n\n## What I tired\n\n1. I tried it just doing nothing, and hoping for the best.\n2. I tried hacking my way there by making the `expandedItems` controlled.\n3. I tried hacking my way there by using the `apiRef`.\n\nSee the following example on how I tried this:\n\nhttps://stackblitz.com/edit/wzk8muwu-kzh7bgqk?file=src%2FDemo.tsx\n\n## Related Issue\n\nThis might relate to the issue we had here: https://github.com/mui/mui-x/issues/19363\n\n### Your environment\n\n<details>\n  <summary>`npx @mui/envinfo`</summary>\n\n```\nnpmPackages:\n    @base-ui/utils:  0.2.4 \n    @emotion/react: latest => 11.14.0 \n    @emotion/styled: latest => 11.14.1 \n    @mui/core-downloads-tracker:  7.3.7 \n    @mui/material: latest => 7.3.7 \n    @mui/private-theming:  7.3.7 \n    @mui/styled-engine:  7.3.7 \n    @mui/system:  7.3.7 \n    @mui/types:  7.4.10 \n    @mui/utils:  7.3.7 \n    @mui/x-internals:  8.26.0 \n    @mui/x-tree-view: latest => 8.26.0 \n    @types/react: latest => 19.2.9 \n    react: latest => 19.2.3 \n    react-dom: latest => 19.2.3 \n    typescript: latest => 5.9.3 \n```\n</details>\n\n\n**Search keywords**: tree lazy-load auto-expand\n\n**Order ID**: 110649\n",
+      "triage": {
+        "category": "feature",
+        "priority": "medium",
+        "component": "tree view",
+        "summary": "Request to auto-expand child nodes in lazy-loaded tree when fetched data already contains nested children.",
+        "suggestedAction": "Consider auto-expand option for lazy-loaded trees when children are pre-loaded. StackBlitz example provided.",
+        "isRegression": false,
+        "affectedArea": "lazy loading"
+      }
+    },
+    {
+      "number": 21036,
+      "title": "[docs] MCP server mui-mcp does not support resource listing",
+      "url": "https://github.com/mui/mui-x/issues/21036",
+      "author": "f1eeman",
+      "createdAt": "2026-01-23T12:08:40Z",
+      "updatedAt": "2026-01-26T15:44:46Z",
+      "labels": [
+        "docs",
+        "status: waiting for maintainer",
+        "scope: pickers",
+        "support: docs-feedback"
+      ],
+      "body": "### Related page\n\nhttps://mui.com/material-ui/getting-started/mcp/#vs-code-cursor-windsurf\n\n### Kind of issue\n\nOther\n\n### Issue description\n\nWhen trying to use MUI X components (e.g., DateField, DateCalendar) in conjunction with MUI MCP server in Windsurf v1.13.9, i encounter the following error: \n`Failure listing resources: server mui-mcp does not support resources`\nThe documentation does not provide guidance on handling MCP server limitations, which leads to integration issues.\n\n### Context\n\nWindsurf v1.13.9\n```\n{\n  \"mcpServers\": {\n    \"mui-mcp\": {\n      \"args\": [\n        \"-y\",\n        \"@mui/mcp@latest\"\n      ],\n      \"command\": \"npx\",\n      \"disabled\": false\n  }\n}\n```\n\n**Search keywords**: MCP, mui-mcp, Failure listing resources, resource listing, x-date-pickers\n",
+      "triage": {
+        "category": "docs",
+        "priority": "low",
+        "component": "pickers",
+        "summary": "MUI MCP server (mui-mcp) doesn't support resource listing, causing errors in Windsurf IDE.",
+        "suggestedAction": "Document MCP server limitations or add resource listing support to mui-mcp.",
+        "isRegression": false,
+        "affectedArea": "MCP server"
+      }
+    },
+    {
+      "number": 20989,
+      "title": "[data grid] Screen reader over-reads DOM after rowReordering live region announcement",
+      "url": "https://github.com/mui/mui-x/issues/20989",
+      "author": "rhysmitchell",
+      "createdAt": "2026-01-21T09:41:25Z",
+      "updatedAt": "2026-01-21T15:11:36Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer"
+      ],
+      "body": "### Steps to reproduce\n\n1. Open the StackBlitz demo: [https://stackblitz.com/edit/vitejs-vite-pf9vrxek](https://stackblitz.com/edit/vitejs-vite-pf9vrxek)  \n2. Move a row using the row action menu (\"Move up\"/\"Move down\")  \n3. Observe that the live region (role=\"status\", aria-live=\"assertive\") announces the move, but **immediately after, the screen reader dictates the entire grid DOM**, overwhelming the intended message\n\n### Current behavior\n\n- Row visually moves as expected  \n- Screen reader does announce the move, but **followed by the entire DOM of the grid**, making the live region message effectively unreadable or confusing\n\n### Expected behavior\n\n- Row moves always trigger clear, concise screen reader announcements in the live region  \n- Announcement reflects the new position, e.g., \"John Doe moved to row 2 of 5\"  \n- Works consistently for both menu-triggered moves and drag-and-drop reordering, **without reading the entire DOM afterwards**\n\n### Context\n\n- Custom live region implemented as a sibling Box element, visually hidden but with role=\"status\" and aria-live=\"assertive\"  \n- Includes `announce()` helper and `RowActionsCell` component for moving rows  \n- Intended to improve accessibility for keyboard and screen reader users\n\n### Your environment\n\n- OS: Windows 11  \n- Browser: Latest Edge  \n- Screen reader: NVDA  \n\n**Search keywords**: MUI, DataGridPro, rowReordering, live region, screen reader, accessibility, aria-live\n",
+      "triage": {
+        "category": "bug",
+        "priority": "medium",
+        "component": "data grid",
+        "summary": "After row reordering, screen reader reads entire grid DOM instead of just the live region announcement.",
+        "suggestedAction": "Fix live region implementation to prevent NVDA from over-reading. StackBlitz reproduction provided.",
+        "isRegression": false,
+        "affectedArea": "accessibility"
+      }
+    },
+    {
+      "number": 20970,
+      "title": "[data grid] Grouping with checkbox selection and server-side-data",
+      "url": "https://github.com/mui/mui-x/issues/20970",
+      "author": "leonhardanthony",
+      "createdAt": "2026-01-19T14:18:54Z",
+      "updatedAt": "2026-01-30T07:42:44Z",
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "feature: Selection",
+        "feature: Server integration",
+        "support: premium standard"
+      ],
+      "body": "### Steps to reproduce\n\nSteps:\n1. [Open this link to live example: (required)](https://stackblitz.com/edit/b2syssnr?file=src%2FDemo.tsx)\n2. Use any exable in the grouping with server side Data and add checkboxSelection\n\n\n### Current behavior\n\nI have a data grid with server-side data, grouping, and checkbox selection.\n\n1. Issue: When a group is selected and then expanded, both the group and its corresponding children become deselected. This happens even if the children were previously loaded and then collapsed and expanded again.\nSteps to Reproduce:\n• Select a group.\n• Expand it.\n(Note: This also occurs if the children were loaded previously.)\n\n2. Issue: When you select one child in a group that has multiple children, the parent’s checkbox state becomes indeterminate. If you then close the parent group, it loses its indeterminate state and is not selected (this also applies to any grandparent groups). Upon reopening the group, the previously selected row is deselected again.\nSteps to Reproduce:\n• Open a group with multiple children (if the group has nested groups, open them until you see children).\n• Select one or multiple children, but not all (so the group becomes indeterminate).\n• Close the group.\n\n3. Issue: The behavior described in Issue 2 can also be reproduced without server-side data but only with the \"select all\" checkbox (see https://stackblitz.com/edit/oplssymg?file=src%2FDemo.tsx).\nSteps to Reproduce:\n• Select a group with multiple children.\n• Deselect one child so that the group’s state becomes indeterminate.\n• Close the group.\n\n### Expected behavior\n\n_No response_\n\n### Context\n\n_No response_\n\n### Your environment\n\n<details>\n  <summary><code>npx @mui/envinfo</code></summary>\n\n```\n  Don't forget to mention which browser you used.\n  Output from `npx @mui/envinfo` goes here.\n```\n</details>\n\n\n\n**Search keywords**: checkbox selection, grouping, server-side-data\n\n**Order ID**: 118089\n",
+      "triage": {
+        "category": "bug",
+        "priority": "high",
+        "component": "data grid",
+        "summary": "Checkbox selection with grouping and server-side data loses selection state when expanding/collapsing groups.",
+        "suggestedAction": "Fix selection state persistence during group expand/collapse with server-side data. Multiple reproduction scenarios documented.",
+        "isRegression": false,
+        "affectedArea": "selection"
+      }
+    }
+  ]
+}
