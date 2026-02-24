@@ -122,7 +122,7 @@ export default function InvestigationQueue() {
     fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
       .then(r => r.json())
       .then((data: TriageIssue[]) => {
-        const investigateIssues = data.filter(i => i.triage.suggestedAction === 'Investigate & Fix' && i.status !== 'archived')
+        const investigateIssues = data.filter(i => i.triage?.suggestedAction === 'Investigate & Fix' && i.status !== 'archived')
         setIssues(investigateIssues)
         setLoading(false)
       })

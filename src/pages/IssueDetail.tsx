@@ -34,7 +34,7 @@ export default function IssueDetail() {
       .then((raw: TriageIssue[] | { issues: TriageIssue[] }) => {
         const data = Array.isArray(raw) ? raw : raw.issues ?? []
         const found = data.find(i => i.number === Number(number))
-        if (found) {
+        if (found && found.triage) {
           setIssue(found)
           setComment(found.triage.suggestedComment)
           setSelectedLabels(found.triage.suggestedLabels)

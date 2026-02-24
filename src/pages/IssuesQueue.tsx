@@ -253,7 +253,7 @@ export default function IssuesQueue() {
       .then(r => r.json())
       .then((data: TriageIssue[] | { issues: TriageIssue[] }) => {
         const list = Array.isArray(data) ? data : data.issues ?? []
-        setIssues(list)
+        setIssues(list.filter(i => i.triage))
         setLoading(false)
       })
       .catch(() => setLoading(false))

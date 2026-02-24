@@ -1,9 +1,18 @@
 {
-  "lastScan": "2026-02-19T15:01:06.574468+00:00",
-  "issueCount": 22,
-  "newIssues": [
-    21397,
-    21398
-  ],
-  "resolvedIssues": []
+  "lastScan": "2026-02-22T13:02:16.015227+00:00",
+  "totalCount": 20,
+  "newSinceLastScan": [],
+  "removedSinceLastScan": [],
+  "byPriority": {
+    "high": 9,
+    "medium": 4,
+    "normal": 7
+  },
+  "byComponent": {
+    "data-grid": 14,
+    "tree-view": 1,
+    "pickers": 2,
+    "unknown": 1,
+    "charts": 2
+  }
 }
