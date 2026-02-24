@@ -1,0 +1,466 @@
+{
+  "lastScan": "2026-02-24T13:01:07.209782+00:00",
+  "totalCount": 25,
+  "byPriority": {
+    "high": 12,
+    "medium": 5,
+    "normal": 8
+  },
+  "byComponent": {
+    "tree-view": 3,
+    "data-grid": 17,
+    "pickers": 3,
+    "charts": 2
+  },
+  "issues": [
+    {
+      "number": 21451,
+      "title": "RichTreeViewPro lazy loading spinners reset when any prop reference changes",
+      "user": "BrentFarese",
+      "url": "https://github.com/mui/mui-x/issues/21451",
+      "component": "tree-view",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 0,
+      "staleDays": 0,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: tree view",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-24T02:57:36Z",
+      "updatedAt": "2026-02-24T02:57:53Z"
+    },
+    {
+      "number": 21447,
+      "title": "[question] Disabling scrollbars on nested DataGrid in multi-level master-detail",
+      "user": "marpro200",
+      "url": "https://github.com/mui/mui-x/issues/21447",
+      "component": "data-grid",
+      "type": "feature-request",
+      "priority": "high",
+      "ageDays": 0,
+      "staleDays": 0,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-23T16:34:14Z",
+      "updatedAt": "2026-02-23T16:34:45Z"
+    },
+    {
+      "number": 21413,
+      "title": "[question]  Vulnerability in minimatch causing npm audit to fail",
+      "user": "justin-wilxite",
+      "url": "https://github.com/mui/mui-x/issues/21413",
+      "component": "data-grid",
+      "type": "feature-request",
+      "priority": "high",
+      "ageDays": 4,
+      "staleDays": 1,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-20T12:18:13Z",
+      "updatedAt": "2026-02-23T07:30:28Z"
+    },
+    {
+      "number": 21398,
+      "title": "[question] How do you apply maintaining the expanded state of a group when the sort model changes for example?",
+      "user": "mbiggs-gresham",
+      "url": "https://github.com/mui/mui-x/issues/21398",
+      "component": "data-grid",
+      "type": "feature-request",
+      "priority": "high",
+      "ageDays": 4,
+      "staleDays": 4,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-19T14:14:42Z",
+      "updatedAt": "2026-02-19T14:15:08Z"
+    },
+    {
+      "number": 21397,
+      "title": "[data grid] Row grouping with a datasource doesn't respect the order the rows are returned",
+      "user": "mbiggs-gresham",
+      "url": "https://github.com/mui/mui-x/issues/21397",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 4,
+      "staleDays": 4,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-19T14:05:51Z",
+      "updatedAt": "2026-02-19T14:07:36Z"
+    },
+    {
+      "number": 21329,
+      "title": "[data grid] Group row at bottom?",
+      "user": "mbiggs-gresham",
+      "url": "https://github.com/mui/mui-x/issues/21329",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 10,
+      "staleDays": 7,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-13T14:54:40Z",
+      "updatedAt": "2026-02-16T13:33:56Z"
+    },
+    {
+      "number": 21313,
+      "title": "[DataGrid] Issue on upgrading to latest version",
+      "user": "Harshit-lawcus",
+      "url": "https://github.com/mui/mui-x/issues/21313",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 11,
+      "staleDays": 0,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-12T17:57:55Z",
+      "updatedAt": "2026-02-24T07:53:22Z"
+    },
+    {
+      "number": 21269,
+      "title": "[Server Side Tree][data grid] Unable to sort the table when the number of rows in the page is less than the number of rows per page",
+      "user": "thomasmauriceco2ai",
+      "url": "https://github.com/mui/mui-x/issues/21269",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 14,
+      "staleDays": 14,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-02-10T08:59:50Z",
+      "updatedAt": "2026-02-10T09:00:14Z"
+    },
+    {
+      "number": 21053,
+      "title": "[tree view] lazy-loaded tree: auto-expand child nodes",
+      "user": "caillou",
+      "url": "https://github.com/mui/mui-x/issues/21053",
+      "component": "tree-view",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 31,
+      "staleDays": 14,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: tree view",
+        "support: pro standard"
+      ],
+      "createdAt": "2026-01-23T14:49:58Z",
+      "updatedAt": "2026-02-10T11:06:14Z"
+    },
+    {
+      "number": 21036,
+      "title": "[docs] MCP server mui-mcp does not support resource listing",
+      "user": "f1eeman",
+      "url": "https://github.com/mui/mui-x/issues/21036",
+      "component": "pickers",
+      "type": "docs",
+      "priority": "high",
+      "ageDays": 32,
+      "staleDays": 0,
+      "labels": [
+        "docs",
+        "status: waiting for maintainer",
+        "scope: pickers",
+        "support: docs-feedback"
+      ],
+      "createdAt": "2026-01-23T12:08:40Z",
+      "updatedAt": "2026-02-24T09:25:01Z"
+    },
+    {
+      "number": 20989,
+      "title": "[data grid] Screen reader over-reads DOM after rowReordering live region announcement",
+      "user": "rhysmitchell",
+      "url": "https://github.com/mui/mui-x/issues/20989",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "high",
+      "ageDays": 34,
+      "staleDays": 33,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer"
+      ],
+      "createdAt": "2026-01-21T09:41:25Z",
+      "updatedAt": "2026-01-21T15:11:36Z"
+    },
+    {
+      "number": 20970,
+      "title": "[data grid] Grouping with checkbox selection and server-side-data",
+      "user": "leonhardanthony",
+      "url": "https://github.com/mui/mui-x/issues/20970",
+      "component": "data-grid",
+      "type": "feature-request",
+      "priority": "high",
+      "ageDays": 35,
+      "staleDays": 25,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "feature: Selection",
+        "feature: Server integration",
+        "support: premium standard"
+      ],
+      "createdAt": "2026-01-19T14:18:54Z",
+      "updatedAt": "2026-01-30T07:42:44Z"
+    },
+    {
+      "number": 21452,
+      "title": "Cell border sometimes remains expanded after exiting edit mode (regression from v6.7.0 to v6.20.4)",
+      "user": "web-delivery",
+      "url": "https://github.com/mui/mui-x/issues/21452",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "medium",
+      "ageDays": 0,
+      "staleDays": 0,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "createdAt": "2026-02-24T03:01:22Z",
+      "updatedAt": "2026-02-24T03:01:43Z"
+    },
+    {
+      "number": 21424,
+      "title": "[pickers] Add year range picker",
+      "user": "caillou",
+      "url": "https://github.com/mui/mui-x/issues/21424",
+      "component": "pickers",
+      "type": "bug",
+      "priority": "medium",
+      "ageDays": 3,
+      "staleDays": 0,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: pickers",
+        "support: pro standard"
+      ],
+      "createdAt": "2026-02-21T09:00:54Z",
+      "updatedAt": "2026-02-23T14:52:45Z"
+    },
+    {
+      "number": 21376,
+      "title": "DataGrid CSP Error: Emotion CacheProvider nonce is not used in inline styles",
+      "user": "visualjerk",
+      "url": "https://github.com/mui/mui-x/issues/21376",
+      "component": "data-grid",
+      "type": "security",
+      "priority": "medium",
+      "ageDays": 6,
+      "staleDays": 6,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "createdAt": "2026-02-18T10:43:09Z",
+      "updatedAt": "2026-02-18T10:50:33Z"
+    },
+    {
+      "number": 21357,
+      "title": "[data grid] getRowId prop does not work with server-side tree data",
+      "user": "ahmedBilal5",
+      "url": "https://github.com/mui/mui-x/issues/21357",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "medium",
+      "ageDays": 7,
+      "staleDays": 7,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "createdAt": "2026-02-17T10:55:27Z",
+      "updatedAt": "2026-02-17T11:06:06Z"
+    },
+    {
+      "number": 21347,
+      "title": "DataGridPro TreeData: \u201cinside\u201d Drop Not Triggered When Initial Data Contains No Child Nodes",
+      "user": "Abassion",
+      "url": "https://github.com/mui/mui-x/issues/21347",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "medium",
+      "ageDays": 8,
+      "staleDays": 5,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: pro standard"
+      ],
+      "createdAt": "2026-02-16T12:48:58Z",
+      "updatedAt": "2026-02-19T01:13:37Z"
+    },
+    {
+      "number": 21429,
+      "title": "[tree view] Support skeleton UI",
+      "user": "Janpot",
+      "url": "https://github.com/mui/mui-x/issues/21429",
+      "component": "tree-view",
+      "type": "bug",
+      "priority": "normal",
+      "ageDays": 1,
+      "staleDays": 0,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: tree view"
+      ],
+      "createdAt": "2026-02-22T13:48:15Z",
+      "updatedAt": "2026-02-23T14:47:56Z"
+    },
+    {
+      "number": 21379,
+      "title": "[charts] Warn users when the controlled tooltip does not match the trigger",
+      "user": "alexfauquette",
+      "url": "https://github.com/mui/mui-x/issues/21379",
+      "component": "charts",
+      "type": "bug",
+      "priority": "normal",
+      "ageDays": 5,
+      "staleDays": 5,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: charts"
+      ],
+      "createdAt": "2026-02-18T14:00:30Z",
+      "updatedAt": "2026-02-18T15:41:25Z"
+    },
+    {
+      "number": 21368,
+      "title": "ajv has ReDoS when using `$data` option",
+      "user": "damiangreen",
+      "url": "https://github.com/mui/mui-x/issues/21368",
+      "component": "data-grid",
+      "type": "security",
+      "priority": "normal",
+      "ageDays": 6,
+      "staleDays": 6,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "scope: pickers",
+        "scope: tree view",
+        "scope: charts"
+      ],
+      "createdAt": "2026-02-18T06:58:38Z",
+      "updatedAt": "2026-02-18T06:58:47Z"
+    },
+    {
+      "number": 21320,
+      "title": "[docs] Demo TreeDataSyncRowData crashes",
+      "user": "Abassion",
+      "url": "https://github.com/mui/mui-x/issues/21320",
+      "component": "data-grid",
+      "type": "docs",
+      "priority": "normal",
+      "ageDays": 11,
+      "staleDays": 7,
+      "labels": [
+        "docs",
+        "scope: data grid",
+        "status: waiting for maintainer"
+      ],
+      "createdAt": "2026-02-13T09:14:15Z",
+      "updatedAt": "2026-02-16T13:24:30Z"
+    },
+    {
+      "number": 21318,
+      "title": "[charts-pro] GHSA-w7fw-mjwx-w883 vulnerability",
+      "user": "damiangreen",
+      "url": "https://github.com/mui/mui-x/issues/21318",
+      "component": "charts",
+      "type": "security",
+      "priority": "normal",
+      "ageDays": 11,
+      "staleDays": 11,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: charts"
+      ],
+      "createdAt": "2026-02-13T02:22:39Z",
+      "updatedAt": "2026-02-13T10:51:18Z"
+    },
+    {
+      "number": 21314,
+      "title": "Datagrid, saving a view with reorganize columns, filter and grouping does not work",
+      "user": "datalogyinc-cloud",
+      "url": "https://github.com/mui/mui-x/issues/21314",
+      "component": "data-grid",
+      "type": "bug",
+      "priority": "normal",
+      "ageDays": 11,
+      "staleDays": 7,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer"
+      ],
+      "createdAt": "2026-02-12T18:00:59Z",
+      "updatedAt": "2026-02-16T13:34:19Z"
+    },
+    {
+      "number": 21310,
+      "title": "[question] Breaking on upgrading version from 8.9.2 to latest version",
+      "user": "Harshit-lawcus",
+      "url": "https://github.com/mui/mui-x/issues/21310",
+      "component": "data-grid",
+      "type": "feature-request",
+      "priority": "normal",
+      "ageDays": 11,
+      "staleDays": 11,
+      "labels": [
+        "scope: data grid",
+        "status: waiting for maintainer",
+        "support: unknown"
+      ],
+      "createdAt": "2026-02-12T14:00:25Z",
+      "updatedAt": "2026-02-12T14:00:36Z"
+    },
+    {
+      "number": 21278,
+      "title": "[pickers] using date-fns adapter with time format KK (Hour [0-11]) does not display properly",
+      "user": "rvspin",
+      "url": "https://github.com/mui/mui-x/issues/21278",
+      "component": "pickers",
+      "type": "bug",
+      "priority": "normal",
+      "ageDays": 13,
+      "staleDays": 13,
+      "labels": [
+        "status: waiting for maintainer",
+        "scope: pickers"
+      ],
+      "createdAt": "2026-02-10T15:06:10Z",
+      "updatedAt": "2026-02-10T15:09:30Z"
+    }
+  ]
+}
