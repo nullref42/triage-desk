@@ -1,0 +1,8 @@
+name = "triage-desk-api"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "triage-desk-db"
+database_id = "525bbe2d-e2da-43d6-9057-ade1c4abe6c4"
