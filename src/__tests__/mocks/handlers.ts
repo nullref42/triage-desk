@@ -101,6 +101,50 @@ export const mockFlatApiIssues = [
   },
 ]
 
+export const mockScanRuns = [
+  {
+    id: 1,
+    started_at: '2025-02-20T08:00:00Z',
+    finished_at: '2025-02-20T08:05:00Z',
+    issues_found: 15,
+    issues_new: 3,
+    issues_updated: 12,
+    status: 'completed',
+    summary: 'Routine scan',
+  },
+  {
+    id: 2,
+    started_at: '2025-02-21T08:00:00Z',
+    finished_at: '2025-02-21T08:04:00Z',
+    issues_found: 10,
+    issues_new: 1,
+    issues_updated: 9,
+    status: 'completed',
+    summary: null,
+  },
+]
+
+export const mockInvestigations = [
+  {
+    number: 1234,
+    title: 'Test issue: DataGrid crash',
+    url: 'https://github.com/mui/mui-x/issues/1234',
+    status: 'pending',
+    component: 'DataGrid',
+    priority: 'High',
+    investigation: JSON.stringify({
+      status: 'done',
+      approach: 'Reproduced locally',
+      painPoints: 'Hard to debug',
+      conclusion: 'Confirmed bug in sort comparator',
+      reasoning: 'The comparator fails on null values',
+      suggestedFix: 'Add null check in comparator',
+      completedAt: '2025-02-20T09:00:00Z',
+    }),
+    analyzed_at: '2025-02-20T08:30:00Z',
+  },
+]
+
 export const handlers = [
   http.get('http://test-api.local/api/issues', () => {
     // Return flat API format (like real Worker does)
@@ -123,5 +167,21 @@ export const handlers = [
 
   http.post('http://test-api.local/api/activity', () => {
     return HttpResponse.json({ ok: true })
+  }),
+
+  http.get('http://test-api.local/api/scan/history', ({ request }) => {
+    const url = new URL(request.url)
+    const limit = Number(url.searchParams.get('limit') || 20)
+    const offset = Number(url.searchParams.get('offset') || 0)
+    const sliced = mockScanRuns.slice(offset, offset + limit)
+    return HttpResponse.json({ runs: sliced, total: mockScanRuns.length })
+  }),
+
+  http.get('http://test-api.local/api/scan/investigations', ({ request }) => {
+    const url = new URL(request.url)
+    const limit = Number(url.searchParams.get('limit') || 50)
+    const offset = Number(url.searchParams.get('offset') || 0)
+    const sliced = mockInvestigations.slice(offset, offset + limit)
+    return HttpResponse.json({ investigations: sliced, total: mockInvestigations.length })
   }),
 ]

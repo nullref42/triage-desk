@@ -184,3 +184,45 @@ export async function postActivity(entry: Omit<ActivityEntry, 'id' | 'timestamp'
 export function clearLocalActivity(): void {
   localStorage.removeItem(ACTIVITY_KEY)
 }
+
+// --------------- Scan History ---------------
+
+export interface ScanRun {
+  id: number
+  started_at: string
+  finished_at: string
+  issues_found: number
+  issues_new: number
+  issues_updated: number
+  status: string
+  summary?: string
+}
+
+export interface InvestigationRow {
+  number: number
+  title: string
+  url: string
+  status: string
+  component: string
+  priority: string
+  investigation: string // JSON string
+  analyzed_at: string
+}
+
+export async function fetchScanHistory(limit = 20, offset = 0): Promise<{ runs: ScanRun[]; total: number }> {
+  if (isApiConfigured()) {
+    const res = await fetch(apiUrl(`/api/scan/history?limit=${limit}&offset=${offset}`), { credentials: 'include' })
+    if (!res.ok) throw new Error(`API ${res.status}`)
+    return await res.json()
+  }
+  return { runs: [], total: 0 }
+}
+
+export async function fetchInvestigations(limit = 50, offset = 0): Promise<{ investigations: InvestigationRow[]; total: number }> {
+  if (isApiConfigured()) {
+    const res = await fetch(apiUrl(`/api/scan/investigations?limit=${limit}&offset=${offset}`), { credentials: 'include' })
+    if (!res.ok) throw new Error(`API ${res.status}`)
+    return await res.json()
+  }
+  return { investigations: [], total: 0 }
+}

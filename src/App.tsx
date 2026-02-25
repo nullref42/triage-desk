@@ -5,6 +5,7 @@ import IssuesQueue from './pages/IssuesQueue'
 import InvestigationQueue from './pages/InvestigationQueue'
 import Settings from './pages/Settings'
 import ActivityLog from './pages/ActivityLog'
+import ScanHistory from './pages/ScanHistory'
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
           <Route path="/" element={<IssuesQueue />} />
           <Route path="/investigate" element={<InvestigationQueue />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/scans" element={<ScanHistory />} />
           <Route path="/activity" element={<ActivityLog />} />
         </Routes>
       </Box>

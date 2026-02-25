@@ -109,4 +109,39 @@ scan.get('/status', async (c) => {
   return c.json(latest || { status: 'no runs' });
 });
 
+// GET /api/scan/history
+scan.get('/history', async (c) => {
+  const limit = Math.min(Number(c.req.query('limit') || 20), 100);
+  const offset = Number(c.req.query('offset') || 0);
+
+  const rows = await c.env.DB.prepare(
+    'SELECT * FROM scan_runs ORDER BY id DESC LIMIT ? OFFSET ?'
+  ).bind(limit, offset).all();
+
+  const countRow = await queryOne(c.env.DB, 'SELECT COUNT(*) as total FROM scan_runs', []);
+
+  return c.json({ runs: rows.results ?? [], total: (countRow as any)?.total ?? 0 });
+});
+
+// GET /api/scan/investigations
+scan.get('/investigations', async (c) => {
+  const limit = Math.min(Number(c.req.query('limit') || 50), 200);
+  const offset = Number(c.req.query('offset') || 0);
+
+  const rows = await c.env.DB.prepare(
+    `SELECT i.number, i.title, i.url, i.status,
+            ta.component, ta.priority, ta.investigation, ta.analyzed_at
+     FROM triage_analysis ta
+     JOIN issues i ON i.number = ta.issue_number
+     WHERE ta.investigation IS NOT NULL
+     ORDER BY ta.analyzed_at DESC
+     LIMIT ? OFFSET ?`
+  ).bind(limit, offset).all();
+
+  const countRow = await queryOne(c.env.DB,
+    'SELECT COUNT(*) as total FROM triage_analysis WHERE investigation IS NOT NULL', []);
+
+  return c.json({ investigations: rows.results ?? [], total: (countRow as any)?.total ?? 0 });
+});
+
 export default scan;
