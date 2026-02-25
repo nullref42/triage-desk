@@ -10,6 +10,8 @@ import {
   type ScanRun, type InvestigationRow,
 } from '../api/triageApi'
 import type { Investigation } from '../types'
+import ScheduleIcon from '@mui/icons-material/Schedule'
+import { getNextTriageRunTime, getNextInvestigationTime } from '../utils/time'
 
 const statusColor: Record<string, 'success' | 'error' | 'warning' | 'info'> = {
   completed: 'success', failed: 'error', running: 'warning',
@@ -118,7 +120,11 @@ export default function ScanHistory() {
   return (
     <Box>
       <Typography variant="h4" fontWeight={700} mb={0.5}>Scan History</Typography>
-      <Typography color="text.secondary" mb={3}>Overview of scan runs and investigated issues</Typography>
+      <Typography color="text.secondary" mb={1.5}>Overview of scan runs and investigated issues</Typography>
+      <Box sx={{ display: 'flex', gap: 1.5, mb: 3, flexWrap: 'wrap' }}>
+        <Chip icon={<ScheduleIcon />} label={`Next scan: ${getNextTriageRunTime()}`} size="small" sx={{ fontWeight: 600, fontSize: 12 }} />
+        <Chip icon={<ScheduleIcon />} label={`Next investigation: ${getNextInvestigationTime()}`} size="small" color="secondary" sx={{ fontWeight: 600, fontSize: 12 }} />
+      </Box>
 
       {/* Scan Runs */}
       <Typography variant="h6" fontWeight={600} mb={1.5}>Scan Runs</Typography>

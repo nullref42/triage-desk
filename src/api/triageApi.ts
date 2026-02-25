@@ -87,7 +87,8 @@ export async function fetchActivity(): Promise<ActivityEntry[]> {
   try {
     const res = await fetch(apiUrl('/api/activity'), { credentials: 'include' })
     if (!res.ok) throw new Error(`API ${res.status}`)
-    return await res.json()
+    const data = await res.json()
+    return Array.isArray(data) ? data : data.activity ?? []
   } catch {
     return []
   }

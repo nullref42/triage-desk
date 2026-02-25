@@ -13,7 +13,7 @@ activity.get('/', async (c) => {
     'SELECT * FROM activity_log ORDER BY timestamp DESC LIMIT ? OFFSET ?',
     [limit, offset]
   );
-  return c.json({ activity: results });
+  return c.json(results);
 });
 
 // POST /api/activity

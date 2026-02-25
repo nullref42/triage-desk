@@ -2,6 +2,28 @@
 
 All notable changes to Triage Desk will be documented in this file.
 
+## [0.5.0] - 2026-02-25
+
+### Added
+- **Phase 2: Frontend API integration** — migrated all data fetching from local JSON to live Cloudflare Worker API
+- **Phase 3: Scan pipeline migration** — scan cron now POSTs triage results to Worker API with upsert logic
+- **Scan History page** — view past scan runs in a DataGrid with status, timing, and issue counts
+- **Investigation details** — expandable rows in Scan History showing AI investigation approach, pain points, conclusion, and suggested fix
+- **Archive/Unarchive button** — move issues between active and archived status via API
+- **Next scan/investigation timers** — chips on Scan History page showing countdown to next scheduled runs
+- **Comprehensive README** — full architecture docs covering data flow, schema, auth, and deployment
+
+### Fixed
+- **Activity Log crash** (`e.map is not a function`) — API now returns array directly; frontend guards against non-array responses
+- **CORS configuration** — added all required origins and headers to Worker CORS middleware
+- **Paper import** — fixed missing MUI Paper import in multiple components
+- **Flat API normalization** — frontend now handles both flat (snake_case) and nested API response formats
+- **Issue body loading** — body field now properly fetched and rendered in detail panel
+
+### Changed
+- **Phase 4: Cleanup** — removed legacy local data files and unused imports
+- Scan cron updated to re-triage ALL issues every run (not just new ones)
+
 ## [0.3.2] - 2026-02-18
 
 ### Changed

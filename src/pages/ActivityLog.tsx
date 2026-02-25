@@ -10,7 +10,7 @@ export default function ActivityLog() {
   const [entries, setEntries] = useState<ActivityEntry[]>([])
 
   useEffect(() => {
-    fetchActivity().then(setEntries)
+    fetchActivity().then(d => setEntries(Array.isArray(d) ? d : []))
   }, [])
 
   const handleClear = () => { setEntries([]) }
