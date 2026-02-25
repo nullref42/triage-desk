@@ -12,6 +12,7 @@ app.use('*', cors({
   origin: ['https://nullref42.github.io', 'http://localhost:5173', 'http://localhost:4173'],
   allowMethods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
   allowHeaders: ['Content-Type', 'Cf-Access-Jwt-Assertion', 'CF-Access-Client-Id', 'CF-Access-Client-Secret'],
+  credentials: true,
 }));
 
 // Health check
