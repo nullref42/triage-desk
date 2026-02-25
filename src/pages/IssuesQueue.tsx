@@ -19,6 +19,7 @@ import { TypeBadge, PriorityBadge, StatusBadge } from '../components/Badges'
 import { getOctokit } from '../utils/github'
 import { addActivity } from '../utils/activity'
 import { getNextTriageRunTime } from '../utils/time'
+import { fetchIssues } from '../api/triageApi'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 
 const columns: GridColDef[] = [
@@ -249,13 +250,8 @@ export default function IssuesQueue() {
   const [view, setView] = useState<'active' | 'archived'>('active')
 
   useEffect(() => {
-    fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
-      .then(r => r.json())
-      .then((data: TriageIssue[] | { issues: TriageIssue[] }) => {
-        const list = Array.isArray(data) ? data : data.issues ?? []
-        setIssues(list.filter(i => i.triage))
-        setLoading(false)
-      })
+    fetchIssues()
+      .then(list => { setIssues(list); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
 

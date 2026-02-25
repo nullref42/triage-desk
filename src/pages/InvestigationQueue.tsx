@@ -11,6 +11,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import type { TriageIssue } from '../types'
 import { PriorityBadge } from '../components/Badges'
 import { getNextInvestigationTime } from '../utils/time'
+import { fetchIssues } from '../api/triageApi'
 
 const columns: GridColDef[] = [
   { field: 'number', headerName: '#', width: 190, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => (
@@ -119,11 +120,9 @@ export default function InvestigationQueue() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
-      .then(r => r.json())
-      .then((data: TriageIssue[]) => {
-        const investigateIssues = data.filter(i => i.triage?.suggestedAction === 'Investigate & Fix' && i.status !== 'archived')
-        setIssues(investigateIssues)
+    fetchIssues()
+      .then(data => {
+        setIssues(data.filter(i => i.triage?.suggestedAction === 'Investigate & Fix' && i.status !== 'archived'))
         setLoading(false)
       })
       .catch(() => setLoading(false))

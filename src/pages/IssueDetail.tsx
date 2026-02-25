@@ -17,6 +17,7 @@ import type { TriageIssue } from '../types'
 import { TypeBadge, PriorityBadge } from '../components/Badges'
 import { getOctokit } from '../utils/github'
 import { addActivity } from '../utils/activity'
+import { fetchIssue } from '../api/triageApi'
 
 export default function IssueDetail() {
   const { number } = useParams<{ number: string }>()
@@ -29,17 +30,13 @@ export default function IssueDetail() {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    fetch(import.meta.env.BASE_URL + 'data/triage-results.json?v=' + Date.now())
-      .then(r => r.json())
-      .then((raw: TriageIssue[] | { issues: TriageIssue[] }) => {
-        const data = Array.isArray(raw) ? raw : raw.issues ?? []
-        const found = data.find(i => i.number === Number(number))
-        if (found && found.triage) {
-          setIssue(found)
-          setComment(found.triage.suggestedComment)
-          setSelectedLabels(found.triage.suggestedLabels)
-        }
-      })
+    fetchIssue(Number(number)).then(found => {
+      if (found && found.triage) {
+        setIssue(found)
+        setComment(found.triage.suggestedComment)
+        setSelectedLabels(found.triage.suggestedLabels)
+      }
+    })
   }, [number])
 
   const showSnack = (msg: string, severity: 'success' | 'error') => setSnack({ open: true, msg, severity })

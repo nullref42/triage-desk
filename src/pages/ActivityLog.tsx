@@ -1,13 +1,18 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Box, Typography, Paper, Button, List, ListItem, ListItemText, Chip, Divider,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getActivity, clearActivity } from '../utils/activity'
+import { getActivity, clearActivity, fetchActivity } from '../utils/activity'
 import type { ActivityEntry } from '../types'
 
 export default function ActivityLog() {
   const [entries, setEntries] = useState<ActivityEntry[]>(getActivity())
+
+  // Load from API if available, otherwise localStorage is already set
+  useEffect(() => {
+    fetchActivity().then(setEntries)
+  }, [])
 
   const handleClear = () => { clearActivity(); setEntries([]) }
 
