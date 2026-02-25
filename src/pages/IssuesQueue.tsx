@@ -58,6 +58,21 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
   const [selectedLabels, setSelectedLabels] = useState<string[]>(issue.triage.suggestedLabels)
   const [snack, setSnack] = useState<{ open: boolean; msg: string; severity: 'success' | 'error' }>({ open: false, msg: '', severity: 'success' })
   const [loading, setLoading] = useState(false)
+  const [body, setBody] = useState(issue.body || '')
+  const [bodyLoading, setBodyLoading] = useState(false)
+
+  // Fetch body from GitHub if not available (D1 doesn't store bodies)
+  useEffect(() => {
+    if (tab === 1 && !body) {
+      const octokit = getOctokit()
+      if (!octokit) return
+      setBodyLoading(true)
+      octokit.issues.get({ owner: 'mui', repo: 'mui-x', issue_number: issue.number })
+        .then(res => setBody(res.data.body || '*No description provided.*'))
+        .catch(() => setBody('*Failed to load issue body. Set your GitHub PAT in Settings.*'))
+        .finally(() => setBodyLoading(false))
+    }
+  }, [tab, body, issue.number])
 
   const showSnack = (msg: string, severity: 'success' | 'error') => setSnack({ open: true, msg, severity })
 
@@ -232,7 +247,15 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
           </Box>
           <Divider sx={{ mb: 2, borderColor: 'rgba(255,255,255,0.06)' }} />
           <Box sx={{ '& img': { maxWidth: '100%' }, '& pre': { bgcolor: 'rgba(0,0,0,0.3)', p: 2, borderRadius: 2, overflow: 'auto' }, '& code': { fontSize: 13 }, '& p': { lineHeight: 1.7 }, '& h1,& h2,& h3': { mt: 2, mb: 1 } }}>
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{issue.body}</ReactMarkdown>
+            {bodyLoading ? (
+              <LinearProgress sx={{ my: 2 }} />
+            ) : body ? (
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+            ) : (
+              <Typography color="text.secondary" fontSize={13} fontStyle="italic">
+                No description available. Set your GitHub PAT in Settings to load issue bodies.
+              </Typography>
+            )}
           </Box>
         </Box>
       )}
