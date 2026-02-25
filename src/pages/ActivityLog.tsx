@@ -3,18 +3,17 @@ import {
   Box, Typography, Paper, Button, List, ListItem, ListItemText, Chip, Divider,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import { getActivity, clearActivity, fetchActivity } from '../utils/activity'
+import { fetchActivity } from '../utils/activity'
 import type { ActivityEntry } from '../types'
 
 export default function ActivityLog() {
-  const [entries, setEntries] = useState<ActivityEntry[]>(getActivity())
+  const [entries, setEntries] = useState<ActivityEntry[]>([])
 
-  // Load from API if available, otherwise localStorage is already set
   useEffect(() => {
     fetchActivity().then(setEntries)
   }, [])
 
-  const handleClear = () => { clearActivity(); setEntries([]) }
+  const handleClear = () => { setEntries([]) }
 
   return (
     <Box>

@@ -1,13 +1,9 @@
-import { describe, it, expect, beforeEach } from 'vitest'
-import { fetchIssues, fetchIssue, updateIssueStatus, postActivity, fetchActivity, clearLocalActivity } from '../api/triageApi'
+import { describe, it, expect } from 'vitest'
+import { fetchIssues, fetchIssue, updateIssueStatus, postActivity, fetchActivity } from '../api/triageApi'
 
 describe('triageApi', () => {
-  beforeEach(() => {
-    localStorage.clear()
-  })
-
   describe('fetchIssues', () => {
-    it('fetches issues from API when configured', async () => {
+    it('fetches issues from API', async () => {
       const issues = await fetchIssues()
       expect(issues).toHaveLength(1)
       expect(issues[0].number).toBe(1234)
@@ -19,9 +15,7 @@ describe('triageApi', () => {
       expect(issues[0].triage.component).toBe('DataGrid')
     })
 
-    it('normalizes flat snake_case API response into nested triage object (regression #1)', async () => {
-      // The real API returns flat rows from a D1 JOIN — no nested `triage` object.
-      // This crashed the frontend with: "can't access property 'type', triage is undefined"
+    it('normalizes flat snake_case API response into nested triage object', async () => {
       const issues = await fetchIssues()
       const issue = issues[0]
       expect(issue.triage).toBeDefined()
@@ -62,41 +56,23 @@ describe('triageApi', () => {
   })
 
   describe('updateIssueStatus', () => {
-    it('writes status to localStorage', async () => {
-      await updateIssueStatus(1234, 'done')
-      const statuses = JSON.parse(localStorage.getItem('triage-desk-statuses') || '{}')
-      expect(statuses[1234]).toBe('done')
-    })
-
     it('sends PATCH to API', async () => {
-      await updateIssueStatus(1234, 'archived')
-      const statuses = JSON.parse(localStorage.getItem('triage-desk-statuses') || '{}')
-      expect(statuses[1234]).toBe('archived')
+      await expect(updateIssueStatus(1234, 'done')).resolves.toBeUndefined()
     })
   })
 
   describe('activity', () => {
-    it('postActivity writes to localStorage', async () => {
-      await postActivity({
+    it('postActivity sends to API', async () => {
+      await expect(postActivity({
         issueNumber: 1234,
         issueTitle: 'Test',
         action: 'Posted comment',
-      })
-      const stored = JSON.parse(localStorage.getItem('triage-desk-activity') || '[]')
-      expect(stored).toHaveLength(1)
-      expect(stored[0].action).toBe('Posted comment')
+      })).resolves.toBeUndefined()
     })
 
-    it('fetchActivity returns from API when configured', async () => {
+    it('fetchActivity returns from API', async () => {
       const entries = await fetchActivity()
       expect(Array.isArray(entries)).toBe(true)
-    })
-
-    it('clearLocalActivity clears localStorage', async () => {
-      await postActivity({ issueNumber: 1, issueTitle: 'x', action: 'test' })
-      clearLocalActivity()
-      const stored = JSON.parse(localStorage.getItem('triage-desk-activity') || '[]')
-      expect(stored).toHaveLength(0)
     })
   })
 })

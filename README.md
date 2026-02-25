@@ -16,35 +16,34 @@ Triage Desk monitors open issues labeled `status: waiting for maintainer` on `mu
 - **One-Click Actions** — Post Comment, Apply Labels, Post & Label, Skip
 - **Issue Body Rendering** — rendered markdown of the original issue, without leaving the dashboard
 - **Activity Log** — tracks every action you take
-- **Hourly Auto-Refresh** — triage data is updated via cron and redeployed automatically
+- **Scan History** — view past scan runs and AI investigations
 
-### How it works
+## Architecture
 
 ```
-┌──────────────┐     ┌───────────────┐     ┌──────────────┐
-│  GitHub API   │────▶│  AI Triage    │────▶│  Static JSON │
-│  (polling)    │     │  (analysis)   │     │  (committed) │
-└──────────────┘     └───────────────┘     └──────┬───────┘
-                                                   │
-                                            ┌──────▼───────┐
-                                            │  GitHub Pages │
-                                            │  (dashboard)  │
-                                            └──────┬───────┘
-                                                   │
-                                            ┌──────▼───────┐
-                                            │  Maintainer   │
-                                            │  (browser)    │
-                                            └──────────────┘
+┌──────────────┐     ┌───────────────────────┐     ┌──────────────┐
+│  GitHub API   │────▶│  Cloudflare Worker     │────▶│  D1 Database │
+│  (polling)    │     │  (cron scan + API)     │     │  (storage)   │
+└──────────────┘     └───────────┬────────────┘     └──────────────┘
+                                 │
+                          ┌──────▼───────┐
+                          │  GitHub Pages │
+                          │  (dashboard)  │
+                          └──────┬───────┘
+                                 │
+                          ┌──────▼───────┐
+                          │  Maintainer   │
+                          │  (browser)    │
+                          └──────────────┘
 ```
 
-1. **Polling**: Issues with `status: waiting for maintainer` are fetched hourly from `mui/mui-x`
-2. **Triage**: Each issue is analyzed — type, component, priority, completeness, suggested action & comment
-3. **Deploy**: Results are committed as `data/triage-results.json` and deployed to GitHub Pages
-4. **Review**: Maintainers open the dashboard, review triage suggestions, and take actions using their own GitHub PAT
+1. **Cron scan**: A Cloudflare Worker runs on a schedule, fetches issues from `mui/mui-x`, analyzes them with AI, and stores results in a D1 database
+2. **API**: The same Worker exposes a REST API for the frontend to read issues, update statuses, and log activity
+3. **Dashboard**: A React SPA on GitHub Pages fetches data from the Worker API
+4. **Actions**: Maintainers review triage suggestions and take actions using their own GitHub PAT (client-side only)
 
 ### Security
 
-- **No backend** — the dashboard is a static site
 - **PATs stay local** — stored in your browser's `localStorage`, never sent to any server
 - **Actions are yours** — comments and labels are posted using your own token, appearing as you
 
@@ -52,16 +51,29 @@ Triage Desk monitors open issues labeled `status: waiting for maintainer` on `mu
 
 - [React](https://react.dev/) + [TypeScript](https://www.typescriptlang.org/) + [Vite](https://vite.dev/)
 - [MUI v6](https://mui.com/) + [MUI X DataGrid Pro](https://mui.com/x/react-data-grid/)
+- [Cloudflare Workers](https://workers.cloudflare.com/) + [D1](https://developers.cloudflare.com/d1/)
 - [Octokit](https://github.com/octokit/rest.js) (client-side GitHub API)
-- [react-markdown](https://github.com/remarkjs/react-markdown) + [remark-gfm](https://github.com/remarkjs/remark-gfm)
 - Deployed on [GitHub Pages](https://pages.github.com/)
 
 ## Development
+
+### Frontend
 
 ```bash
 npm install
 npm run dev     # Start dev server
 npm run build   # Build for production
+```
+
+Set `VITE_API_URL` in `.env.local` to your Worker URL (e.g. `https://triage-desk-api.triage-desk.workers.dev`).
+
+### Worker (Backend)
+
+```bash
+cd worker
+npm install
+wrangler dev    # Local development
+wrangler deploy # Deploy to Cloudflare
 ```
 
 ## License
