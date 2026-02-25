@@ -19,7 +19,9 @@ import { TypeBadge, PriorityBadge, StatusBadge } from '../components/Badges'
 import { getOctokit } from '../utils/github'
 import { addActivity } from '../utils/activity'
 import { getNextTriageRunTime } from '../utils/time'
-import { fetchIssues } from '../api/triageApi'
+import { fetchIssues, updateIssueStatus } from '../api/triageApi'
+import ArchiveIcon from '@mui/icons-material/Archive'
+import UnarchiveIcon from '@mui/icons-material/Unarchive'
 import ScheduleIcon from '@mui/icons-material/Schedule'
 
 const columns: GridColDef[] = [
@@ -51,7 +53,7 @@ const columns: GridColDef[] = [
   { field: 'status', headerName: 'Status', width: 100, align: 'center', headerAlign: 'center', renderCell: (p: GridRenderCellParams) => <StatusBadge status={p.value} /> },
 ]
 
-function DetailPanel({ issue }: { issue: TriageIssue }) {
+function DetailPanel({ issue, onStatusChange }: { issue: TriageIssue; onStatusChange?: () => void }) {
   const [tab, setTab] = useState(0)
   const [comment, setComment] = useState(issue.triage.suggestedComment)
   const [previewMode, setPreviewMode] = useState<'edit' | 'preview'>('edit')
@@ -224,6 +226,30 @@ function DetailPanel({ issue }: { issue: TriageIssue }) {
               <Button size="small" variant="contained" startIcon={<SendIcon />} onClick={postComment} disabled={loading}>Post Comment</Button>
               <Button size="small" variant="outlined" startIcon={<LabelIcon />} onClick={applyLabels} disabled={loading}>Apply Labels</Button>
               <Button size="small" variant="contained" color="secondary" onClick={postAndLabel} disabled={loading}>Post & Label</Button>
+              <Box sx={{ flex: 1 }} />
+              <Button
+                size="small"
+                variant="outlined"
+                color={issue.status === 'archived' ? 'success' : 'warning'}
+                startIcon={issue.status === 'archived' ? <UnarchiveIcon /> : <ArchiveIcon />}
+                disabled={loading}
+                onClick={async () => {
+                  setLoading(true)
+                  try {
+                    const newStatus = issue.status === 'archived' ? 'pending' : 'archived'
+                    await updateIssueStatus(issue.number, newStatus)
+                    await addActivity({ issueNumber: issue.number, issueTitle: issue.title, action: newStatus === 'archived' ? 'Archived issue' : 'Unarchived issue' })
+                    showSnack(newStatus === 'archived' ? 'Issue archived' : 'Issue restored to active', 'success')
+                    onStatusChange?.()
+                  } catch {
+                    showSnack('Failed to update status', 'error')
+                  } finally {
+                    setLoading(false)
+                  }
+                }}
+              >
+                {issue.status === 'archived' ? 'Unarchive' : 'Archive'}
+              </Button>
             </Box>
           </Box>
         </Box>
@@ -272,11 +298,13 @@ export default function IssuesQueue() {
   const [loading, setLoading] = useState(true)
   const [view, setView] = useState<'active' | 'archived'>('active')
 
-  useEffect(() => {
+  const loadIssues = useCallback(() => {
     fetchIssues()
       .then(list => { setIssues(list); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
+
+  useEffect(() => { loadIssues() }, [loadIssues])
 
   const filteredIssues = issues.filter(i => view === 'archived' ? i.status === 'archived' : i.status !== 'archived')
   const archivedCount = issues.filter(i => i.status === 'archived').length
@@ -298,9 +326,9 @@ export default function IssuesQueue() {
     ({ row }: any) => {
       const issue = issues.find(i => i.number === row.number)
       if (!issue) return null
-      return <DetailPanel issue={issue} />
+      return <DetailPanel issue={issue} onStatusChange={loadIssues} />
     },
-    [issues]
+    [issues, loadIssues]
   )
 
   const getDetailPanelHeight = useCallback(() => 'auto' as const, [])
